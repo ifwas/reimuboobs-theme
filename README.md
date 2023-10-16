@@ -13,6 +13,7 @@ i will finish it whenever im not lazy but this is essential atm
 ## TODO:
 
 - fix roomsearch in multiplayer
+- fix unicode font size (or just use another font, i'll see what i can do)
 - fix some values and actually put the effort in fixing some positions (this is in order of making 4:3 playable)
 - fix the etterna judgment converter and other stuff broken in ScreenEvaluation
 - not be lazy and delete some things i just left in _xoon2
