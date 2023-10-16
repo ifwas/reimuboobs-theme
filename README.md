@@ -1,4 +1,4 @@
-##About 
+## About 
 
 This is my own theme edit of [Etterna](https://github.com/etternagame/etterna)'s theme "Til Death", the goal of this repository is to document the changes/fixes i make while giving out an public release of the theme 
 
