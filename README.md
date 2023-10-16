@@ -6,7 +6,8 @@ This is my own theme edit of [Etterna](https://github.com/etternagame/etterna)'s
 
 - Poco0137
 - Sidek for the titlesplash animation, for porting the xoon 3 particule system and inspiration on the ScreenEvaluation layout
-
+- MISSILE228 for some graphic stuff (mainly the main menu artwork)
+  
 i will finish it whenever im not lazy but this is essential atm 
 
 ## TODO:
