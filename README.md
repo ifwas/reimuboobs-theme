@@ -16,4 +16,5 @@ i will finish it whenever im not lazy but this is essential atm
 - fix some values and actually put the effort in fixing some positions (this is in order of making 4:3 playable)
 - fix the etterna judgment converter and other stuff broken in ScreenEvaluation
 - not be lazy and delete some things i just left in _xoon2
-- do some changes to the SongWheel and some tabs
+- do some changes to the SongWheel and some changes to the tabs
+- implement ideas (such as durvin's edit of ScreenEvaluation and other stuff from other themes)
