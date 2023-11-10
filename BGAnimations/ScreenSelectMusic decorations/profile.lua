@@ -7,6 +7,10 @@ local function BroadcastIfActive(msg)
 	end
 end
 
+local playCount = 0
+local playTime = 0
+local noteCount = 0
+
 local translated_info = {
 	Validated = THEME:GetString("TabProfile", "ScoreValidated"),
 	Invalidated = THEME:GetString("TabProfile", "ScoreInvalidated"),
@@ -21,7 +25,19 @@ local translated_info = {
 	Failure = THEME:GetString("TabProfile", "SaveFail"),
 	ValidateAll = THEME:GetString("TabProfile", "ValidateAllScores"),
 	ForceRecalc = THEME:GetString("TabProfile", "ForceRecalcScores"),
+
+	--testing new stuff for the profile tab  (clearly not copypasted from player info nono)
+	Plays = THEME:GetString("GeneralInfo", "ProfilePlays"),
+	TapsHit = THEME:GetString("GeneralInfo", "ProfileTapsHit"),
+	Playtime = THEME:GetString("GeneralInfo", "ProfilePlaytime"),
+	Judge = THEME:GetString("GeneralInfo", "ProfileJudge"),
+	RefreshSongs = THEME:GetString("GeneralInfo", "DifferentialReloadTrigger"),
+	SongsLoaded = THEME:GetString("GeneralInfo", "ProfileSongsLoaded"),
+	SessionTime = THEME:GetString("GeneralInfo", "SessionTime")
 }
+
+
+
 
 local t = Def.ActorFrame {
 	BeginCommand = function(self)
@@ -70,17 +86,17 @@ local frameX = 10
 local frameY = 45
 local frameWidth = capWideScale(360, 400)
 local frameHeight = 350
-local fontScale = 0.25
+local fontScale = 0.21
 local scoresperpage = 20
-local scoreYspacing = 12.5
+local scoreYspacing = 12
 local distY = 15
-local offsetX = -10
+local offsetX = -5
 local offsetY = 20
-local txtDist = 33
+local txtDist = 20
 local rankingSkillset = 1
 local rankingPage = 1
 local numrankingpages = 10
-local rankingWidth = frameWidth - capWideScale(10, 25)
+local rankingWidth = frameWidth - capWideScale(10, 30)
 local rankingX = capWideScale(25, 35)
 local rankingY = capWideScale(40, 40)
 local rankingTitleSpacing = (rankingWidth / (#ms.SkillSets))
@@ -856,6 +872,8 @@ for i = 1, scoresperpage do
 	r[#r + 1] = recentLabel(i)
 end
 
+
+
 -- Technically the "overall" skillset is used for single value display during music select/eval and isn't factored in to the profile rating
 -- Only the specific skillsets are, and so overall should be used to display the specific skillset breakdowns separately - mina
 for i = 1, #ms.SkillSets do
@@ -876,26 +894,26 @@ local function littlebits(i)
 				self:visible(false)
 			end
 		end,
-		LoadFont("Common Large") .. {
+		LoadFont("Common Large") .. { --Text Skillset
 			InitCommand = function(self)
-				self:y(txtDist * i):maxwidth(170 * 2):halign(0):zoom(0.575)
+				self:y((txtDist * i) + 20):maxwidth(170 * 2):halign(0):zoom(0.275)
 			end,
 			SetCommand = function(self)
 				self:settext(ms.SkillSetsTranslated[i] .. ":")
 			end,
 		},
-		LoadFont("Common Large") .. {
+		LoadFont("Common Large") .. { 
 			InitCommand = function(self)
-				self:xy(210, txtDist * i):halign(0):zoom(0.575)
+				self:xy(240, ((txtDist * i) + 20)):halign(0):zoom(0.275)
 			end,
 			SetCommand = function(self)
 				local rating = 0
-				if not showOnline then
+				if not showOnline then -- local skillset msd
 					rating = profile:GetPlayerSkillsetRating(ms.SkillSets[i])
 					self:settextf("%05.2f", rating)
 					self:GetParent():x(frameX + capWideScale(28,45))
-					self:x(210)
-				else
+					self:x(80)
+				else -- online skilset msd
 					rating = DLMAN:GetSkillsetRating(ms.SkillSets[i])
 					self:settextf("%05.2f (#%i)", rating, DLMAN:GetSkillsetRank(ms.SkillSets[i]))
 					self:GetParent():x(frameX)
@@ -910,7 +928,7 @@ local function littlebits(i)
 			PlayerRatingUpdatedMessageCommand = function(self)
 				self:queuecommand("Set")
 			end
-		}
+		},
 	}
 	return t
 end
@@ -936,6 +954,35 @@ local profilebuttons = Def.ActorFrame {
 			user = ""
 		end
 	end,
+	--profile stats text
+	LoadFont("Common Large") .. { --taps
+			InitCommand = function(self)
+				self:xy(200 , ((txtDist * i) - 20)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			end,
+			SetCommand = function(self)
+				self:settextf("%s %s", noteCount, translated_info["TapsHit"])
+			end,
+		},
+		LoadFont("Common Large") .. { --playtime
+			InitCommand = function(self)
+				self:xy(200 , ((txtDist * i) - 5)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			end,
+			BeginCommand = function(self)
+				self:queuecommand("Set")
+			end,
+			SetCommand = function(self)
+				local time = SecondsToHHMMSS(playTime)
+				self:settextf("%s %s", time, translated_info["Playtime"])
+			end,
+		},
+		LoadFont("Common Large") .. { --plays
+		InitCommand = function(self)
+			self:xy(200 , ((txtDist * i) + 10)):maxwidth(170 * 3):halign(0):zoom(0.275)
+		end,
+		SetCommand = function(self)
+			self:settextf("%s %s", playCount, translated_info["Plays"])
+		end,
+	},
 	UpdateRankingMessageCommand = function(self)
 		if rankingSkillset == 1 and update and not recentactive then
 			self:visible(true)
@@ -1031,6 +1078,24 @@ local profilebuttons = Def.ActorFrame {
 			self:settext("-")
 		end,
 	},
+}
+
+t[#t + 1] = Def.Actor {
+	BeginCommand = function(self)
+		self:queuecommand("Set")
+	end,
+	SetCommand = function(self)
+		profile = GetPlayerOrMachineProfile(PLAYER_1)
+		profileName = profile:GetDisplayName()
+		playCount = SCOREMAN:GetTotalNumberOfScores()
+		playTime = profile:GetTotalSessionSeconds()
+		noteCount = profile:GetTotalTapsAndHolds()
+		playerRating = profile:GetPlayerRating()
+	end,
+	PlayerRatingUpdatedMessageCommand = function(self)
+		playerRating = profile:GetPlayerRating()
+		self:GetParent():GetChild("AvatarPlayerNumber_P1"):GetChild("Name"):playcommand("Set")
+	end
 }
 
 t[#t + 1] = profilebuttons
