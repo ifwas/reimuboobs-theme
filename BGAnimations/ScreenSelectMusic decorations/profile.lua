@@ -896,7 +896,7 @@ local function littlebits(i)
 		end,
 		LoadFont("Common Large") .. { --Text Skillset
 			InitCommand = function(self)
-				self:y((txtDist * i) + 20):maxwidth(170 * 2):halign(0):zoom(0.275)
+				self:xy(-30,( (txtDist * i) + 20)):maxwidth(170 * 2):halign(0):zoom(0.275)
 			end,
 			SetCommand = function(self)
 				self:settext(ms.SkillSetsTranslated[i] .. ":")
@@ -916,9 +916,9 @@ local function littlebits(i)
 				else -- online skilset msd
 					rating = DLMAN:GetSkillsetRating(ms.SkillSets[i])
 					self:settextf("%05.2f (#%i)", rating, DLMAN:GetSkillsetRank(ms.SkillSets[i]))
-					self:GetParent():x(frameX)
-					self:x(capWideScale(184,198)):maxwidth(9999)
-					if not IsUsingWideScreen() then self:maxwidth(270) end
+					self:GetParent():x(frameX + capWideScale(28,45))
+					self:x(80)
+					if not IsUsingWideScreen() then self:maxwidth(70) end
 				end
 				self:diffuse(byMSD(rating))
 			end,
@@ -957,7 +957,7 @@ local profilebuttons = Def.ActorFrame {
 	--profile stats text
 	LoadFont("Common Large") .. { --taps
 			InitCommand = function(self)
-				self:xy(200 , ((txtDist * i) - 20)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				self:xy(240 , ((txtDist * i) - 20)):maxwidth(170 * 3):halign(0):zoom(0.275)
 			end,
 			SetCommand = function(self)
 				self:settextf("%s %s", noteCount, translated_info["TapsHit"])
@@ -965,7 +965,7 @@ local profilebuttons = Def.ActorFrame {
 		},
 		LoadFont("Common Large") .. { --playtime
 			InitCommand = function(self)
-				self:xy(200 , ((txtDist * i) - 5)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				self:xy(240 , ((txtDist * i) - 5)):maxwidth(170 * 3):halign(0):zoom(0.275)
 			end,
 			BeginCommand = function(self)
 				self:queuecommand("Set")
@@ -977,7 +977,7 @@ local profilebuttons = Def.ActorFrame {
 		},
 		LoadFont("Common Large") .. { --plays
 		InitCommand = function(self)
-			self:xy(200 , ((txtDist * i) + 10)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			self:xy(240 , ((txtDist * i) + 10)):maxwidth(170 * 3):halign(0):zoom(0.275)
 		end,
 		SetCommand = function(self)
 			self:settextf("%s %s", playCount, translated_info["Plays"])
