@@ -17,5 +17,4 @@ i will finish it whenever im not lazy but this is essential atm
 - this is related to the last point but atm i will try to fix some things in the EvaluationScreen
 - fix the etterna judgment converter and other stuff broken in ScreenEvaluation
 - not be lazy and delete some things i just left in _xoon2
-- do some changes to the SongWheel and some changes to the tabs
 - implement ideas (such as durvin's edit of ScreenEvaluation and other stuff from other themes)
