@@ -4,9 +4,11 @@ t[#t + 1] =
 	LoadActor(THEME:GetPathG("", "_OptionsScreen")) ..
 	{
 		OnCommand = function(self)
-			self:zoomto(SCREEN_WIDTH, SCREEN_HEIGHT):Center():zoom(1):diffusealpha(1)
+			self:FullScreen():zoom(0.449):blend(color("#000000"))
+			
 		end
 	}
+
 
 if SameColor(getMainColor("positive"),color("#9654FD")) then
 	t[#t + 1] =

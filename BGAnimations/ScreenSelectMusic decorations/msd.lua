@@ -184,7 +184,7 @@ t[#t + 1] = LoadFont("Common Large") .. {
 -- Music Rate Display
 t[#t + 1] = LoadFont("Common Large") .. {
 	InitCommand = function(self)
-		self:xy(frameX + capWideScale(290,310), frameY + 123):visible(true):align(1,0):zoom(0.3)
+		self:xy(frameX + capWideScale(290,310), frameY + 58):visible(true):align(1,0):zoom(0.3)
 	end,
 	SetCommand = function(self)
 		if steps then

@@ -2,6 +2,7 @@ local moving = false
 local whee
 local pressingtab = false
 local top
+local pressingAltLeft = false
 
 local function scrollInput(event)
 	if top:GetName() == "ScreenSelectmusic" then

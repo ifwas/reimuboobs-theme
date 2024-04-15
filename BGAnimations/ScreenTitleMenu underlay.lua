@@ -9,7 +9,7 @@ local frameX = THEME:GetMetric("ScreenTitleMenu", "ScrollerX") - 10
 local frameY = THEME:GetMetric("ScreenTitleMenu", "ScrollerY")
 
 
---bg image tardé 5 años para saber la pinche sintaxis de mie -ifwas
+
 t[#t + 1] =
 	Def.Sprite{
 		Texture=THEME:GetPathG("","titlebg");
@@ -99,7 +99,7 @@ t[#t + 1] = LoadFont("Common Large") .. {
 t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
 	Name = "Version",
 	InitCommand=function(self)
-		self:xy(515,frameY-1000000000):zoom(0.125):align(0.5,1) -- i think no one will notice this if you do please kill yourself -ifwas
+		self:xy(515,frameY-1000000000):zoom(0.125):align(0.5,1) -- please ignore this, please please please please
 		self:diffusetopedge(Saturation(getMainColor("highlight"), 0.5))
 		self:diffusebottomedge(Saturation(getMainColor("positive"), 0.8))
 	end,
@@ -108,7 +108,7 @@ t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
 	end,
 	MouseDownCommand = function(self, params)
 		if params.event == "DeviceButton_left mouse button" then
-			local tag = "urlnoexit,https://github.com/etternagame/etterna/releases/tag/v" .. GAMESTATE:GetEtternaVersion()
+			local tag = "urlnoexit,https://uglyretardedfaggots.com/" .. GAMESTATE:GetEtternaVersion()
 			GAMESTATE:ApplyGameCommand(tag)
 		end
 	end

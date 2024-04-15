@@ -1,4 +1,5 @@
 -- Various player and stage info, more text = fps drop so we should be sparing
+-- i will try to remove some unnecesary stuff tho -ifwas
 local profileP1 = GetPlayerOrMachineProfile(PLAYER_1)
 local PlayerFrameX = 0
 local PlayerFrameY = SCREEN_HEIGHT - 50

@@ -33,7 +33,9 @@ local translated_info = {
 	Judge = THEME:GetString("GeneralInfo", "ProfileJudge"),
 	RefreshSongs = THEME:GetString("GeneralInfo", "DifferentialReloadTrigger"),
 	SongsLoaded = THEME:GetString("GeneralInfo", "ProfileSongsLoaded"),
-	SessionTime = THEME:GetString("GeneralInfo", "SessionTime")
+	SessionTime = THEME:GetString("GeneralInfo", "SessionTime"),
+
+	
 }
 
 
@@ -983,6 +985,15 @@ local profilebuttons = Def.ActorFrame {
 			self:settextf("%s %s", playCount, translated_info["Plays"])
 		end,
 	},
+
+	--porting some neat things from rebirth
+	--LoadFont("Common Large") .. { --top3
+			--InitCommand = function(self)
+				--self:xy(240 , ((txtDist * i) - 20)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				--self:settext(translated_info["Top3PlayedSkillsets"])
+			--end,
+		--},
+
 	UpdateRankingMessageCommand = function(self)
 		if rankingSkillset == 1 and update and not recentactive then
 			self:visible(true)

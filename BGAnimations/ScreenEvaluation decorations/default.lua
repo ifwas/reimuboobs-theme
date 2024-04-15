@@ -77,7 +77,7 @@ t[#t+1] = Def.ActorFrame {
 			self:queuecommand("Set")
 		end,
 		SetCommand = function(self)
-			self:settext(GAMESTATE:GetCurrentSong():GetDisplayMainTitle().. " // " .. GAMESTATE:GetCurrentSong():GetOrTryAtLeastToGetSimfileAuthor())
+			self:settext(GAMESTATE:GetCurrentSong():GetDisplayMainTitle())
 		end,
 	},
 	LoadFont("Common Large") .. {
@@ -106,6 +106,21 @@ t[#t+1] = Def.ActorFrame {
 		end,
 		SetCommand = function(self)
 			   self:settext("''"..GAMESTATE:GetCurrentSong():GetDisplaySubTitle().. "''")
+		end,
+	},
+	LoadFont("Common Large") .. {
+		Name = "AuthorSim", --thanks for the idea oniichan42
+		InitCommand = function(self)
+			self:xy(SCREEN_CENTER_X, capWideScale(173, 150) - 100)
+			self:zoom(0.23)
+			self:maxwidth(capWideScale(250 / 0.25, 180 / 0.25))
+			self:diffuse(getMainColor("positive"))
+		end,
+		BeginCommand = function(self)
+			self:queuecommand("Set")
+		end,
+		SetCommand = function(self)
+			self:settext("By: " ..GAMESTATE:GetCurrentSong():GetOrTryAtLeastToGetSimfileAuthor())
 		end,
 	},
 	LoadFont("Common Large") .. {
