@@ -297,7 +297,7 @@ local function scoreBoard(pn, position)
 		Def.ActorFrame {
 			Name = "CustomScoringDisplay",
 			InitCommand = function(self)
-				self:xy(frameX - 5, frameY + 5)
+				self:xy(frameX - 5, frameY + 44.3)
 				self:visible(usingCustomWindows)
 			end,
 			ToggleCustomWindowsMessageCommand = function(self)
@@ -305,8 +305,9 @@ local function scoreBoard(pn, position)
 				usingCustomWindows = not usingCustomWindows
 
 				self:visible(usingCustomWindows)
-				self:GetParent():GetChild("GraphDisplayP1"):visible(not usingCustomWindows)
-				self:GetParent():GetChild("ComboGraphP1"):visible(not usingCustomWindows)
+				self:GetParent():GetChild("WifeDisplay"):visible(not usingCustomWindows)
+				--self:GetParent():GetChild("GraphDisplayP1"):visible(not usingCustomWindows)
+				--self:GetParent():GetChild("ComboGraphP1"):visible(not usingCustomWindows)
 				if not usingCustomWindows then
 					unloadCustomWindowConfig()
 					MESSAGEMAN:Broadcast("UnloadedCustomWindow")
@@ -347,43 +348,12 @@ local function scoreBoard(pn, position)
 				end
 			end,
 
-			UIElements.QuadButton(1, 1) .. {
-				Name = "BG",
-				InitCommand = function(self)
-					self:zoomto(capWideScale(get43size(235),235), 25)
-					self:halign(0):valign(1)
-					self:diffuse(getMainColor("tabs"))
-				end,
-				MouseClickCommand = function(self, params)
-					if self:IsVisible() and usingCustomWindows then
-						if params.event ~= "DeviceButton_left mouse button" then
-							moveCustomWindowConfigIndex(1)
-						else
-							moveCustomWindowConfigIndex(-1)
-						end
-						loadCurrentCustomWindowConfig()
-						MESSAGEMAN:Broadcast("RecalculateGraphs", {judge=judge})
-						lastSnapshot = REPLAYS:GetActiveReplay():GetLastReplaySnapshot()
-						self:GetParent():playcommand("Set")
-						MESSAGEMAN:Broadcast("LoadedCustomWindow")
-					end
-				end,
-			},
-			Def.Quad {
-				Name = "SmallHorizontalLine",
-				InitCommand = function(self)
-					self:xy(0, 0)
-					self:zoomto(capWideScale(get43size(235),235), 2)
-					self:halign(0)
-					self:diffuse(getMainColor("highlight"))
-					self:diffusealpha(0.5)
-				end,
-			},
+
 			LoadFont("Common Large") .. {
 				Name = "CustomPercent",
 				InitCommand = function(self)
 					self:xy(8, -4)
-					self:zoom(0.45)
+					self:zoom(0.3)
 					self:halign(0):valign(1)
 					self:maxwidth(capWideScale(320, 500))
 				end,
