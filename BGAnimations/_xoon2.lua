@@ -208,9 +208,9 @@ t[#t + 1] = Def.ActorFrame {
 		Name = "Name",
 		InitCommand = function(self)
 			self:halign(0)
-			self:xy(AvatarX + 54, AvatarY + 7)
-			self:zoom(0.50)
-			self:maxwidth(capWideScale(360,800))
+			self:xy(AvatarX + 54, AvatarY + 7) --54
+			self:zoom(0.45)
+			self:maxwidth(capWideScale(260,400))
 			self:maxheight(22)
 			self:diffuse(ButtonColor)
 		end,
@@ -320,7 +320,12 @@ t[#t + 1] = Def.ActorFrame {
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		Name = "LoggedInAs",
 		InitCommand = function(self)
-			self:xy(AvatarX + 144, AvatarY + 20):halign(0.5):zoom(0.45):diffuse(ButtonColor)
+			self:halign(0)
+			self:xy(AvatarX + 54, AvatarY + 23)
+			self:zoom(0.45)
+			self:maxwidth(capWideScale(360,800))
+			self:maxheight(22)
+			self:diffuse(ButtonColor)
 			-- self:xy(SCREEN_CENTER_X + 35, AvatarY + 41.25):halign(0.5):zoom(0.45):diffuse(ButtonColor) "default value"
 		end,
 		BeginCommand = function(self)
@@ -380,30 +385,6 @@ t[#t + 1] = Def.ActorFrame {
 			local online = IsNetSMOnline() and IsSMOnlineLoggedIn() and NSMAN:IsETTP()
 			self:y(AvatarY - 422  - (online and 18 or 0))
 			self:settextf("%s: %s", translated_info["Judge"], GetTimingDifficulty())
-		end
-	},
-	UIElements.TextToolTip(1, 1, "Common Normal") .. {
-		Name = "Version",
-		InitCommand = function(self)
-			self:xy(SCREEN_WIDTH - 3, AvatarY + 20000):halign(1):zoom(0.42):diffuse(ButtonColor)
-		end,
-		BeginCommand = function(self)
-			self:queuecommand("Set")
-		end,
-		SetCommand = function(self)
-			self:settext(GAMESTATE:GetEtternaVersion())
-		end,
-		MouseOverCommand = function(self)
-			highlightIfOver(self)
-		end,
-		MouseOutCommand = function(self)
-			highlightIfOver(self)
-		end,
-		MouseDownCommand = function(self, params)
-			if params.event == "DeviceButton_left mouse button" then
-				local tag = "urlnoexit,https://github.com/etternagame/etterna/releases/tag/v" .. GAMESTATE:GetEtternaVersion()
-				GAMESTATE:ApplyGameCommand(tag)
-			end
 		end
 	},
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
@@ -494,14 +475,14 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "CurrentTime",
 		InitCommand = function(self)
-			self:xy(AvatarX + 40, AvatarY - 419):halign(0.5):valign(1):zoom(0.3)
+			self:xy(AvatarX + 40, AvatarY - 420):halign(0.5):valign(1):zoom(0.3)
 		end
 	},
 
 	LoadFont("Common Normal") .. {
 		Name = "SessionTime",
 		InitCommand = function(self)
-			self:xy(AvatarX + 203, AvatarY + 37.6):halign(1):valign(1):zoom(0.45)
+			self:xy(AvatarX + 203, AvatarY + 43):halign(1):valign(1):zoom(0.45)
 			--(AvatarX + 53, AvatarY - 419):halign(0.5):valign(1):zoom(0.3)
 		end
 	}

@@ -318,8 +318,13 @@ t[#t + 1] = Def.ActorFrame {
 	},
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		Name = "LoggedInAs",
-		InitCommand = function(self)
-			self:xy(AvatarX + 154, AvatarY + 23):halign(0.5):zoom(0.5):diffuse(ButtonColor)
+		InitCommand = function(self) --154, 23
+			self:halign(0)
+			self:xy(AvatarX + 54, AvatarY + 23)
+			self:zoom(0.55)
+			self:maxwidth(capWideScale(360,800))
+			self:maxheight(22)
+			self:diffuse(ButtonColor)
 			-- self:xy(SCREEN_CENTER_X + 35, AvatarY + 41.25):halign(0.5):zoom(0.45):diffuse(ButtonColor) "default value"
 		end,
 		BeginCommand = function(self)
