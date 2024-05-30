@@ -432,10 +432,14 @@ t[#t + 1] = Def.ActorFrame {
 			end
 		end,
 		ChartPreviewOnMessageCommand = function(self)
-			self:visible(false)
+			self:accelerate(0.1)
+			self:addx(240)
+			
 		end,
 		ChartPreviewOffMessageCommand = function(self)
 			self:visible(true)
+			self:accelerate(0.2)
+			self:addx(-240)
 		end
 	},
 	LoadFont("Common Normal") .. {
@@ -452,10 +456,14 @@ t[#t + 1] = Def.ActorFrame {
 			end
 		end,
 		ChartPreviewOnMessageCommand = function(self)
-			self:visible(false)
+			self:accelerate(0.15)
+			self:addx(240)
+			
 		end,
 		ChartPreviewOffMessageCommand = function(self)
 			self:visible(true)
+			self:accelerate(0.15)
+			self:addx(-240)
 		end
 	},
 	LoadFont("Common Normal") .. {
@@ -472,10 +480,14 @@ t[#t + 1] = Def.ActorFrame {
 			end
 		end,
 		ChartPreviewOnMessageCommand = function(self)
-			self:visible(false)
+			self:accelerate(0.2)
+			self:addx(240)
+			
 		end,
 		ChartPreviewOffMessageCommand = function(self)
 			self:visible(true)
+			self:accelerate(0.1)
+			self:addx(-240)
 		end
 	},
 	-- **score related stuff** These need to be updated with rate changed commands
@@ -755,7 +767,7 @@ t[#t + 1] =LoadFont("Common Normal") .. {
 -- cdtitle
 t[#t + 1] = UIElements.SpriteButton(1, 1, nil) .. {
 	InitCommand = function(self)
-		self:xy(capWideScale(get43size(344), 364) + 50, capWideScale(get43size(345), 255))
+		self:xy(capWideScale(get43size(344), 364) + 50, capWideScale(get43size(345), 255) - 10)
 		self:halign(0.5):valign(1)
 	end,
 	CurrentStyleChangedMessageCommand = function(self)
