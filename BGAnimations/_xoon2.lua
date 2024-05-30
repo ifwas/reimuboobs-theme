@@ -209,7 +209,7 @@ t[#t + 1] = Def.ActorFrame {
 		InitCommand = function(self)
 			self:halign(0)
 			self:xy(AvatarX + 54, AvatarY + 7) --54
-			self:zoom(0.45)
+			self:zoom(0.5)
 			self:maxwidth(capWideScale(260,400))
 			self:maxheight(22)
 			self:diffuse(ButtonColor)
@@ -243,7 +243,7 @@ t[#t + 1] = Def.ActorFrame {
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		Name = "loginlogout",
 		InitCommand = function(self)
-			self:xy(AvatarX + 120, SCREEN_BOTTOM - 9):halign(0.5):zoom(0.45):diffuse(ButtonColor)
+			self:xy(AvatarX + 120, SCREEN_BOTTOM - 27):halign(0.5):zoom(0.5):diffuse(ButtonColor)
 			-- default value: self:xy(SCREEN_CENTER_X, AvatarY + 8):halign(0.5):zoom(0.45):diffuse(ButtonColor)
 		end,
 		BeginCommand = function(self)
