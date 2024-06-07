@@ -28,6 +28,9 @@ curGameVolume = PREFSMAN:GetPreference("SoundVolume")
 				self:zoomto(capWideScale(curGameVolume,235), 2)
 				self:diffuse(getMainColor("positive"))
 			end,
+			OnCommand = function(self)
+				self:zoomto(capWideScale(curGameVolume,235), 2)
+			end,
 		},
 	}
 

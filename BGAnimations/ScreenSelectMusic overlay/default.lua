@@ -110,7 +110,7 @@ t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
 
 t[#t + 1] = LoadActor("../_cursor")
 t[#t + 1] = LoadActor("../_halppls")
-
+t[#t + 1] = LoadActor("../_volumecontrol")
 updateDiscordStatusForMenus()
 updateNowPlaying()
 

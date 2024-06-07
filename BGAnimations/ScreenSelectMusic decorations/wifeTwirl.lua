@@ -22,6 +22,8 @@ local previewVisible = false
 local onlyChangedSteps = false
 local shouldPlayMusic = false
 local prevtab = 0
+local positionMSDtextaddxIni = 255
+local positionMSDtextaddxFin = - 255
 
 local itsOn = false
 
@@ -433,13 +435,13 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		ChartPreviewOnMessageCommand = function(self)
 			self:accelerate(0.1)
-			self:addx(240)
+			self:addx(positionMSDtextaddxIni)
 			
 		end,
 		ChartPreviewOffMessageCommand = function(self)
 			self:visible(true)
 			self:accelerate(0.2)
-			self:addx(-240)
+			self:addx(positionMSDtextaddxFin)
 		end
 	},
 	LoadFont("Common Normal") .. {
@@ -457,13 +459,13 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		ChartPreviewOnMessageCommand = function(self)
 			self:accelerate(0.15)
-			self:addx(240)
+			self:addx(positionMSDtextaddxIni)
 			
 		end,
 		ChartPreviewOffMessageCommand = function(self)
 			self:visible(true)
 			self:accelerate(0.15)
-			self:addx(-240)
+			self:addx(positionMSDtextaddxFin)
 		end
 	},
 	LoadFont("Common Normal") .. {
@@ -481,13 +483,13 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		ChartPreviewOnMessageCommand = function(self)
 			self:accelerate(0.2)
-			self:addx(240)
+			self:addx(positionMSDtextaddxIni)
 			
 		end,
 		ChartPreviewOffMessageCommand = function(self)
 			self:visible(true)
 			self:accelerate(0.1)
-			self:addx(-240)
+			self:addx(positionMSDtextaddxFin)
 		end
 	},
 	-- **score related stuff** These need to be updated with rate changed commands
@@ -779,7 +781,7 @@ t[#t + 1] = UIElements.SpriteButton(1, 1, nil) .. {
 		if song then
 			if song:HasCDTitle() then
 				self:visible(true)
-				self:Load(song:GetCDTitlePath())
+				self:Load(song:GetCDTitlePath()):wag():effectmagnitude(0,0,5)
 			else
 				self:visible(false)
 			end

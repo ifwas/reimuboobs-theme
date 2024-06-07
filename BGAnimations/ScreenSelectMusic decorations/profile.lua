@@ -418,7 +418,7 @@ local function rankingButton(i)
 		LoadFont("Common Large") .. {
 			Name = "RankButtonTxt",
 			InitCommand = function(self)
-				self:addy(-1):diffuse(getMainColor("positive")):maxwidth(rankingTitleSpacing / 0.40 - 10):zoom(0.40)
+				self:addy(-1):diffuse(getMainColor("positive")):maxwidth(rankingTitleSpacing / 0.25 ):zoom(0.22)
 			end,
 			BeginCommand = function(self)
 				self:settext(ms.SkillSetsTranslated[i])

@@ -1,3 +1,4 @@
+
 -- refactored a bit but still needs work -mina
 local collapsed = false
 local rtTable
@@ -27,7 +28,18 @@ local nestedTabButtonHeight = 20
 local netPageButtonWidth = 50
 local netPageButtonHeight = 50
 local headeroffY = 10
+local localscore = nil
 
+
+--fuck fuckfucffjkk
+local ratios = {
+
+MainGraphicWidth = 640 / 1920, -- width of judgment bars and offset plot
+OffsetPlotHeight = 184 / 1080,
+OffsetPlotUpperGap = 308 / 1080, -- bottom of top lip to top of graph
+SideBufferGap = 12 / 1920
+
+}
 local selectedrateonly
 
 local judges = {
@@ -265,6 +277,7 @@ local ret = Def.ActorFrame {
 
 local cheese
 -- eats only inputs that would scroll to a new score
+
 local function input(event)
 	if isOver(cheese:GetChild("FrameDisplay")) then
 		if event.DeviceInput.button == "DeviceButton_mousewheel up" and event.type == "InputEventType_FirstPress" then
@@ -374,8 +387,10 @@ local t = Def.ActorFrame {
 		ExpandCommand = function(self)
 			self:visible(true)
 		end
-	}
+	},
 }
+
+
 
 -- header bar
 t[#t + 1] = Def.Quad {
@@ -383,6 +398,8 @@ t[#t + 1] = Def.Quad {
 		self:zoomto(frameWidth, offsetY):halign(0):valign(0):diffuse(getMainColor("frames")):diffusealpha(0.5)
 	end
 }
+
+
 
 local l = Def.ActorFrame {
 	-- stuff inside the frame.. so we can move it all at once
@@ -651,6 +668,7 @@ for i = 1, #judges do
 	l[#l + 1] = makeJudge(i, judges[i])
 end
 
+--this is what i was looking for
 l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 	Name = "Score",
 	InitCommand = function(self)
@@ -660,6 +678,8 @@ l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 	DisplayCommand = function(self)
 		if hasReplayData then
 			self:settext(translated_info["ShowOffset"])
+			MESSAGEMAN:Broadcast("HasReplayDat")
+			--SCREENMAN:AddNewScreenToTop("ScreenScoreTabOffsetPlot") -- this line is a bitch
 		else
 			self:settext("")
 		end
@@ -672,13 +692,6 @@ l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 	MouseOutCommand = function(self)
 		if hasReplayData then
 			self:diffusealpha(1)
-		end
-	end,
-	MouseDownCommand = function(self, params)
-		if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
-			if getTabIndex() == 2 and getScoreForPlot() and hasReplayData and isOver(self) then
-				SCREENMAN:AddNewScreenToTop("ScreenScoreTabOffsetPlot")
-			end
 		end
 	end,
 }
@@ -886,6 +899,8 @@ l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 }
 t[#t + 1] = l
 
+
+
 t[#t + 1] = Def.Quad {
 	Name = "ScrollBar",
 	InitCommand = function(self)
@@ -965,6 +980,9 @@ local function nestedTabButton(i)
 	}
 end
 
+
+
+--t[#t + 1] = LoadActor("../offsetplot")
 -- online score display
 ret[#ret + 1] = LoadActor("../superscoreboard")
 

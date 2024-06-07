@@ -23,8 +23,9 @@ local row2yoff = 1
 local moving
 local cheese
 local collapsed = false
-
+local yo = "reimuboobs"
 local isGlobalRanking = true
+
 
 -- will eat any mousewheel inputs to scroll pages while mouse is over the background frame
 local function input(event)
@@ -272,7 +273,7 @@ local o = Def.ActorFrame {
 				if scoretable ~= nil and #scoretable == 0 then
 					self:settext(translated_info["NoScoresFound"])
 				elseif scoretable == nil then
-					self:settext("Chart is not ranked")
+					self:settext("El chart no está rankeado")
 				else
 					self:settext("")
 				end
@@ -285,7 +286,7 @@ local o = Def.ActorFrame {
 			elseif not online and scoretable ~= nil and #scoretable == 0 then
 				self:settext(translated_info["LoginToView"])
 			elseif scoretable == nil then
-				self:settext("Chart is not ranked")
+				self:settext("El chart no está rankeado")
 			else
 				self:settext(translated_info["NoScoresFound"])
 			end
@@ -439,7 +440,7 @@ local function makeScoreDisplay(i)
 			InitCommand = function(self)
 				self:x(c2x - c1x + offx):zoom(tzoom + 0.05):halign(0.5):valign(1)
 				if collapsed then
-					self:x(46):zoom(tzoom + 0.15):halign(0.5):valign(0.5):maxwidth(20 / tzoom)
+					self:x(36):zoom(tzoom + 0.15):halign(0.5):valign(0.5):maxwidth(20 / tzoom)
 				end
 			end,
 			DisplayCommand = function(self)
@@ -466,7 +467,7 @@ local function makeScoreDisplay(i)
 		UIElements.TextToolTip(1, 1, "Common Normal") .. {
 			Name = "Burt" .. i,
 			InitCommand = function(self)
-				self:x(c2x):zoom(tzoom + 0.1):maxwidth((c3x - c2x - capWideScale(10, 40)) / tzoom):halign(0):valign(1)
+				self:x(c2x + 22):zoom(tzoom + 0.1):maxwidth((c3x - c2x - capWideScale(10, 40)) / tzoom):halign(0):valign(1)
 				if collapsed then
 					self:x(c2x + 10):maxwidth(60 / tzoom):zoom(tzoom + 0.2):valign(0.5)
 				end
@@ -496,7 +497,7 @@ local function makeScoreDisplay(i)
 			Name = "Ernie" .. i,
 			InitCommand = function(self)
 				if not collapsed then
-					self:x(c2x):zoom(tzoom - 0.05):halign(0):valign(0):maxwidth(width / 2 / tzoom):addy(row2yoff)
+					self:x(c2x + 22):zoom(tzoom - 0.05):halign(0):valign(0):maxwidth(width / 2 / tzoom):addy(row2yoff)
 				end
 			end,
 			DisplayCommand = function(self)
@@ -526,6 +527,25 @@ local function makeScoreDisplay(i)
 				self:visible(true):addy(-row2yoff)
 			end
 		},
+
+--poco pleasd help me my familyu are in danger pls dfix
+--if you get like a bazillion errors don't come crying at me
+--[[
+		Def.Sprite {
+			OnCommand = function(self)
+				self:visible(true)
+				self:x(c2x - 6):zoom(tzoom + 0.25):halign(0):valign(0.5):maxwidth(width / 2 / tzoom):addy(row2yoff)
+			end,
+			-- please don't do this at home kids
+			DisplayCommand = function(self)
+				local pfpath = THEME:GetPathG("", "pfp/" .. hs:GetDisplayName())
+				if not pfpath then
+                pfpath = THEME:GetPathG("", "profile")
+				end
+				self:Load(pfpath)
+			end
+		},
+        
 
 		--[[ --wife version display ... not 100% reliable
 		LoadFont("Common normal") .. {
