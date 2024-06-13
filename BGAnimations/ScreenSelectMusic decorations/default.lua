@@ -12,7 +12,7 @@ t[#t + 1] = LoadActor("playlists")
 t[#t + 1] = LoadActor("downloads")
 t[#t + 1] = LoadActor("tags")
 t[#t + 1] = LoadActor("stepsdisplay")
-t[#t + 1] = LoadActor("../_mousewheelscroll")
 
+t[#t + 1] = LoadActor("../_mousewheelscroll")
 collectgarbage()
 return t

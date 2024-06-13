@@ -1,5 +1,5 @@
 -- Old avatar actor frame.. renamed since much more will be placed here (hopefully?)
--- this is literally an exact replica of the code on _PlayerInfo except this is more specifically made for the result screen
+-- dupe of playerinfo cus lalala shit breaks
 local t =
 	Def.ActorFrame {
 	Name = "PlayerAvatar"
@@ -53,14 +53,15 @@ local translated_info = {
 	LoginSuccess = THEME:GetString("GeneralInfo", "LoginSuccess"),
 	LoginCanceled = THEME:GetString("GeneralInfo", "LoginCanceled"),
 	Password = THEME:GetString("GeneralInfo","Password"),
-	Username = THEME:GetString("GeneralInfo","Username"),
+	Username = THEME:GetString("GeneralInfo","Email"),
 	Plays = THEME:GetString("GeneralInfo", "ProfilePlays"),
+	PlaysThisSession = THEME:GetString("GeneralInfo", "PlaysThisSession"),
 	TapsHit = THEME:GetString("GeneralInfo", "ProfileTapsHit"),
 	Playtime = THEME:GetString("GeneralInfo", "ProfilePlaytime"),
 	Judge = THEME:GetString("GeneralInfo", "ProfileJudge"),
 	RefreshSongs = THEME:GetString("GeneralInfo", "DifferentialReloadTrigger"),
 	SongsLoaded = THEME:GetString("GeneralInfo", "ProfileSongsLoaded"),
-	SessionTime = THEME:GetString("GeneralInfo", "SessionTime")
+	SessionTime = THEME:GetString("GeneralInfo", "SessionTime"),
 }
 
 local function UpdateTime(self)
@@ -70,7 +71,7 @@ local function UpdateTime(self)
 	local hour = Hour()
 	local minute = Minute()
 	local second = Second()
-	self:GetChild("CurrentTime"):settextf("%04d-%02d-%02d  %02d:%02d:%02d", year, month, day, hour, minute, second)
+	self:GetChild("CurrentTime"):settextf("%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second)
 
 	local sessiontime = GAMESTATE:GetSessionTime()
 	self:GetChild("SessionTime"):settextf("%s: %s", translated_info["SessionTime"], SecondsToHHMMSS(sessiontime))
@@ -98,7 +99,7 @@ local function loginStep1(self)
 	-- if you press escape or just enter nothing, you are forced out
 	-- input redirects are controlled here because we want to be careful not to break any prior redirects
 	easyInputStringOKCancel(
-		translated_info["Username"]..":", 255, false,
+		translated_info["Username"]..":", 255, true,
 		function(answer)
 			username = answer
 			-- moving on to step 2 if the answer isnt blank
@@ -168,7 +169,7 @@ t[#t + 1] = Def.Actor {
 	end,
 	PlayerRatingUpdatedMessageCommand = function(self)
 		playerRating = profile:GetPlayerRating()
-		self:GetParent():GetChild("AvatarPlayerNumber_P1"):GetChild("Name"):playcommand("Set")
+		self:GetParent():GetDescendant("AvatarPlayerNumber_P1", "Name"):playcommand("Set")
 	end
 }
 
@@ -244,7 +245,6 @@ t[#t + 1] = Def.ActorFrame {
 		Name = "loginlogout",
 		InitCommand = function(self)
 			self:xy(AvatarX + 120, SCREEN_BOTTOM - 27):halign(0.5):zoom(0.5):diffuse(ButtonColor)
-			-- default value: self:xy(SCREEN_CENTER_X, AvatarY + 8):halign(0.5):zoom(0.45):diffuse(ButtonColor)
 		end,
 		BeginCommand = function(self)
 			self:queuecommand("Set")
@@ -303,8 +303,8 @@ t[#t + 1] = Def.ActorFrame {
 		MouseOutCommand = function(self)
 			highlightIfOver(self)
 		end,
-		LoginFailedMessageCommand = function(self)
-			ms.ok(translated_info["LoginFailed"])
+		LoginFailedMessageCommand = function(self, params)
+			ms.ok(translated_info["LoginFailed"] .. " -- " .. params.why)
 		end,
 		LoginHotkeyPressedMessageCommand = function(self)
 			if DLMAN:IsLoggedIn() then
@@ -326,7 +326,6 @@ t[#t + 1] = Def.ActorFrame {
 			self:maxwidth(capWideScale(360,800))
 			self:maxheight(22)
 			self:diffuse(ButtonColor)
-			-- self:xy(SCREEN_CENTER_X + 35, AvatarY + 41.25):halign(0.5):zoom(0.45):diffuse(ButtonColor) "default value"
 		end,
 		BeginCommand = function(self)
 			self:queuecommand("Set")
@@ -356,7 +355,7 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		MouseDownCommand = function(self, params)
 			if params.event == "DeviceButton_left mouse button" then
-				local userpage = "urlnoexit,https://etternaonline.com/user/" .. DLMAN:GetUsername()
+				local userpage = "urlnoexit," .. DLMAN:GetHomePage() .. "/users/" .. DLMAN:GetUsername()
 				GAMESTATE:ApplyGameCommand(userpage)
 			end
 		end,
@@ -370,21 +369,29 @@ t[#t + 1] = Def.ActorFrame {
 			highlightIfOver(self)
 		end,
 	},
-	LoadFont("Common Normal") .. {
+	
+	UIElements.TextToolTip(1, 1, "Common Normal") .. {
+		Name = "Version",
 		InitCommand = function(self)
-			self:xy(AvatarX + 220, SCREEN_CENTER_Y):halign(0.5):zoom(0.36):diffuse(nonButtonColor)
-			--(SCREEN_CENTER_X - capWideScale(125,175) default value
+			self:xy(SCREEN_WIDTH - 3, AvatarY + 90):halign(1):zoom(0.42):diffuse(ButtonColor)
 		end,
 		BeginCommand = function(self)
 			self:queuecommand("Set")
 		end,
-		OptionsScreenClosedMessageCommand = function(self)
-			self:queuecommand("Set")
-		end,
 		SetCommand = function(self)
-			local online = IsNetSMOnline() and IsSMOnlineLoggedIn() and NSMAN:IsETTP()
-			self:y(AvatarY - 422  - (online and 18 or 0))
-			self:settextf("%s: %s", translated_info["Judge"], GetTimingDifficulty())
+			self:settext("secret button")
+		end,
+		MouseOverCommand = function(self)
+			highlightIfOver(self)
+		end,
+		MouseOutCommand = function(self)
+			highlightIfOver(self)
+		end,
+		MouseDownCommand = function(self, params)
+			if params.event == "DeviceButton_left mouse button" then
+				local tag = "urlnoexit,https://youtu.be/jk9NLUyYEpw?si=-6Lc4fz00R52e16k"
+				GAMESTATE:ApplyGameCommand(tag)
+			end
 		end
 	},
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
@@ -410,7 +417,7 @@ t[#t + 1] = Def.ActorFrame {
 			end
 		end
 	},
-	LoadFont("Common Normal") .. {
+	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		InitCommand = function(self)
 			self:xy(SCREEN_WIDTH - 3, AvatarY + 100):halign(1):zoom(0.35):diffuse(nonButtonColor)
 		end,
@@ -422,11 +429,22 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		DFRFinishedMessageCommand = function(self)
 			self:queuecommand("Set")
-		end
+		end,
+		MouseOverCommand = function(self)
+			highlightIfOver(self)
+			if not self:IsVisible() then return end
+			TOOLTIP:SetText(SONGMAN:GetNumSongGroups() .. " " .. "Packs Loaded")
+			TOOLTIP:Show()
+		end,
+		MouseOutCommand = function(self)
+			highlightIfOver(self)
+			if not self:IsVisible() then return end
+			TOOLTIP:Hide()
+		end,
 	},
 	-- ok coulda done this as a separate object to avoid copy paste but w.e
 	-- upload progress bar bg
-	Def.Quad {
+	UIElements.QuadButton(1,1) .. {
 		InitCommand = function(self)
 			self:xy(SCREEN_WIDTH * 2/3, AvatarY + 41):zoomto(uploadbarwidth, uploadbarheight)
 			self:diffuse(color("#111111")):diffusealpha(0):halign(0)
@@ -435,8 +453,31 @@ t[#t + 1] = Def.ActorFrame {
 			self:diffusealpha(1)
 			if params.percent == 1 then
 				self:diffusealpha(0)
+				if isOver(self) then
+					TOOLTIP:Hide()
+				end
 			end
-		end
+		end,
+		SequentialScoreUploadFinishedMessageCommand = function(self)
+			self:diffusealpha(0)
+			if isOver(self) then
+				TOOLTIP:Hide()
+			end
+		end,
+		LogOutMessageCommand = function(self)
+			self:playcommand("SequentialScoreUploadFinished")
+		end,
+		MouseOverCommand = function(self)
+			if not self:IsVisible() or DLMAN:GetQueuedScoreUploadTotal() == 0 then return end
+			local remaining = DLMAN:GetQueuedScoreUploadsRemaining()
+			local total = DLMAN:GetQueuedScoreUploadTotal()
+			TOOLTIP:SetText("Remaining Scores: "..remaining.." out of "..total)
+			TOOLTIP:Show()
+		end,
+		MouseOutCommand = function(self)
+			if not self:IsVisible() then return end
+			TOOLTIP:Hide()
+		end,
 	},
 	-- fill bar
 	Def.Quad {
@@ -450,8 +491,14 @@ t[#t + 1] = Def.ActorFrame {
 			if params.percent == 1 then
 				self:diffusealpha(0)
 			end
-		end
-		},
+		end,
+		SequentialScoreUploadFinishedMessageCommand = function(self)
+			self:diffusealpha(0)
+		end,
+		LogOutMessageCommand = function(self)
+			self:playcommand("SequentialScoreUploadFinished")
+		end,
+	},
 	-- super required explanatory text
 	LoadFont("Common Normal") .. {
 	    InitCommand = function(self)
@@ -464,7 +511,13 @@ t[#t + 1] = Def.ActorFrame {
 			if params.percent == 1 then
 				self:diffusealpha(0)
 			end
-		end
+		end,
+		SequentialScoreUploadFinishedMessageCommand = function(self)
+			self:diffusealpha(0)
+		end,
+		LogOutMessageCommand = function(self)
+			self:playcommand("SequentialScoreUploadFinished")
+		end,
 	}
 }
 

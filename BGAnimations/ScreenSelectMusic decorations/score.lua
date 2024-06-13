@@ -1,4 +1,3 @@
-
 -- refactored a bit but still needs work -mina
 local collapsed = false
 local rtTable
@@ -28,18 +27,7 @@ local nestedTabButtonHeight = 20
 local netPageButtonWidth = 50
 local netPageButtonHeight = 50
 local headeroffY = 10
-local localscore = nil
 
-
---fuck fuckfucffjkk
-local ratios = {
-
-MainGraphicWidth = 640 / 1920, -- width of judgment bars and offset plot
-OffsetPlotHeight = 184 / 1080,
-OffsetPlotUpperGap = 308 / 1080, -- bottom of top lip to top of graph
-SideBufferGap = 12 / 1920
-
-}
 local selectedrateonly
 
 local judges = {
@@ -75,7 +63,11 @@ local translated_info = {
 	UploadAllScore=THEME:GetString("TabScore", "UploadAllScore"),
 	UploadingReplay = THEME:GetString("TabScore", "UploadingReplay"),
 	UploadingScore = THEME:GetString("TabScore", "UploadingScore"),
-	NotLoggedIn = THEME:GetString("GeneralInfo", "NotLoggedIn")
+	NotLoggedIn = THEME:GetString("GeneralInfo", "NotLoggedIn"),
+    ValidateScore = THEME:GetString("TabScore", "ValidateScore"),
+    ScoreValidated = THEME:GetString("TabProfile", "ScoreValidated"),
+    InvalidateScore = THEME:GetString("TabScore", "InvalidateScore"),
+    ScoreInvalidated = THEME:GetString("TabProfile", "ScoreInvalidated")
 }
 
 local defaultRateText = ""
@@ -196,7 +188,7 @@ local ret = Def.ActorFrame {
 	end,
 	ChangeStepsMessageCommand = function(self)
 		if getTabIndex() ~= 2 then return end
-		self:playcommand("Set"):finishtweening()
+		self:queuecommand("Set")
 		updateLeaderBoardForCurrentChart()
 	end,
 	CollapseCommand = function(self)
@@ -244,23 +236,23 @@ local ret = Def.ActorFrame {
 	CodeMessageCommand = function(self, params) -- this is intentionally bad to remind me to fix other things that are bad -mina
 		if ((getTabIndex() == 2 and nestedTab == 2) and not collapsed) and DLMAN:GetCurrentRateFilter() then
 			local rate = getCurRateValue()
-			if params.Name == "PrevScore" and rate < 2.95 then
+			if params.Name == "PrevScore" and rate < MAX_MUSIC_RATE - 0.05 then
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate(rate + 0.1)
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(rate + 0.1)
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Current"):MusicRate(rate + 0.1)
 				MESSAGEMAN:Broadcast("CurrentRateChanged")
-			elseif params.Name == "NextScore" and rate > 0.75 then
+			elseif params.Name == "NextScore" and rate > MIN_MUSIC_RATE + 0.05 then
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate(rate - 0.1)
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(rate - 0.1)
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Current"):MusicRate(rate - 0.1)
 				MESSAGEMAN:Broadcast("CurrentRateChanged")
 			end
-			if params.Name == "PrevRate" and rate < 3 then
+			if params.Name == "PrevRate" and rate < MAX_MUSIC_RATE then
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate(rate + 0.05)
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(rate + 0.05)
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Current"):MusicRate(rate + 0.05)
 				MESSAGEMAN:Broadcast("CurrentRateChanged")
-			elseif params.Name == "NextRate" and rate > 0.7 then
+			elseif params.Name == "NextRate" and rate > MIN_MUSIC_RATE then
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate(rate - 0.05)
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate(rate - 0.05)
 				GAMESTATE:GetSongOptionsObject("ModsLevel_Current"):MusicRate(rate - 0.05)
@@ -277,7 +269,6 @@ local ret = Def.ActorFrame {
 
 local cheese
 -- eats only inputs that would scroll to a new score
-
 local function input(event)
 	if isOver(cheese:GetChild("FrameDisplay")) then
 		if event.DeviceInput.button == "DeviceButton_mousewheel up" and event.type == "InputEventType_FirstPress" then
@@ -387,10 +378,8 @@ local t = Def.ActorFrame {
 		ExpandCommand = function(self)
 			self:visible(true)
 		end
-	},
+	}
 }
-
-
 
 -- header bar
 t[#t + 1] = Def.Quad {
@@ -398,8 +387,6 @@ t[#t + 1] = Def.Quad {
 		self:zoomto(frameWidth, offsetY):halign(0):valign(0):diffuse(getMainColor("frames")):diffusealpha(0.5)
 	end
 }
-
-
 
 local l = Def.ActorFrame {
 	-- stuff inside the frame.. so we can move it all at once
@@ -609,7 +596,7 @@ local function makeText(index)
 	}
 end
 
-for i = 1, 10 do
+for i = 1, 9 do
 	t[#t + 1] = makeText(i)
 end
 
@@ -668,7 +655,6 @@ for i = 1, #judges do
 	l[#l + 1] = makeJudge(i, judges[i])
 end
 
---this is what i was looking for
 l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 	Name = "Score",
 	InitCommand = function(self)
@@ -678,8 +664,6 @@ l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 	DisplayCommand = function(self)
 		if hasReplayData then
 			self:settext(translated_info["ShowOffset"])
-			MESSAGEMAN:Broadcast("HasReplayDat")
-			--SCREENMAN:AddNewScreenToTop("ScreenScoreTabOffsetPlot") -- this line is a bitch
 		else
 			self:settext("")
 		end
@@ -692,6 +676,13 @@ l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 	MouseOutCommand = function(self)
 		if hasReplayData then
 			self:diffusealpha(1)
+		end
+	end,
+	MouseDownCommand = function(self, params)
+		if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
+			if getTabIndex() == 2 and getScoreForPlot() and hasReplayData and isOver(self) then
+				SCREENMAN:AddNewScreenToTop("ScreenScoreTabOffsetPlot")
+			end
 		end
 	end,
 }
@@ -897,9 +888,42 @@ l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		end
 	end
 }
+l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
+	Name = "ValidateInvalidateScoreButton",
+	InitCommand = function(self)
+		self:xy(frameWidth - offsetX - frameX, frameHeight - headeroffY - 91 - offsetY):zoom(0.425):halign(1):settext("")
+		self:diffuse(getMainColor("positive"))
+	end,
+	DisplayCommand = function(self)
+        if score:GetEtternaValid() then
+            self:settext(translated_info["InvalidateScore"])
+        else
+            self:settext(translated_info["ValidateScore"])
+        end
+	end,
+	MouseOverCommand = function(self)
+		self:diffusealpha(hoverAlpha)
+	end,
+	MouseOutCommand = function(self)
+		self:diffusealpha(1)
+	end,
+	MouseDownCommand = function(self, params)
+		if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
+			if getTabIndex() == 2 and isOver(self) then
+                score:ToggleEtternaValidation()
+                MESSAGEMAN:Broadcast("UpdateRanking")
+				if score:GetEtternaValid() then
+					ms.ok(translated_info["ScoreValidated"])
+                    self:settext(translated_info["InvalidateScore"])
+                else
+                    ms.ok(translated_info["ScoreInvalidated"])
+                    self:settext(translated_info["ValidateScore"])
+				end
+			end
+		end
+	end
+}
 t[#t + 1] = l
-
-
 
 t[#t + 1] = Def.Quad {
 	Name = "ScrollBar",
@@ -980,9 +1004,6 @@ local function nestedTabButton(i)
 	}
 end
 
-
-
---t[#t + 1] = LoadActor("../offsetplot")
 -- online score display
 ret[#ret + 1] = LoadActor("../superscoreboard")
 

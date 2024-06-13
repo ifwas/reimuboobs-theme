@@ -1,7 +1,6 @@
 local t = Def.ActorFrame {}
 
 local minanyms = {
-    "gay porn"
 	"the logorrhea of yore",
 	"Irate Platypusaurusean",
 	"Pancreatic_MilkTrombone",

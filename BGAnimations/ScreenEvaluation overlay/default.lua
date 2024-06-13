@@ -7,13 +7,12 @@ translated_info = {
 	Replay = THEME:GetString("ScreenEvaluation", "ReplayTitle")
 }
 
---what the settext says
-
 
 --Group folder name
+local frameWidth = SCREEN_CENTER_X - 200
+local frameHeight = 20
 local frameX = 170
 local frameY = 25 
-local frameWidth = SCREEN_CENTER_X - 200
 
 t[#t + 1] = LoadFont("Common Large") .. {
 	InitCommand = function(self)

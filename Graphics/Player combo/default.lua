@@ -25,7 +25,6 @@ local Pulse = function(self, param)
 	sself:linear(0.160)
 	self:zoomy(0.4)
 end
-
 local PulseLabel = function(self, param)
 	self:stoptweening()
 	self:zoom(1.125 * param.LabelZoom * labelZoom())

@@ -2,7 +2,9 @@
 
 This is my own theme edit of [Etterna](https://github.com/etternagame/etterna)'s theme "Til Death", the goal of this repository is to document the changes/fixes i make while giving out an public release of the theme 
 
-At the moment, this theme **is only playable on 0.72.3, and in a ratio of 16:9**, i will not fix anything in regards on 4:3 or other different versions
+At the moment, this theme **is only playable on 0.73, and in a ratio of 16:9**, i will not fix anything in regards on 4:3 or other different versions
+
+This version of the theme has some stuff missing from 0.72.3, mostly experimental stuff but i will try to finish them soon
 
 ## Credits
 

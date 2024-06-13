@@ -6,6 +6,4 @@ t[#t + 1] = LoadActor(THEME:GetPathG("", "_OptionsScreen")) ..  {
 	end
 }
 
-
-
 return t

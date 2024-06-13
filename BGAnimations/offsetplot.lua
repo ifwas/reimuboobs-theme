@@ -124,17 +124,19 @@ local o = Def.ActorFrame {
 			ctt = pss:GetTrackVector() -- column information for each offset
 			ntt = pss:GetTapNoteTypeVector() -- notetype information (we use this to handle mine hits differently- currently that means not displaying them)
 		else -- should be default behavior
-			if name == "ScreenSelectMusic" then
+			if name == "ScreenScoreTabOffsetPlot" then
 				local score = getScoreForPlot()
-				self:xy(plotX - 370, plotY - 40)
+				plotWidth, plotHeight = SCREEN_WIDTH, SCREEN_WIDTH * 0.3
+				self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y)
 				textzoom = 0.5
 				bgalpha = 1
 				if score ~= nil then
 					if score:HasReplayData() then
-						dvt = score:GetOffsetVector()
-						nrt = score:GetNoteRowVector()
-						ctt = score:GetTrackVector()
-						ntt = score:GetTapNoteTypeVector()
+						local replay = score:GetReplay()
+						dvt = replay:GetOffsetVector()
+						nrt = replay:GetNoteRowVector()
+						ctt = replay:GetTrackVector()
+						ntt = replay:GetTapNoteTypeVector()
 					end
 				end
 			else
@@ -172,10 +174,16 @@ local o = Def.ActorFrame {
 			local score = params.score
 
 			if score:HasReplayData() then
-				dvt = score:GetOffsetVector()
-				nrt = score:GetNoteRowVector()
-				ctt = score:GetTrackVector()
-				ntt = score:GetTapNoteTypeVector()
+				local replay = score:GetReplay()
+				dvt = replay:GetOffsetVector()
+				nrt = replay:GetNoteRowVector()
+				ctt = replay:GetTrackVector()
+				ntt = replay:GetTapNoteTypeVector()
+			else
+				dvt = {}
+				nrt = {}
+				ctt = {}
+				ntt = {}
 			end
 
 			wuab = {}
@@ -254,9 +262,10 @@ local o = Def.ActorFrame {
 		local s = SCREENMAN:GetTopScreen():GetHighScore()
 		if s then
 			score = s
-			dvt = score:GetOffsetVector()
-			nrt = score:GetNoteRowVector()
-			ctt = score:GetTrackVector()
+			local replay = score:GetReplay()
+			dvt = replay:GetOffsetVector()
+			nrt = replay:GetNoteRowVector()
+			ctt = replay:GetTrackVector()
 			wuab = {}
 			for i = 1, #nrt do
 				wuab[i] = td:GetElapsedTimeFromNoteRow(nrt[i])

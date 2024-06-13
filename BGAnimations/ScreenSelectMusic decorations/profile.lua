@@ -11,6 +11,7 @@ local playCount = 0
 local playTime = 0
 local noteCount = 0
 
+
 local translated_info = {
 	Validated = THEME:GetString("TabProfile", "ScoreValidated"),
 	Invalidated = THEME:GetString("TabProfile", "ScoreInvalidated"),
@@ -25,19 +26,16 @@ local translated_info = {
 	Failure = THEME:GetString("TabProfile", "SaveFail"),
 	ValidateAll = THEME:GetString("TabProfile", "ValidateAllScores"),
 	ForceRecalc = THEME:GetString("TabProfile", "ForceRecalcScores"),
+	UploadAllScore = THEME:GetString("TabProfile", "UploadAllScore"),
+
 
 	--testing new stuff for the profile tab  (clearly not copypasted from player info nono)
-	Plays = THEME:GetString("GeneralInfo", "ProfilePlays"),
-	TapsHit = THEME:GetString("GeneralInfo", "ProfileTapsHit"),
-	Playtime = THEME:GetString("GeneralInfo", "ProfilePlaytime"),
-	Judge = THEME:GetString("GeneralInfo", "ProfileJudge"),
-	RefreshSongs = THEME:GetString("GeneralInfo", "DifferentialReloadTrigger"),
-	SongsLoaded = THEME:GetString("GeneralInfo", "ProfileSongsLoaded"),
-	SessionTime = THEME:GetString("GeneralInfo", "SessionTime"),
-
-	
+	--for some reason in this new update, if you put this outside the translated bracket the game fucks up so yeah don't do that
+    Plays = THEME:GetString("GeneralInfo", "ProfilePlays"),
+    TapsHit = THEME:GetString("GeneralInfo", "ProfileTapsHit"),
+    Playtime = THEME:GetString("GeneralInfo", "ProfilePlaytime"),
+    PlaysThisSession = THEME:GetString("GeneralInfo", "PlaysThisSession")
 }
-
 
 
 
@@ -88,17 +86,17 @@ local frameX = 10
 local frameY = 45
 local frameWidth = capWideScale(360, 400)
 local frameHeight = 350
-local fontScale = 0.21
+local fontScale = 0.25
 local scoresperpage = 20
-local scoreYspacing = 12
+local scoreYspacing = 12.5
 local distY = 15
-local offsetX = -5
+local offsetX = -10
 local offsetY = 20
 local txtDist = 20
 local rankingSkillset = 1
 local rankingPage = 1
 local numrankingpages = 10
-local rankingWidth = frameWidth - capWideScale(10, 30)
+local rankingWidth = frameWidth - capWideScale(10, 25)
 local rankingX = capWideScale(25, 35)
 local rankingY = capWideScale(40, 40)
 local rankingTitleSpacing = (rankingWidth / (#ms.SkillSets))
@@ -418,7 +416,7 @@ local function rankingButton(i)
 		LoadFont("Common Large") .. {
 			Name = "RankButtonTxt",
 			InitCommand = function(self)
-				self:addy(-1):diffuse(getMainColor("positive")):maxwidth(rankingTitleSpacing / 0.25 ):zoom(0.22)
+				self:addy(-1):diffuse(getMainColor("positive")):maxwidth(rankingTitleSpacing / 0.40 - 10):zoom(0.40)
 			end,
 			BeginCommand = function(self)
 				self:settext(ms.SkillSetsTranslated[i])
@@ -439,7 +437,7 @@ local function recentLabel(i)
 
 	local t = Def.ActorFrame {
 		InitCommand = function(self)
-			self:xy(rankingX - 38 , rankingY + offsetY + 10 + (i - 1) * scoreYspacing)
+			self:xy(rankingX - 22 , rankingY + offsetY + 10 + (i - 1) * scoreYspacing)
 			self:visible(false)
 		end,
 		UpdateRankingMessageCommand = function(self)
@@ -874,8 +872,6 @@ for i = 1, scoresperpage do
 	r[#r + 1] = recentLabel(i)
 end
 
-
-
 -- Technically the "overall" skillset is used for single value display during music select/eval and isn't factored in to the profile rating
 -- Only the specific skillsets are, and so overall should be used to display the specific skillset breakdowns separately - mina
 for i = 1, #ms.SkillSets do
@@ -930,7 +926,7 @@ local function littlebits(i)
 			PlayerRatingUpdatedMessageCommand = function(self)
 				self:queuecommand("Set")
 			end
-		},
+		}
 	}
 	return t
 end
@@ -959,7 +955,7 @@ local profilebuttons = Def.ActorFrame {
 	--profile stats text
 	LoadFont("Common Large") .. { --taps
 			InitCommand = function(self)
-				self:xy(240 , ((txtDist * i) - 20)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				self:xy(240 , ((txtDist * i) - 80)):maxwidth(170 * 3):halign(0):zoom(0.275)
 			end,
 			SetCommand = function(self)
 				self:settextf("%s %s", noteCount, translated_info["TapsHit"])
@@ -967,7 +963,7 @@ local profilebuttons = Def.ActorFrame {
 		},
 		LoadFont("Common Large") .. { --playtime
 			InitCommand = function(self)
-				self:xy(240 , ((txtDist * i) - 5)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				self:xy(240 , ((txtDist * i) - 65)):maxwidth(170 * 3):halign(0):zoom(0.275)
 			end,
 			BeginCommand = function(self)
 				self:queuecommand("Set")
@@ -979,20 +975,20 @@ local profilebuttons = Def.ActorFrame {
 		},
 		LoadFont("Common Large") .. { --plays
 		InitCommand = function(self)
-			self:xy(240 , ((txtDist * i) + 10)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			self:xy(240 , ((txtDist * i) - 50)):maxwidth(170 * 3):halign(0):zoom(0.275)
 		end,
 		SetCommand = function(self)
 			self:settextf("%s %s", playCount, translated_info["Plays"])
 		end,
 	},
-
-	--porting some neat things from rebirth
-	--LoadFont("Common Large") .. { --top3
-			--InitCommand = function(self)
-				--self:xy(240 , ((txtDist * i) - 20)):maxwidth(170 * 3):halign(0):zoom(0.275)
-				--self:settext(translated_info["Top3PlayedSkillsets"])
-			--end,
-		--},
+		LoadFont("Common Large") .. { --playsonthissession
+		InitCommand = function(self)
+			self:xy(240 , ((txtDist * i) - 35)):maxwidth(170 * 3):halign(0):zoom(0.275)
+		end,
+		SetCommand = function(self)
+			self:settextf(SCOREMAN:GetNumScoresThisSession() .. " " .. translated_info["PlaysThisSession"])
+		end,
+	},
 
 	UpdateRankingMessageCommand = function(self)
 		if rankingSkillset == 1 and update and not recentactive then
@@ -1003,7 +999,7 @@ local profilebuttons = Def.ActorFrame {
 	end,
 	UIElements.TextToolTip(1, 1, "Common Large") .. {
 		InitCommand = function(self)
-			self:xy(frameX + frameWidth * 1/6, frameHeight + 04):halign(0.5):diffuse(getMainColor("positive")):zoom(0.3)
+			self:xy(frameX + frameWidth * 1/7, frameHeight + 04):halign(0.5):diffuse(getMainColor("positive")):zoom(0.3)
 			self:settext(translated_info["Save"])
 		end,
 		MouseOverCommand = function(self)
@@ -1025,7 +1021,7 @@ local profilebuttons = Def.ActorFrame {
 	},
 	UIElements.TextToolTip(1, 1, "Common Large") .. {
 		InitCommand = function(self)
-			self:xy(frameX + frameWidth * 3/6, frameHeight + 04):halign(0.5):diffuse(getMainColor("positive")):zoom(0.3)
+			self:xy(frameX + frameWidth * 3/7, frameHeight + 04):halign(0.5):diffuse(getMainColor("positive")):zoom(0.3)
 			self:settext(translated_info["AssetSettings"])
 		end,
 		MouseOverCommand = function(self)
@@ -1042,7 +1038,7 @@ local profilebuttons = Def.ActorFrame {
 	},
 	UIElements.TextToolTip(1, 1, "Common Large") .. {
 		InitCommand = function(self)
-			self:xy(frameX + frameWidth * 1/6, frameHeight + 26):halign(0.5):diffuse(getMainColor("positive")):zoom(0.3)
+			self:xy(frameX + frameWidth * 1/7, frameHeight + 26):halign(0.5):diffuse(getMainColor("positive")):zoom(0.3)
 			self:settext(translated_info["ValidateAll"])
 		end,
 		MouseOverCommand = function(self)
@@ -1060,7 +1056,7 @@ local profilebuttons = Def.ActorFrame {
 	},
 	UIElements.TextToolTip(1, 1, "Common Large") .. {
 		InitCommand = function(self)
-			self:xy(frameX + frameWidth * 3/6, frameHeight + 26):diffuse(getMainColor("positive")):zoom(0.3)
+			self:xy(frameX + frameWidth * 3/7, frameHeight + 26):diffuse(getMainColor("positive")):zoom(0.3)
 			self:settext(translated_info["ForceRecalc"])
 		end,
 		MouseOverCommand = function(self)
@@ -1077,16 +1073,25 @@ local profilebuttons = Def.ActorFrame {
 			end
 		end,
 	},
-	LoadFont("Common Large") .. { -- nothing
+	UIElements.TextToolTip(1, 1, "Common Large") .. {
 		InitCommand = function(self)
-			self:xy(frameX + frameWidth * 5/6, frameHeight + 04):halign(0.5):zoom(0.5):diffuse(1,1,1,0.01)
-			self:settext("-")
+			self:xy(frameX + frameWidth * 5.3/7, frameHeight + 26):diffuse(getMainColor("positive")):zoom(0.3)
+			self:settext(translated_info["UploadAllScore"])
 		end,
-	},
-	LoadFont("Common Large") .. { -- nothing
-		InitCommand = function(self)
-			self:xy(frameX + frameWidth * 5/6, frameHeight + 26):halign(0.5):zoom(0.5):diffuse(1,1,1,0.01)
-			self:settext("-")
+		MouseOverCommand = function(self)
+			self:diffusealpha(hoverAlpha)
+		end,
+		MouseOutCommand = function(self)
+			self:diffusealpha(1)
+		end,
+		MouseDownCommand = function(self, params)
+			if params.event == "DeviceButton_left mouse button" and update and rankingSkillset == 1 and not recentactive  then
+				if DLMAN:IsLoggedIn() then
+					DLMAN:UploadAllScores()
+				else
+					ms.ok("You must be logged in...")
+				end
+			end
 		end,
 	},
 }
@@ -1108,6 +1113,7 @@ t[#t + 1] = Def.Actor {
 		self:GetParent():GetChild("AvatarPlayerNumber_P1"):GetChild("Name"):playcommand("Set")
 	end
 }
+
 
 t[#t + 1] = profilebuttons
 t[#t + 1] = r

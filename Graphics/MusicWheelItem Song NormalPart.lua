@@ -1,61 +1,7 @@
 local lastclick = GetTimeSinceStart()
 local requiredtimegap = 0.1
 
-local t = Def.ActorFrame {}
-
---if you uncomment this you'll lose 300fps
---[[
-t[#t+1] = Def.Sprite {
-    InitCommand = function(self)
-		self:fadeleft(0)
-		self:halign(0.9)
-		self:zoomto(120,60)
-		self:x(20)
-		self:y(-2)
-		self:diffusealpha(1)
-		end,
-		SetMessageCommand = function(self,params)
-			local song = params.Song
-            local pack = params.Pack
-			local focus = params.HasFocus
-			local bnpath = nil
-			local pkpath = nil
-
-			if song then
-				bnpath = params.Song:GetBannerPath()
-				if not bnpath then
-					bnpath = THEME:GetPathG("Common", "fallback wheelbanner")
-				end
-				self:Load(bnpath)
-				self:zoomto(60,30)
-            else
-                bnpath = SONGMAN:GetSongGroupBannerPath()
-                if not bnpath then
-					bnpath = THEME:GetPathG("Common", "fallback wheelbanner")
-				end
-                self:Load(bnpath)
-				self:zoomto(60,30)
-			end
-
-			--This does nothing. Maybe I need a different file for this
-			if pack then
-				pkpath = WHEELDATA:GetFolderBanner()
-				if not pkpath then
-					pkpath = THEME:GetPathG("Common", "fallback wheelbanner")
-				end
-				self:Load(pkpath)
-				self:zoomto(120,60)
-			end
-
-			if focus then
-				self:diffusealpha(1)
-			else
-				self:diffusealpha(0.4)
-			end
-		end
-};
-]]
-t[#t+1] = Def.ActorFrame {
+return Def.ActorFrame {
     UIElements.QuadButton(1, 1) .. {
 		InitCommand = function(self)
 			self:halign(0)
@@ -99,5 +45,3 @@ t[#t+1] = Def.ActorFrame {
 		end,
 	},
 }
-
-return t

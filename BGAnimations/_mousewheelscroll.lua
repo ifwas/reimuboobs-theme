@@ -14,7 +14,7 @@ local function scrollInput(event)
 		elseif event.type == "InputEventType_Release" then
 			pressingtab = false
 		end
-	elseif event.type == "InputEventType_FirstPress"then
+	elseif event.type == "InputEventType_FirstPress" then
 		if event.DeviceInput.button == "DeviceButton_mousewheel up" then
 			moving = true
 			if pressingtab == true and not whee:IsSettled() then
@@ -44,9 +44,6 @@ local t = Def.ActorFrame {
 		top = SCREENMAN:GetTopScreen()
 		top:AddInputCallback(scrollInput)
 		self:visible(false)
-
 	end
 }
-
-
 return t

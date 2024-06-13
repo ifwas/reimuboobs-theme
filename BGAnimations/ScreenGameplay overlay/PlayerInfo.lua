@@ -1,14 +1,14 @@
 -- Various player and stage info, more text = fps drop so we should be sparing
--- i will try to remove some unnecesary stuff tho -ifwas
 local profileP1 = GetPlayerOrMachineProfile(PLAYER_1)
 local PlayerFrameX = 0
 local PlayerFrameY = SCREEN_HEIGHT - 50
 local bgalpha = PREFSMAN:GetPreference("BGBrightness")
+local profileName = profileP1:GetDisplayName()
 
 
 local translated_info = {
 	Judge = THEME:GetString("ScreenGameplay", "ScoringJudge"),
-	profileName = THEME:GetString("GeneralInfo", "NoProfile"),
+	
 }
 
 local t = Def.ActorFrame {
