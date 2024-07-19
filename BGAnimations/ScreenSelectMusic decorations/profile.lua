@@ -951,7 +951,7 @@ local profilebuttons = Def.ActorFrame {
 
 	LoadFont("Common Large") .. { --taps
 			InitCommand = function(self)
-				self:xy(240 , ((txtDist * i) - 80)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				self:xy(240 , ((txtDist * i) - 25)):maxwidth(170 * 3):halign(0):zoom(0.275)
 			end,
 			SetCommand = function(self)
 				self:settextf("%s %s", noteCount, translated_info["TapsHit"])
@@ -959,7 +959,7 @@ local profilebuttons = Def.ActorFrame {
 		},
 		LoadFont("Common Large") .. { --playtime
 			InitCommand = function(self)
-				self:xy(240 , ((txtDist * i) - 65)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				self:xy(240 , ((txtDist * i) - 10)):maxwidth(170 * 3):halign(0):zoom(0.275)
 			end,
 			BeginCommand = function(self)
 				self:queuecommand("Set")
@@ -971,7 +971,7 @@ local profilebuttons = Def.ActorFrame {
 		},
 		LoadFont("Common Large") .. { --plays
 		InitCommand = function(self)
-			self:xy(240 , ((txtDist * i) - 50)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			self:xy(240 , ((txtDist * i) + 5)):maxwidth(170 * 3):halign(0):zoom(0.275)
 		end,
 		SetCommand = function(self)
 			self:settextf("%s %s", playCount, translated_info["Plays"])
@@ -979,7 +979,7 @@ local profilebuttons = Def.ActorFrame {
 	},
 		LoadFont("Common Large") .. { --playsonthissession
 		InitCommand = function(self)
-			self:xy(240 , ((txtDist * i) - 35)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			self:xy(240 , ((txtDist * i) + 20)):maxwidth(170 * 3):halign(0):zoom(0.275)
 		end,
 		SetCommand = function(self)
 			self:settextf(SCOREMAN:GetNumScoresThisSession() .. " " .. translated_info["PlaysThisSession"])
