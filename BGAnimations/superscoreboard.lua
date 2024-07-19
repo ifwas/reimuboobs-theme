@@ -473,13 +473,6 @@ local function makeScoreDisplay(i)
 			end,
 			DisplayCommand = function(self)
 				self:settext(hs:GetDisplayName())
-
-				if hs:GetDisplayName() == "SOYNEBUV2" then
-			    self:settext("ajaw")
-				else
-				self:settext(hs:GetDisplayName())
-				end
-
 				if not hs:GetEtternaValid() then
 					self:diffuse(color("#F0EEA6"))
 				else
@@ -663,11 +656,7 @@ local function makeScoreDisplay(i)
 			end,
 			DisplayCommand = function(self)
 				local perc = hs:GetWifeScore() * 100
-				if perc > 99.7 then
-					self:settextf("%05.5f%%", notShit.floor(perc, 5))
-				else
-					self:settextf("%05.4f%%", notShit.floor(perc, 4))
-				end
+				self:settextf("%05.4f%%", notShit.floor(perc, 4))
 				self:diffuse(byGrade(hs:GetWifeGrade()))
 			end
 		},

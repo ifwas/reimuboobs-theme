@@ -61,6 +61,7 @@ local translated_info = {
 	RefreshSongs = THEME:GetString("GeneralInfo", "DifferentialReloadTrigger"),
 	SongsLoaded = THEME:GetString("GeneralInfo", "ProfileSongsLoaded"),
 	SessionTime = THEME:GetString("GeneralInfo", "SessionTime"),
+	GroupsLoaded = THEME:GetString("GeneralInfo", "GroupsLoaded"),
 }
 
 local function UpdateTime(self)
@@ -73,7 +74,7 @@ local function UpdateTime(self)
 	self:GetChild("CurrentTime"):settextf("%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second)
 
 	local sessiontime = GAMESTATE:GetSessionTime()
-	self:GetChild("SessionTime"):settextf("%s: %s", "Session Time", SecondsToHHMMSS(sessiontime))
+	self:GetChild("SessionTime"):settextf("%s: %s", translated_info["SessionTime"], SecondsToHHMMSS(sessiontime))
 	self:diffuse(nonButtonColor)
 end
 
@@ -473,7 +474,7 @@ t[#t + 1] = Def.ActorFrame {
 		MouseOverCommand = function(self)
 			highlightIfOver(self)
 			if not self:IsVisible() then return end
-			TOOLTIP:SetText(SONGMAN:GetNumSongGroups() .. " " .. "Packs Loaded")
+			TOOLTIP:SetText(SONGMAN:GetNumSongGroups() .. " " .. translated_info["GroupsLoaded"])
 			TOOLTIP:Show()
 		end,
 		MouseOutCommand = function(self)

@@ -11,7 +11,6 @@ local playCount = 0
 local playTime = 0
 local noteCount = 0
 
-
 local translated_info = {
 	Validated = THEME:GetString("TabProfile", "ScoreValidated"),
 	Invalidated = THEME:GetString("TabProfile", "ScoreInvalidated"),
@@ -28,7 +27,6 @@ local translated_info = {
 	ForceRecalc = THEME:GetString("TabProfile", "ForceRecalcScores"),
 	UploadAllScore = THEME:GetString("TabProfile", "UploadAllScore"),
 
-
 	--testing new stuff for the profile tab  (clearly not copypasted from player info nono)
 	--for some reason in this new update, if you put this outside the translated bracket the game fucks up so yeah don't do that
     Plays = THEME:GetString("GeneralInfo", "ProfilePlays"),
@@ -36,8 +34,6 @@ local translated_info = {
     Playtime = THEME:GetString("GeneralInfo", "ProfilePlaytime"),
     PlaysThisSession = THEME:GetString("GeneralInfo", "PlaysThisSession")
 }
-
-
 
 local t = Def.ActorFrame {
 	BeginCommand = function(self)
@@ -892,7 +888,7 @@ local function littlebits(i)
 				self:visible(false)
 			end
 		end,
-		LoadFont("Common Large") .. { --Text Skillset
+		LoadFont("Common Large") .. {
 			InitCommand = function(self)
 				self:xy(-30,( (txtDist * i) + 20)):maxwidth(170 * 2):halign(0):zoom(0.275)
 			end,
@@ -900,22 +896,22 @@ local function littlebits(i)
 				self:settext(ms.SkillSetsTranslated[i] .. ":")
 			end,
 		},
-		LoadFont("Common Large") .. { 
+		LoadFont("Common Large") .. {
 			InitCommand = function(self)
 				self:xy(240, ((txtDist * i) + 20)):halign(0):zoom(0.275)
 			end,
 			SetCommand = function(self)
 				local rating = 0
-				if not showOnline then -- local skillset msd
+				if not showOnline then
 					rating = profile:GetPlayerSkillsetRating(ms.SkillSets[i])
 					self:settextf("%05.2f", rating)
 					self:GetParent():x(frameX + capWideScale(28,45))
-					self:x(80)
-				else -- online skilset msd
+					self:x(88)
+				else
 					rating = DLMAN:GetSkillsetRating(ms.SkillSets[i])
 					self:settextf("%05.2f (#%i)", rating, DLMAN:GetSkillsetRank(ms.SkillSets[i]))
-					self:GetParent():x(frameX + capWideScale(28,45))
-					self:x(80)
+					self:GetParent():x(frameX)
+					self:x(capWideScale(28,45)):maxwidth(9999)
 					if not IsUsingWideScreen() then self:maxwidth(70) end
 				end
 				self:diffuse(byMSD(rating))
@@ -952,10 +948,10 @@ local profilebuttons = Def.ActorFrame {
 			user = ""
 		end
 	end,
-	--profile stats text
+
 	LoadFont("Common Large") .. { --taps
 			InitCommand = function(self)
-				self:xy(240 , ((txtDist * i) - 25)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				self:xy(240 , ((txtDist * i) - 80)):maxwidth(170 * 3):halign(0):zoom(0.275)
 			end,
 			SetCommand = function(self)
 				self:settextf("%s %s", noteCount, translated_info["TapsHit"])
@@ -963,7 +959,7 @@ local profilebuttons = Def.ActorFrame {
 		},
 		LoadFont("Common Large") .. { --playtime
 			InitCommand = function(self)
-				self:xy(240 , ((txtDist * i) - 10)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				self:xy(240 , ((txtDist * i) - 65)):maxwidth(170 * 3):halign(0):zoom(0.275)
 			end,
 			BeginCommand = function(self)
 				self:queuecommand("Set")
@@ -975,7 +971,7 @@ local profilebuttons = Def.ActorFrame {
 		},
 		LoadFont("Common Large") .. { --plays
 		InitCommand = function(self)
-			self:xy(240 , ((txtDist * i) + 5)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			self:xy(240 , ((txtDist * i) - 50)):maxwidth(170 * 3):halign(0):zoom(0.275)
 		end,
 		SetCommand = function(self)
 			self:settextf("%s %s", playCount, translated_info["Plays"])
@@ -983,13 +979,12 @@ local profilebuttons = Def.ActorFrame {
 	},
 		LoadFont("Common Large") .. { --playsonthissession
 		InitCommand = function(self)
-			self:xy(240 , ((txtDist * i) + 20)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			self:xy(240 , ((txtDist * i) - 35)):maxwidth(170 * 3):halign(0):zoom(0.275)
 		end,
 		SetCommand = function(self)
 			self:settextf(SCOREMAN:GetNumScoresThisSession() .. " " .. translated_info["PlaysThisSession"])
 		end,
 	},
-
 	UpdateRankingMessageCommand = function(self)
 		if rankingSkillset == 1 and update and not recentactive then
 			self:visible(true)
@@ -1113,7 +1108,6 @@ t[#t + 1] = Def.Actor {
 		self:GetParent():GetChild("AvatarPlayerNumber_P1"):GetChild("Name"):playcommand("Set")
 	end
 }
-
 
 t[#t + 1] = profilebuttons
 t[#t + 1] = r

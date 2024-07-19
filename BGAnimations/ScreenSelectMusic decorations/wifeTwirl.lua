@@ -25,7 +25,6 @@ local prevtab = 0
 local positionMSDtextaddxIni = 255
 local positionMSDtextaddxFin = - 255
 
-
 local itsOn = false
 
 local translated_info = {
@@ -434,7 +433,7 @@ t[#t + 1] = Def.ActorFrame {
 			end
 		end
 	},
-	-- skillset suff (these 3 can prolly be wrapped)
+	-- skillset stuff (these 3 can prolly be wrapped)
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
 			self:xy(frameX + 120, frameY - 60):halign(0):zoom(0.6, maxwidth, 125)

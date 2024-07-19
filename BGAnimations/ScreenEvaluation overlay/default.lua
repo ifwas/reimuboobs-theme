@@ -49,3 +49,4 @@ t[#t + 1] = Def.Sprite {
 t[#t + 1] = LoadActor("../_cursor")
 
 return t
+

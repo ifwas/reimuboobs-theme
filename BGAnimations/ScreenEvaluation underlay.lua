@@ -20,6 +20,4 @@ if enabled then
 	}
 end
 
-
-
 return t
