@@ -2,7 +2,7 @@ t = Def.ActorFrame { }
 
 t[#t + 1] = LoadActor(THEME:GetPathG("", "_OptionsScreen")) ..  {
 	OnCommand = function(self)
-		self:FullScreen():zoom(0.449)
+		self:FullScreen():zoom(0.445)
 	end
 }
 

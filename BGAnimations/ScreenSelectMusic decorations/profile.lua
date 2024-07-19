@@ -985,6 +985,56 @@ local profilebuttons = Def.ActorFrame {
 			self:settextf(SCOREMAN:GetNumScoresThisSession() .. " " .. translated_info["PlaysThisSession"])
 		end,
 	},
+
+
+	-- grade functionality in profile page here
+	LoadFont("Common Large") .. { --quint
+		InitCommand = function(self)
+			self:xy(240 , ((txtDist * i) + 45)):maxwidth(170 * 3):halign(0):zoom(0.275)
+		end,
+		SetCommand = function(self)
+			local quints = WHEELDATA:GetTotalClearsByGrade("Grade_Tier01")
+			self:settextf("%ss: %d", getGradeStrings("Grade_Tier01"), quints):diffuse(getGradeColor("Grade_Tier01"))
+		end,
+	},
+	LoadFont("Common Large") .. { --AAAA
+	InitCommand = function(self)
+		self:xy(240 , ((txtDist * i) + 60)):maxwidth(170 * 3):halign(0):zoom(0.275)
+	end,
+	SetCommand = function(self)
+		local scores = WHEELDATA:GetTotalClearsByGrade("Grade_Tier02") + WHEELDATA:GetTotalClearsByGrade("Grade_Tier03") + WHEELDATA:GetTotalClearsByGrade("Grade_Tier04")
+		self:settextf("%ss: %d", getGradeStrings("Grade_Tier04"), scores):diffuse(getGradeColor("Grade_Tier04"))
+	end,
+    },
+	LoadFont("Common Large") .. { --AAA
+		InitCommand = function(self)
+			self:xy(240 , ((txtDist * i) + 75)):maxwidth(170 * 3):halign(0):zoom(0.275)
+		end,
+		SetCommand = function(self)
+			local scores = WHEELDATA:GetTotalClearsByGrade("Grade_Tier05") + WHEELDATA:GetTotalClearsByGrade("Grade_Tier06") + WHEELDATA:GetTotalClearsByGrade("Grade_Tier07")
+			self:settextf("%ss: %d", getGradeStrings("Grade_Tier07"), scores):diffuse(getGradeColor("Grade_Tier07"))
+		end,
+	},
+	LoadFont("Common Large") .. { --AA
+	InitCommand = function(self)
+		self:xy(240 , ((txtDist * i) + 90)):maxwidth(170 * 3):halign(0):zoom(0.275)
+	end,
+	SetCommand = function(self)
+		local scores = WHEELDATA:GetTotalClearsByGrade("Grade_Tier08") + WHEELDATA:GetTotalClearsByGrade("Grade_Tier09") + WHEELDATA:GetTotalClearsByGrade("Grade_Tier10")
+		self:settextf("%ss: %d", getGradeStrings("Grade_Tier10"), scores):diffuse(getGradeColor("Grade_Tier10"))
+	end,
+},
+LoadFont("Common Large") .. { --A
+	InitCommand = function(self)
+		self:xy(240 , ((txtDist * i) + 105)):maxwidth(170 * 3):halign(0):zoom(0.275)
+	end,
+	SetCommand = function(self)
+		local scores = WHEELDATA:GetTotalClearsByGrade("Grade_Tier11") + WHEELDATA:GetTotalClearsByGrade("Grade_Tier12") + WHEELDATA:GetTotalClearsByGrade("Grade_Tier13")
+		self:settextf("%ss: %d", getGradeStrings("Grade_Tier13"), scores):diffuse(getGradeColor("Grade_Tier13"))
+	end,
+},
+
+
 	UpdateRankingMessageCommand = function(self)
 		if rankingSkillset == 1 and update and not recentactive then
 			self:visible(true)
@@ -1108,6 +1158,7 @@ t[#t + 1] = Def.Actor {
 		self:GetParent():GetChild("AvatarPlayerNumber_P1"):GetChild("Name"):playcommand("Set")
 	end
 }
+
 
 t[#t + 1] = profilebuttons
 t[#t + 1] = r

@@ -4,6 +4,10 @@ local t =
 	Name = "PlayerAvatar"
 }
 
+
+
+
+
 local profile
 
 local profileName = THEME:GetString("GeneralInfo", "NoProfile")
@@ -561,6 +565,8 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 	}
 }
+
+
 
 t[#t + 1] = Def.ActorFrame {
 	InitCommand = function(self)
