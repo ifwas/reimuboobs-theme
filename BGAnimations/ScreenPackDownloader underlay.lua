@@ -72,6 +72,69 @@ local o = Def.ActorFrame {
 
 }
 
+local playingMusic = {}
+local playingMusicCounter = 1
+
+--Title text
+o[#o + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
+	InitCommand=function(self)
+		self:xy(150,50):zoom(0.5)
+		self:diffusetopedge(Saturation(getMainColor("highlight"), 0.5))
+		self:diffusebottomedge(Saturation(getMainColor("positive"), 0.8))
+	end,
+	OnCommand=function(self)
+		self:settext("Pack Downloads")
+	end,
+	MouseOverCommand = function(self)
+		self:diffusealpha(0.6)
+	end,
+	MouseOutCommand = function(self)
+		self:diffusealpha(1)
+	end,
+	MouseDownCommand = function(self, params)
+		if params.event == "DeviceButton_left mouse button" then
+			local function startSong()
+				local sngs = SONGMAN:GetAllSongs()
+				if #sngs == 0 then ms.ok("No songs to play") return end
+
+				local s = sngs[math.random(#sngs)]
+				local p = s:GetMusicPath()
+				local l = s:MusicLengthSeconds()
+				local top = SCREENMAN:GetTopScreen()
+
+				local thisSong = playingMusicCounter
+				playingMusic[thisSong] = true
+
+				SOUND:StopMusic()
+				SOUND:PlayMusicPart(p, 0, l)
+	
+				ms.ok("NOW PLAYING: "..s:GetMainTitle() .. " | LENGTH: "..SecondsToMMSS(l))
+	
+				top:setTimeout(
+					function()
+						if not playingMusic[thisSong] then return end
+						playingMusicCounter = playingMusicCounter + 1
+						startSong()
+					end,
+					l
+				)
+	
+			end
+	
+			SCREENMAN:GetTopScreen():setTimeout(function()
+					playingMusic[playingMusicCounter] = false
+					playingMusicCounter = playingMusicCounter + 1
+					startSong()
+				end,
+			0.1)
+		else
+			SOUND:StopMusic()
+			playingMusic = {}
+			playingMusicCounter = playingMusicCounter + 1
+			ms.ok("Stopped music")
+		end
+	end,
+}
 
 
 o[#o+1] = Def.ActorFrame {
@@ -80,15 +143,6 @@ o[#o+1] = Def.ActorFrame {
 		self:xy(leftSpace + tagFrameWidth/2, cancelFrameY)
 	end,
 
-	LoadFont("Common Large") .. {
-		Name = "TitleText",
-		InitCommand = function(self)
-			self:y(-cancelFrameY/2)
-			self:zoom(0.4)
-			self:maxwidth(SCREEN_WIDTH / 2)
-			self:settext("Pack Downloads")
-		end
-	},
 	UIElements.TextButton(1, 1, "Common Large") .. {
 		Name = "StopAllDownloadsButton",
 		InitCommand = function(self)
@@ -131,6 +185,7 @@ o[#o+1] = Def.ActorFrame {
 					count = count + 1
 				end
 				if count > 0 then
+					SOUND:PlayOnce(THEME:GetPathS("", "canceldl"))
 					ms.ok("Stopped All Downloads: "..count.." Downloads")
 				end
 			end
@@ -146,7 +201,7 @@ o[#o+1] = Def.ActorFrame {
 
 			self.txt:xy(tagFrameWidth/4 - leftSpace/4, packh/2)
 			self.txt:valign(0.5)
-			self.txt:settext(translated_info["CancelCurrent"])
+			self.txt:settext("Stop Current Download")
 			self.txt:zoom(0.4)
 			self.txt:maxwidth((tagFrameWidth/2 - leftSpace) / 0.4)
 
@@ -170,6 +225,7 @@ o[#o+1] = Def.ActorFrame {
 			if params.update == "OnMouseDown" then
 				local dl = DLMAN:GetDownloads()[1]
 				if dl then
+					SOUND:PlayOnce(THEME:GetPathS("", "canceldl"))
 					dl:Stop()
 				end
 			end
@@ -178,7 +234,7 @@ o[#o+1] = Def.ActorFrame {
 }
 
 local function tagframe()
-	local maxtags = 12
+	local maxtags = 7
 	local curpage = 1
 
 	local frameBGHeight = SCREEN_HEIGHT - (f0y-30) - leftSpace
@@ -253,7 +309,7 @@ local function tagframe()
 		LoadFont("Common Large") .. {
 			Name = "TagExplain",
 			InitCommand = function(self)
-				self:settext("Select tags to filter packs")
+				self:settext("Tags")
 				self:zoom(0.4)
 				self:valign(0)
 				self:xy(frameBGWidth/2, leftSpace)
@@ -514,7 +570,7 @@ o[#o + 1] = Def.ActorFrame {
 			self:xy(-2,-1) -- font problems
 			self:halign(1)
 			self:zoom(fontScale)
-			self:settextf("%s:", translated_info["SearchName"])
+			self:settextf("%s:", "Search")
 		end,
 	},
 	LoadFont("Common Normal") .. {
@@ -527,6 +583,17 @@ o[#o + 1] = Def.ActorFrame {
 	}
 }
 
+o[#o + 1] =
+	Def.Sprite{
+		Texture=THEME:GetPathG("","titlebg");
+		InitCommand=function(self)
+			self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):zoom(0.4)
+			self:scaletocover(0, 0, SCREEN_WIDTH, SCREEN_BOTTOM)
+			self:diffusealpha(0.2)
+		end
+	}
+
 o[#o + 1] = LoadActor("packlistDisplay")
+o[#o + 1] = LoadActor("_xoon3")
 
 return o

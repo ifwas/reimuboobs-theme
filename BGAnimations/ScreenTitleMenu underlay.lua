@@ -25,7 +25,7 @@ local playingMusicCounter = 1
 --Title text
 t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
 	InitCommand=function(self)
-		self:xy(380         ,frameY-120):zoom(0.7):align(0.5,1)
+		self:xy(380,frameY-120):zoom(0.7):align(0.5,1)
 		self:diffusetopedge(Saturation(getMainColor("highlight"), 0.5))
 		self:diffusebottomedge(Saturation(getMainColor("positive"), 0.8))
 	end,

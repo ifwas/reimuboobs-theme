@@ -3,6 +3,10 @@ local c
 local enabledJudgment = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).JudgmentText
 local JTEnabled = JudgementTweensEnabled()
 
+--the 1.2 value is for how aggresive the wooble is for the judgment, setting it to 1.0 the judgment is not gonna make it move
+local wooble = 1.2 
+
+
 --[[
 -- old commands from metrics [Judgment]:
 JudgmentW1Command=shadowlength,0;diffusealpha,1;zoom,1.3;linear,0.05;zoom,1;sleep,0.8;smooth,0.1;zoomy,0.5;zoomx,2;diffusealpha,0;glowblink;effectperiod,0.05;effectcolor1,color("1,1,1,0");effectcolor2,color("1,1,1,0.25")
@@ -16,52 +20,51 @@ JudgmentMissCommand=shadowlength,0;diffusealpha,1;zoom,1.05;linear,0.05;zoom,1;s
 local JudgeCmds = {
 	TapNoteScore_W1 = function(self)
 		local jz = MovableValues.JudgeZoom or 1
-		self:shadowlength(0):diffusealpha(1):zoom(1.3 * jz)
-		self:linear(0.05)
-		self:zoom(1 * jz)
+		self:shadowlength(0):diffusealpha(1):zoomy(wooble * jz) 
+		self:linear(0.1)
+		self:zoomy(1 * jz)
 		self:sleep(0.8):smooth(0.1)
-		self:zoomy(0.5 * jz):zoomx(2 * jz):diffusealpha(0)
-		self:glowblink():effectperiod(0.05):effectcolor1(color("1,1,1,0")):effectcolor2(color("1,1,1,0.25"))
+		self:zoomy(0.25 * jz):diffusealpha(0)
 	end,
 	TapNoteScore_W2 = function(self)
 		local jz = MovableValues.JudgeZoom or 1
-		self:shadowlength(0):diffusealpha(1):zoom(1.2 * jz)
-		self:linear(0.05)
-		self:zoom(1 * jz)
+		self:shadowlength(0):diffusealpha(1):zoomy(wooble * jz)
+		self:linear(0.1)
+		self:zoomy(1 * jz)
 		self:sleep(0.8):smooth(0.1)
-		self:zoomy(0.5 * jz):zoomx(2 * jz):diffusealpha(0)
+		self:zoomy(0.25 * jz):diffusealpha(0)
 	end,
 	TapNoteScore_W3 = function(self)
 		local jz = MovableValues.JudgeZoom or 1
-		self:shadowlength(0):diffusealpha(1):zoom(1.2 * jz)
-		self:linear(0.05)
-		self:zoom(1 * jz)
+		self:shadowlength(0):diffusealpha(1):zoomy(wooble * jz)
+		self:linear(0.1)
+		self:zoomy(1 * jz)
 		self:sleep(0.8):smooth(0.1)
-		self:zoomy(0.5 * jz):zoomx(2 * jz):diffusealpha(0)
+		self:zoomy(0.25 * jz):diffusealpha(0)
 	end,
 	TapNoteScore_W4 = function(self)
 		local jz = MovableValues.JudgeZoom or 1
-		self:shadowlength(0):diffusealpha(1):zoom(1.1 * jz)
-		self:linear(0.05)
-		self:zoom(1 * jz)
+		self:shadowlength(0):diffusealpha(1):zoomy(wooble * jz)
+		self:linear(0.1)
+		self:zoomy(1 * jz)
 		self:sleep(0.8):smooth(0.1)
-		self:zoomy(0.5 * jz):zoomx(2 * jz):diffusealpha(0)
+		self:zoomy(0.25 * jz):diffusealpha(0)
 	end,
 	TapNoteScore_W5 = function(self)
 		local jz = MovableValues.JudgeZoom or 1
-		self:shadowlength(0):diffusealpha(1):zoom(1.05 * jz)
-		self:linear(0.05)
-		self:zoom(1 * jz)
+		self:shadowlength(0):diffusealpha(1):zoomy(wooble * jz)
+		self:linear(0.1)
+		self:zoomy(1 * jz)
 		self:sleep(0.8):smooth(0.1)
-		self:zoomy(0.5 * jz):zoomx(2 * jz):diffusealpha(0)
+		self:zoomy(0.25 * jz):diffusealpha(0)
 	end,
 	TapNoteScore_Miss = function(self)
 		local jz = MovableValues.JudgeZoom or 1
-		self:shadowlength(0):diffusealpha(1):zoom(1.05 * jz)
-		self:linear(0.05)
-		self:zoom(1 * jz)
+		self:shadowlength(0):diffusealpha(1):zoomy(wooble * jz)
+		self:linear(0.1)
+		self:zoomy(1 * jz)
 		self:sleep(0.8):smooth(0.1)
-		self:zoomy(0.5 * jz):zoomx(2 * jz):diffusealpha(0)
+		self:zoomy(0.25 * jz):diffusealpha(0)
 	end,
 }
 
