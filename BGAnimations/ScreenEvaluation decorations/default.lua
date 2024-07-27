@@ -105,7 +105,11 @@ t[#t+1] = Def.ActorFrame {
 			self:queuecommand("Set")
 		end,
 		SetCommand = function(self)
+			if GAMESTATE:GetCurrentSong():GetDisplaySubTitle() == "" then
+			   self:settext("")
+		    else
 			   self:settext("''"..GAMESTATE:GetCurrentSong():GetDisplaySubTitle().. "''")
+		    end
 		end,
 	},
 	LoadFont("Common Large") .. {
@@ -121,35 +125,6 @@ t[#t+1] = Def.ActorFrame {
 		end,
 		SetCommand = function(self)
 			self:settext("By: " ..GAMESTATE:GetCurrentSong():GetOrTryAtLeastToGetSimfileAuthor())
-		end,
-	},
-	LoadFont("Common Large") .. {
-		Name = "RateString",
-		InitCommand = function(self)
-			self:xy(frameX + 214, frameY - 62)
-			self:zoom(0.33)
-			self:halign(0.5)
-			self:queuecommand("Set")
-		end,
-		ScoreChangedMessageCommand = function(self)
-			self:queuecommand("Set")
-		end,
-		SetCommand = function(self)
-			local top = SCREENMAN:GetTopScreen()
-			local rate
-			if top:GetName() == "ScreenNetEvaluation" then
-				rate = score:GetMusicRate()
-			else
-				rate = top:GetReplayRate()
-				if not rate then rate = getCurRateValue() end
-			end
-			rate = notShit.round(rate,3)
-			local ratestr = getRateString(rate)
-			if ratestr == "1x" then
-				self:settext("")
-			else
-				self:settext(ratestr)
-			end
 		end,
 	},
 }
@@ -466,6 +441,35 @@ local function scoreBoard(pn, position)
 				local diff = getDifficulty(steps:GetDifficulty())
 				self:settext(getShortDifficulty(diff))
 				self:diffuse(getDifficultyColor(GetCustomDifficulty(steps:GetStepsType(), steps:GetDifficulty())))
+			end,
+		},
+		LoadFont("Common Large") .. {
+			Name = "RateString",
+			InitCommand = function(self)
+				self:xy(frameX + 210, frameY - 63)
+				self:zoom(0.35)
+				self:halign(0.5)
+				self:queuecommand("Set")
+			end,
+			ScoreChangedMessageCommand = function(self)
+				self:queuecommand("Set")
+			end,
+			SetCommand = function(self)
+				local top = SCREENMAN:GetTopScreen()
+				local rate
+				if top:GetName() == "ScreenNetEvaluation" then
+					rate = score:GetMusicRate()
+				else
+					rate = top:GetReplayRate()
+					if not rate then rate = getCurRateValue() end
+				end
+				rate = notShit.round(rate,3)
+				local ratestr = getRateString(rate)
+				if ratestr == "1x" then
+					self:settext("1.0x")
+				else
+					self:settext(ratestr)
+				end
 			end,
 		},
 		Def.ActorFrame {

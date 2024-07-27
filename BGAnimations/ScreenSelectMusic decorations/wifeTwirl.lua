@@ -797,7 +797,7 @@ t[#t + 1] = UIElements.SpriteButton(1, 1, nil) .. {
 		if song then
 			if song:HasCDTitle() then
 				self:visible(true)
-				self:Load(song:GetCDTitlePath())
+				self:Load(song:GetCDTitlePath()):bob():effectmagnitude(0,2,0)
 			else
 				self:visible(false)
 			end
