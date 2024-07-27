@@ -467,7 +467,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "ClearType",
 		InitCommand = function(self)
-			self:y(44):zoom(0.5):halign(0):settext(""):diffuse(color(colorConfig:get_data().clearType["NoPlay"]))
+			self:y(40):zoom(0.5):halign(0):settext(""):diffuse(color(colorConfig:get_data().clearType["NoPlay"]))
 		end,
 		DisplayCommand = function(self)
 			self:settext(getClearTypeFromScore(pn, score, 0))
@@ -477,7 +477,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "Mods",
 		InitCommand = function(self)
-			self:y(63):zoom(0.4):halign(0):maxwidth(capWideScale(690,1000))
+			self:xy(65,63):zoom(0.4):halign(0):maxwidth(capWideScale(690,1000))
 			self:settextf("%s:", translated_info["Mods"]):settext("")
 		end,
 		DisplayCommand = function(self)
@@ -487,7 +487,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "Date",
 		InitCommand = function(self)
-			self:y(78):zoom(0.4):halign(0):settextf("%s:", translated_info["DateAchieved"]):settext("")
+			self:xy(65,78):zoom(0.4):halign(0):settextf("%s:", translated_info["DateAchieved"]):settext("")
 		end,
 		DisplayCommand = function(self)
 			self:settextf("%s: %s", translated_info["DateAchieved"], getScoreDate(score))
@@ -496,7 +496,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "Combo",
 		InitCommand = function(self)
-			self:y(93):zoom(0.4):halign(0):settextf("%s:", translated_info["MaxCombo"]):settext("")
+			self:xy(65,93):zoom(0.4):halign(0):settextf("%s:", translated_info["MaxCombo"]):settext("")
 		end,
 		DisplayCommand = function(self)
 			self:settextf("%s: %d", translated_info["MaxCombo"], score:GetMaxCombo())
@@ -505,7 +505,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "ComboBreaks",
 		InitCommand = function(self)
-			self:y(108):zoom(0.4):halign(0):settextf("%s:", translated_info["ComboBreaks"]):settext("")
+			self:xy(65,108):zoom(0.4):halign(0):settextf("%s:", translated_info["ComboBreaks"]):settext("")
 		end,
 		DisplayCommand = function(self)
 			local comboBreaks = getScoreComboBreaks(score)
@@ -686,11 +686,10 @@ l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		end
 	end,
 }
-l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
+l[#l + 1] = UIElements.SpriteButton(1, 1, THEME:GetPathG("", "showReplay")) .. {
 	Name = "ReplayViewer",
 	InitCommand = function(self)
-		self:y(frameHeight - headeroffY - 15 - offsetY):zoom(0.55):halign(0):settext("")
-		self:diffuse(getMainColor("positive"))
+		self:xy( 30,frameHeight - 310):zoom(0.55):halign(0):diffusealpha(0)
 	end,
 	BeginCommand = function(self)
 		if SCREENMAN:GetTopScreen():GetName() == "ScreenNetSelectMusic" then
@@ -699,21 +698,22 @@ l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 	end,
 	DisplayCommand = function(self)
 		if hasReplayData then
-			self:settext(translated_info["ShowReplay"])
-			self:diffuse(getMainColor("positive")):zoom(0.55)
+			self:diffusealpha(1):zoom(0.55)
 		else
-			self:settext(translated_info["NoReplayData"])
-			self:diffuse(1,1,1,1):zoom(0.4)
+			self:diffusealpha(0)
 		end
 	end,
 	MouseOverCommand = function(self)
 		if hasReplayData then
 			self:diffusealpha(hoverAlpha)
+			TOOLTIP:SetText("Show Replay")
+			TOOLTIP:Show()
 		end
 	end,
 	MouseOutCommand = function(self)
 		if hasReplayData then
 			self:diffusealpha(1)
+			TOOLTIP:Hide()
 		end
 	end,
 	MouseDownCommand = function(self, params)
@@ -730,11 +730,10 @@ l[#l + 1] = Def.ActorFrame {
 			self:x(6):y(37):zoom(0.9)
 		end
 	end,
-	UIElements.QuadButton(1, 1) .. {
+	UIElements.SpriteButton(1, 1, THEME:GetPathG("", "showEval")) .. {
 		Name = "EvalViewQuad",
 		InitCommand = function(self)
-			self:xy((frameWidth - offsetX - frameX) / 2.1, frameHeight - headeroffY - 17 - offsetY):diffuse(0,0,0,0)
-			self:zoomtowidth(145):zoomtoheight(21)
+			self:xy(15,frameHeight - 310):zoom(0.55):halign(0):diffusealpha(0)
 		end,
 		BeginCommand = function(self)
 			if SCREENMAN:GetTopScreen():GetName() == "ScreenNetSelectMusic" then
@@ -743,16 +742,19 @@ l[#l + 1] = Def.ActorFrame {
 		end,
 		DisplayCommand = function(self)
 			if hasReplayData then
-				self:diffusealpha(0.3)
+				self:diffusealpha(1)
 			else
 				self:diffusealpha(0)
 			end
 		end,
 		MouseOverCommand = function(self)
 			self:GetParent():GetChild("EvalViewer"):diffusealpha(0.6)
+			TOOLTIP:SetText("Show Evaluation")
+			TOOLTIP:Show()
 		end,
 		MouseOutCommand = function(self)
 			self:GetParent():GetChild("EvalViewer"):diffusealpha(1)
+			TOOLTIP:Hide()
 		end,
 		MouseDownCommand = function(self, params)
 			if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
@@ -766,41 +768,36 @@ l[#l + 1] = Def.ActorFrame {
 		Name = "EvalViewer",
 		InitCommand = function(self)
 			self:xy((frameWidth - offsetX - frameX) / 2.1, frameHeight - headeroffY - 18 - offsetY):zoom(0.35):settext("")
-			self:diffuse(getMainColor("positive"))
+			self:diffusealpha(0)
 		end,
 		BeginCommand = function(self)
 			if SCREENMAN:GetTopScreen():GetName() == "ScreenNetSelectMusic" then
 				self:visible(false)
 			end
 		end,
-		DisplayCommand = function(self)
-			if hasReplayData then
-				self:settext(translated_info["ShowEval"])
-			else
-				self:settext("")
-			end
-		end,
 	},
 }
 
-l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
+l[#l + 1] = UIElements.SpriteButton(1, 1, THEME:GetPathG("", "upload")) .. {
 	Name = "TheDootButton",
 	InitCommand = function(self)
-		self:xy(frameWidth - offsetX - frameX, frameHeight - headeroffY - 35 - offsetY):zoom(0.525):halign(1):settext("")
-		self:diffuse(getMainColor("positive"))
+		self:xy(0 ,frameHeight - 310):zoom(0.55):halign(0):diffusealpha(0)
 	end,
 	DisplayCommand = function(self)
 		if hasReplayData then
-			self:settext(translated_info["UploadReplay"])
+			self:diffusealpha(1)
 		else
-			self:settext("")
+			self:diffusealpha(0)
 		end
 	end,
 	MouseOverCommand = function(self)
 		self:diffusealpha(hoverAlpha)
+		TOOLTIP:SetText(translated_info["UploadReplay"])
+		TOOLTIP:Show()
 	end,
 	MouseOutCommand = function(self)
 		self:diffusealpha(1)
+		TOOLTIP:Hide()
 	end,
 	MouseDownCommand = function(self, params)
 		if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
