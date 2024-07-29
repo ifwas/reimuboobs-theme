@@ -30,6 +30,7 @@ local headeroffY = 10
 
 local selectedrateonly
 
+
 local judges = {
 	"TapNoteScore_W1",
 	"TapNoteScore_W2",
@@ -37,8 +38,6 @@ local judges = {
 	"TapNoteScore_W4",
 	"TapNoteScore_W5",
 	"TapNoteScore_Miss",
-	"HoldNoteScore_Held",
-	"HoldNoteScore_LetGo"
 }
 
 local translated_info = {
@@ -407,7 +406,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "Wife",
 		InitCommand = function(self)
-			self:xy(65, 15):zoom(0.6):halign(0):settext("")
+			self:xy(110, 10):zoom(0.65):halign(0):settext("")
 		end,
 		DisplayCommand = function(self)
 			if score:GetWifeScore() == 0 then
@@ -435,7 +434,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "Score",
 		InitCommand = function(self)
-			self:xy(65, 30):zoom(0.6):halign(0):settext("")
+			self:xy(65, 11):zoom(0.65):halign(0):settext("")
 		end,
 		DisplayCommand = function(self)
 			if score:GetWifeScore() == 0 then
@@ -443,24 +442,6 @@ local l = Def.ActorFrame {
 			else
 				local overall = score:GetSkillsetSSR("Overall")
 				self:settextf("%.2f", overall):diffuse(byMSD(overall))
-			end
-		end
-	},
-	LoadFont("Common Normal") .. {
-		Name = "Score",
-		InitCommand = function(self)
-			self:xy(65, 43):zoom(0.5):halign(0):settext("")
-		end,
-		DisplayCommand = function(self)
-			if score:GetWifeScore() == 0 then
-				self:settext("")
-			else
-				local ss = GAMESTATE:GetCurrentSteps():GetRelevantSkillsetsByMSDRank(getCurRateValue(), 1)
-				if ss ~= "" then
-					self:settext(THEME:GetString("Skillsets", ss))
-				else
-					self:settext("")
-				end
 			end
 		end
 	},
@@ -477,7 +458,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "Mods",
 		InitCommand = function(self)
-			self:xy(65,63):zoom(0.4):halign(0):maxwidth(capWideScale(690,1000))
+			self:xy(65,25):zoom(0.4):halign(0):maxwidth(capWideScale(690,1000))
 			self:settextf("%s:", translated_info["Mods"]):settext("")
 		end,
 		DisplayCommand = function(self)
@@ -487,7 +468,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "Date",
 		InitCommand = function(self)
-			self:xy(65,78):zoom(0.4):halign(0):settextf("%s:", translated_info["DateAchieved"]):settext("")
+			self:xy(65,38):zoom(0.4):halign(0):settextf("%s:", translated_info["DateAchieved"]):settext("")
 		end,
 		DisplayCommand = function(self)
 			self:settextf("%s: %s", translated_info["DateAchieved"], getScoreDate(score))
@@ -496,7 +477,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "Combo",
 		InitCommand = function(self)
-			self:xy(65,93):zoom(0.4):halign(0):settextf("%s:", translated_info["MaxCombo"]):settext("")
+			self:xy(65,51):zoom(0.4):halign(0):settextf("%s:", translated_info["MaxCombo"]):settext("")
 		end,
 		DisplayCommand = function(self)
 			self:settextf("%s: %d", translated_info["MaxCombo"], score:GetMaxCombo())
@@ -505,7 +486,7 @@ local l = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "ComboBreaks",
 		InitCommand = function(self)
-			self:xy(65,108):zoom(0.4):halign(0):settextf("%s:", translated_info["ComboBreaks"]):settext("")
+			self:xy(65,64):zoom(0.4):halign(0):settextf("%s:", translated_info["ComboBreaks"]):settext("")
 		end,
 		DisplayCommand = function(self)
 			local comboBreaks = getScoreComboBreaks(score)
@@ -526,39 +507,12 @@ local l = Def.ActorFrame {
 			self:zoom(0.4)
 		end
 	},
-	LoadFont("Common Normal") .. {
-		Name = "Judge",
-		InitCommand = function(self)
-			self:xy(frameX + offsetX + 55,frameHeight - headeroffY - 65 - offsetY):zoom(0.45):halign(0.5):settext("")
-		end,
-		DisplayCommand = function(self)
-			local j = table.find(ms.JudgeScalers, notShit.round(score:GetJudgeScale(), 2))
-			if not j then j = 4 end
-			if j < 4 then j = 4 end
-			self:settextf("%s %i", translated_info["Judge"], j)
-		end
-	},
-	LoadFont("Common Normal") .. {
-		Name = "ChordCohesion",
-		InitCommand = function(self)
-			self:xy(frameX + offsetX + 55,frameHeight - headeroffY - 50 - offsetY):zoom(0.4):halign(0.5):settext("")
-		end,
-		DisplayCommand = function(self)
-			if score:GetChordCohesion() then
-				self:settextf("%s: %s", translated_info["ChordCohesion"], translated_info["Yes"])
-				self:diffuse(1,0,0,1)
-			else
-				self:settextf("%s: %s", translated_info["ChordCohesion"], translated_info["No"])
-				self:diffuse(1,1,1,1)
-			end
-		end
-	},
 }
 
 local function makeText(index)
 	return UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		InitCommand = function(self)
-			self:xy(frameWidth - frameX, offsetY + 100 + (index * 15)):zoom(fontScale + 0.05):halign(1):settext("")
+			self:xy(frameX + 57, offsetY + 75 + (index * 15)):zoom(fontScale + 0.05):halign(1):settext("")
 		end,
 		DisplayCommand = function(self)
 			local count = 0
@@ -596,60 +550,102 @@ local function makeText(index)
 	}
 end
 
+
+local JudgeBg = frameWidth / 1.5
+
 for i = 1, 9 do
 	t[#t + 1] = makeText(i)
 end
 
 local function makeJudge(index, judge)
 	local t = Def.ActorFrame {
+		
 		InitCommand = function(self)
-			self:y(129 + ((index - 1) * 18))
-		end
-	}
-
-	--labels
-	t[#t + 1] = LoadFont("Common Normal") .. {
-		InitCommand = function(self)
-			self:zoom(0.55):halign(0)
+			self:y(120 + ((index - 1) * 18))
 		end,
-		BeginCommand = function(self)
-			self:settext(getJudgeStrings(judge))
-			self:diffuse(byJudgment(judge))
-		end
-	}
 
-	t[#t + 1] = LoadFont("Common Normal") .. {
-		InitCommand = function(self)
-			self:x(127):zoom(0.55):halign(1):settext("0")
-		end,
-		DisplayCommand = function(self)
-			if judge ~= "HoldNoteScore_Held" and judge ~= "HoldNoteScore_LetGo" then
-				self:settext(getScoreTapNoteScore(score, judge))
-			else
-				self:settext(getScoreHoldNoteScore(score, judge))
+		Def.Quad {
+			Name = "BG",
+			InitCommand = function(self)
+				self:xy(frameX + 55, frameY - 80 + ((index - 1)))
+				self:zoomto(JudgeBg, 15)
+				self:halign(0)
+				self:diffusealpha(0)
+			end,
+			DisplayCommand = function(self)
+				self:diffuse(byJudgment(judge))
+				self:diffusealpha(0.5)
+			end,
+		},
+		Def.Quad {
+			Name = "Fill",
+			InitCommand = function(self)
+				self:xy(frameX + 55, frameY - 80 + ((index - 1)))
+				self:zoomto(JudgeBg, 15)
+				self:halign(0)
+				self:diffusealpha(0)
+			end,
+			DisplayCommand = function(self)
+				local tapss = math.max(1, getMaxNotes(pn))
+				local countt = getScoreTapNoteScore(score, judge)
+
+				self:diffuse(byJudgment(judge))
+				self:diffusealpha(0.5)
+				self:zoomx(JudgeBg * (countt / tapss))
+			end,
+		},
+		LoadFont("Common Large") .. {
+			Name = "Label",
+			InitCommand = function(self)
+				self:xy(frameX + 325, frameY - 80 + ((index - 1)))
+				self:zoom(0.25):halign(1)
+				self:settext("")
+			end,
+			DisplayCommand = function(self)
+				if judge ~= "HoldNoteScore_Held" and judge ~= "HoldNoteScore_LetGo" then
+					self:settext(getScoreTapNoteScore(score, judge))
+				else
+					self:settext(getScoreHoldNoteScore(score, judge))
+				end
 			end
-		end
-	}
-
-	t[#t + 1] = LoadFont("Common Normal") .. {
-		InitCommand = function(self)
-			self:x(130):zoom(0.3):halign(0):settext("")
-		end,
-		DisplayCommand = function(self)
-			if judge ~= "HoldNoteScore_Held" and judge ~= "HoldNoteScore_LetGo" then
-				local taps = math.max(1, getMaxNotes(pn))
-				local count = getScoreTapNoteScore(score, judge)
-				self:settextf("(%03.2f%%)", (count / taps) * 100)
-			else
-				local holds = math.max(1, getMaxHolds(pn))
-				local count = getScoreHoldNoteScore(score, judge)
-				self:settextf("(%03.2f%%)", (count / holds) * 100)
+		},
+		LoadFont("Common Large") .. {
+			InitCommand = function(self)
+				self:xy(frameX + 330, frameY - 80 + ((index - 1))):settext("")
+				self:zoom(0.2):halign(0)
+				self:settext("")
+			end,
+			DisplayCommand = function(self)
+				if judge ~= "HoldNoteScore_Held" and judge ~= "HoldNoteScore_LetGo" then
+					local taps = math.max(1, getMaxNotes(pn))
+					local count = getScoreTapNoteScore(score, judge)
+					self:settextf("(%03.2f%%)", (count / taps) * 100)
+				else
+					local holds = math.max(1, getMaxHolds(pn))
+					local count = getScoreHoldNoteScore(score, judge)
+					self:settextf("(%03.2f%%)", (count / holds) * 100)
+				end
 			end
-		end
+		},
+		LoadFont("Common Large") .. {
+			Name = "Name",
+			InitCommand = function(self)
+				self:xy(frameX + 60, frameY - 80 + ((index - 1)))
+				self:zoom(0.25):halign(0)
+				self:settext("")
+			end,
+			DisplayCommand = function(self)
+				self:settext(getJudgeStrings(judge))
+			end
+		},
+
+		
 	}
 
 	return t
 end
+
+
 
 for i = 1, #judges do
 	l[#l + 1] = makeJudge(i, judges[i])
@@ -777,6 +773,9 @@ l[#l + 1] = Def.ActorFrame {
 		end,
 	},
 }
+
+--todo
+--l[#l + 1] = LoadActor("../offsetplot")
 
 l[#l + 1] = UIElements.SpriteButton(1, 1, THEME:GetPathG("", "upload")) .. {
 	Name = "TheDootButton",
