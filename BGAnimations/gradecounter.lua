@@ -1,3 +1,7 @@
+--[[ quick TODO: make an option to make this visible in the bottom part of the frame and the ScreenEvaluation
+     but i think screenevaluation needs it's own frame to put the gradecounter and other neet stuff like 
+     online score viewer in ScreenEvaluation just like in rebirth  ]]
+
 -- pls don't look at this mess -steffen
 -- haha i looked at it lolol
 
@@ -17,12 +21,13 @@ local basePath = PROFILEMAN:GetProfileDir(1)
 local saveFile = basePath .. "grade_counter.txt"
 
 -- the visual in the lower right displaying the values
+-- we don't rlly need this to be visible while still using the logic so, me being lazy i'll just make everything invisible
 local function CreateGradeDisplay(tier, index)
     return Def.ActorFrame {
         -- tier display
         LoadFont("Common Normal") .. {
             OnCommand = function(self)
-                self:xy(SCREEN_CENTER_X + SCREEN_CENTER_X / 2.5 + xPos + xGap, SCREEN_BOTTOM - yPos + yGap * index):halign(0):valign(1):zoom(fontZoom)
+                self:xy(SCREEN_CENTER_X + SCREEN_CENTER_X / 2.5 + xPos + xGap, SCREEN_BOTTOM - yPos + yGap * index):halign(0):valign(1):zoom(fontZoom):visible(false)
                 self:settext(getGradeStrings(tier) .. "")
                 self:diffuse(getGradeColor(tier))
             end
@@ -36,7 +41,7 @@ local function CreateGradeDisplay(tier, index)
                 if index == 2 then valueToDisplay = GRADECOUNTERSTORAGE.AA end
                 if index == 3 then valueToDisplay = GRADECOUNTERSTORAGE.A end
 
-                self:xy(SCREEN_CENTER_X + SCREEN_CENTER_X / 2.5 + xPos, SCREEN_BOTTOM - yPos + yGap * index):halign(1):valign(1):zoom(fontZoom)
+                self:xy(SCREEN_CENTER_X + SCREEN_CENTER_X / 2.5 + xPos, SCREEN_BOTTOM - yPos + yGap * index):halign(1):valign(1):zoom(fontZoom):visible(false)
 				self:diffuse(fontColor)
 				self:settext(valueToDisplay)
             end

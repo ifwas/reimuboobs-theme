@@ -748,12 +748,12 @@ l[#l + 1] = Def.ActorFrame {
 			end
 		end,
 		MouseOverCommand = function(self)
-			self:GetParent():GetChild("EvalViewer"):diffusealpha(0.6)
+			self:diffusealpha(hoverAlpha)
 			TOOLTIP:SetText("Show Evaluation")
 			TOOLTIP:Show()
 		end,
 		MouseOutCommand = function(self)
-			self:GetParent():GetChild("EvalViewer"):diffusealpha(1)
+			self:diffusealpha(1)
 			TOOLTIP:Hide()
 		end,
 		MouseDownCommand = function(self, params)
