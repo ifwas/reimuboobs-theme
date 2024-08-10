@@ -71,7 +71,7 @@ local t =
 
 local frameWidth = capWideScale(get43size(450), 450) / (#tabNames - 1)
 local frameX = frameWidth / 2 + 2
-local frameY = SCREEN_HEIGHT - 70
+local frameY = SCREEN_TOP - 2
 
 local function tabs(index)
 	local t = Def.ActorFrame {
@@ -87,7 +87,7 @@ local function tabs(index)
 			self:smooth(0.1)
 			--show tab if it's the currently selected one
 			if getTabIndex() == index - 1 then
-				self:diffusealpha(1):y(frameY - 1)
+				self:diffusealpha(1):y(frameY + 2)
 				self:GetChild("TabBG"):diffusecolor(Brightness(getMainColor("positive"),0.3)):diffusealpha(0.5)
 			else -- otherwise "Hide" them
 				self:diffusealpha(0.7):y(frameY)
@@ -102,7 +102,7 @@ local function tabs(index)
 	t[#t + 1] = UIElements.QuadButton(1, 1) .. {
 		Name = "TabBG",
 		InitCommand = function(self)
-			self:y(2):valign(0):zoomto(frameWidth, 20):diffusecolor(getMainColor("frames")):diffusealpha(0.7)
+			self:y(0):valign(0):zoomto(frameWidth, 20):diffusecolor(getMainColor("frames")):diffusealpha(0.7)
 		end,
 		MouseDownCommand = function(self, params)
 			if params.event == "DeviceButton_left mouse button" then
@@ -116,7 +116,7 @@ local function tabs(index)
 	t[#t + 1] = LoadFont("Common Normal") .. {
 		Name = "TabText",
 		InitCommand = function(self)
-			self:y(4):valign(0):zoom(0.4):diffuse(getMainColor("positive")):maxwidth(frameWidth * 2)
+			self:y(8):valign(0):zoom(0.4):diffuse(getMainColor("positive")):maxwidth(frameWidth * 2)
 		end,
 		BeginCommand = function(self)
 			self:queuecommand("Set")

@@ -6,7 +6,8 @@ return Def.ActorFrame {
 		end,
 		SetCommand = function(self)
 			self:diffuseramp()
-			self:effectcolor1(color("#FFFFFF33"))
+			self:effectcolor1(color("#FFFFFF23"))
+			self:effectclock("beat")
 			self:effectcolor2(color("#FFFFFF33"))
 		end,
 		BeginCommand = function(self)

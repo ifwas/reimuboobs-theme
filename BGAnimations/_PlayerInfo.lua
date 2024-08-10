@@ -462,31 +462,6 @@ t[#t + 1] = Def.ActorFrame {
 			end
 		end
 	},
-	UIElements.TextToolTip(1, 1, "Common Normal") .. {
-		InitCommand = function(self)
-			self:xy(SCREEN_WIDTH - 3, AvatarY + 30):halign(1):zoom(0.35):diffuse(nonButtonColor)
-		end,
-		BeginCommand = function(self)
-			self:queuecommand("Set")
-		end,
-		SetCommand = function(self)
-			self:settextf("%s: %i", translated_info["SongsLoaded"], SONGMAN:GetNumSongs())
-		end,
-		DFRFinishedMessageCommand = function(self)
-			self:queuecommand("Set")
-		end,
-		MouseOverCommand = function(self)
-			highlightIfOver(self)
-			if not self:IsVisible() then return end
-			TOOLTIP:SetText(SONGMAN:GetNumSongGroups() .. " " .. translated_info["GroupsLoaded"])
-			TOOLTIP:Show()
-		end,
-		MouseOutCommand = function(self)
-			highlightIfOver(self)
-			if not self:IsVisible() then return end
-			TOOLTIP:Hide()
-		end,
-	},
 	-- ok coulda done this as a separate object to avoid copy paste but w.e
 	-- upload progress bar bg
 	UIElements.QuadButton(1,1) .. {
@@ -566,7 +541,16 @@ t[#t + 1] = Def.ActorFrame {
 	}
 }
 
-
+--silly little thing
+--[[
+t[#t + 1] = Def.Sprite {
+	Texture=THEME:GetPathG("","caralmel 7x3");
+	InitCommand=function(self)
+		self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):zoom(0.3)
+		self:effectclock("beat")
+	end
+}
+]]
 
 t[#t + 1] = Def.ActorFrame {
 	InitCommand = function(self)

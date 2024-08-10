@@ -1,37 +1,23 @@
 local t = Def.ActorFrame {}
-local topFrameHeight = 35
+local topFrameHeight = SCREEN_BOTTOM
 local bottomFrameHeight = 54
 local borderWidth = 4
 
 --Frames
-t[#t + 1] = UIElements.QuadButton(1, 1) .. {
-	InitCommand = function(self)
-		self:xy(0, 0):halign(0):valign(0):zoomto(SCREEN_WIDTH, topFrameHeight):diffuse(getMainColor("frames"))
-	end
-}
-
-t[#t + 1] = UIElements.QuadButton(1, 1) .. {
-	InitCommand = function(self)
-		self:xy(0, SCREEN_HEIGHT):halign(0):valign(1):zoomto(SCREEN_WIDTH, bottomFrameHeight):diffuse(getMainColor("frames"))
-	end
-}
-
---FrameBorders
-t[#t + 1] = Def.Quad {
-	InitCommand = function(self)
-		self:xy(0, topFrameHeight):halign(0):valign(1):zoomto(SCREEN_WIDTH, borderWidth):diffuse(getMainColor("highlight")):diffusealpha(
-			0.5
-		)
-	end
-}
 
 t[#t + 1] = Def.Quad {
 	InitCommand = function(self)
-		self:xy(0, SCREEN_HEIGHT - bottomFrameHeight):halign(0):valign(0):zoomto(SCREEN_WIDTH, borderWidth):diffuse(
-			getMainColor("highlight")
-		):diffusealpha(0.5)
+		self:xy(502, 0):halign(0):valign(0):zoomto(SCREEN_WIDTH / 2, topFrameHeight):diffuse(color("0,0,0,0")):diffusetopedge(getMainColor("positive"), 0.1):diffusealpha(0.15)
 	end
 }
+
+
+t[#t + 1] = UIElements.QuadButton(1, 1) .. {
+	InitCommand = function(self)
+		self:xy(0, SCREEN_HEIGHT):halign(0):valign(1):zoomto(SCREEN_WIDTH, bottomFrameHeight):diffuse(getMainColor("frames")):diffusealpha(0.7)
+	end
+}
+
 
 --[[
 if themeConfig:get_data().global.TipType == 2 or themeConfig:get_data().global.TipType == 3 then

@@ -1,5 +1,11 @@
 local showVisualizer = themeConfig:get_data().global.ShowVisualizer
 
+local translated_info = {
+	SongsLoaded = THEME:GetString("GeneralInfo", "ProfileSongsLoaded"),
+	GroupsLoaded = THEME:GetString("GeneralInfo", "GroupsLoaded"),
+}
+
+
 local function input(event)
 	-- mouse click events left here to let anything in selectmusic react to them
 	if event.DeviceInput.button == "DeviceButton_left mouse button" then 
@@ -44,15 +50,17 @@ t[#t + 1] = Def.Actor {
 	end,
 }
 
+
+
 t[#t + 1] = LoadActor("../_frame")
 t[#t + 1] = LoadActor("../_PlayerInfo")
 
 if showVisualizer then
 	local vis = audioVisualizer:new {
-		x = 175,
-		y = 30,
+		x = 400,
+		y = SCREEN_BOTTOM,
 		maxHeight = 30,
-		freqIntervals = audioVisualizer.multiplyIntervals(audioVisualizer.defaultIntervals, 5),
+		freqIntervals = audioVisualizer.multiplyIntervals(audioVisualizer.defaultIntervals, 7),
 		color = getMainColor("positive"),
 		onBarUpdate = function(self)
 			--[
@@ -75,14 +83,17 @@ t[#t + 1] = LoadActor("currentsort")
 t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
 	Name="rando",
 	InitCommand = function(self)
-		self:xy(5, 32):halign(0):valign(1):zoom(0.55):diffuse(getMainColor("positive"))
-		self:settextf("%s:", THEME:GetString("ScreenSelectMusic", "Title"))
+		self:xy(765, SCREEN_BOTTOM - 17):halign(0):valign(1):zoom(0.2):diffuse(getMainColor("positive"))
+		self:settextf("%s: %i", translated_info["SongsLoaded"], SONGMAN:GetNumSongs())
 	end,
 	MouseOverCommand = function(self)
 		self:diffusealpha(hoverAlpha)
+		TOOLTIP:SetText(SONGMAN:GetNumSongGroups() .. " " .. translated_info["GroupsLoaded"])
+		TOOLTIP:Show()
 	end,
 	MouseOutCommand = function(self)
 		self:diffusealpha(1)
+		TOOLTIP:Hide()
 	end,
 	MouseDownCommand = function(self, params)
 		if params.event == "DeviceButton_left mouse button" then

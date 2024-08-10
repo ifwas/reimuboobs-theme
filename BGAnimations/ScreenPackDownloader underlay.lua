@@ -585,7 +585,7 @@ o[#o + 1] = Def.ActorFrame {
 
 o[#o + 1] =
 	Def.Sprite{
-		Texture=THEME:GetPathG("","titlebg");
+		Texture=THEME:GetPathG("","packdownloadbg");
 		InitCommand=function(self)
 			self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):zoom(0.4)
 			self:scaletocover(0, 0, SCREEN_WIDTH, SCREEN_BOTTOM)

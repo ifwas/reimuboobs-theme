@@ -328,7 +328,6 @@ local function makePackDisplay(i)
 				local avgdiff = packinfo:GetAvgDifficulty()
 				self:settextf("%0.2f", avgdiff)
 				self:diffuse(byMSD(avgdiff))
-				self:diffusebottomedge(Saturation(getMainColor("positive"), 0.1))
 			end
 		},
 		LoadFont("Common normal") .. {
@@ -340,7 +339,6 @@ local function makePackDisplay(i)
 				local psize = packinfo:GetSize() / 1024 / 1024
 				self:settextf("%i%s", psize, translated_info["MB"])
 				self:diffuse(byFileSize(psize))
-				self:diffusebottomedge(Saturation(getMainColor("positive"), 0.1))
 			end
 		},
 		LoadFont("Common normal") .. {

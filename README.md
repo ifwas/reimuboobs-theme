@@ -26,6 +26,7 @@ It doesn't change a lot in terms of gameplay but im open to suggestions
 
 ## TODO:
 
-- fix scrollwheel.lua 
+- actually finish the volume control thing
 - not be lazy and delete some things i just left in _xoon2
+- fix the pointer for the offsetplot that i broke for the score page
 - implement ideas (such as durvin's edit of ScreenEvaluation and other stuff from other themes)
