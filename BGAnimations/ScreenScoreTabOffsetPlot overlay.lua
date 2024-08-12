@@ -23,5 +23,5 @@ local t = Def.ActorFrame {
 		end
 	end
 }
-t[#t + 1] = LoadActor("putamadrebart")
+t[#t + 1] = LoadActor("offsetplot")
 return t

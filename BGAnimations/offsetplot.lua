@@ -124,9 +124,10 @@ local o = Def.ActorFrame {
 			ctt = pss:GetTrackVector() -- column information for each offset
 			ntt = pss:GetTapNoteTypeVector() -- notetype information (we use this to handle mine hits differently- currently that means not displaying them)
 		else -- should be default behavior
-			if name == "ScreenSelectMusic" then
+			if name == "ScreenScoreTabOffsetPlot" then
 				local score = getScoreForPlot()
-				self:xy(plotX - 426, plotY - 100)
+				plotWidth, plotHeight = SCREEN_WIDTH, SCREEN_WIDTH * 0.3
+				self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y)
 				textzoom = 0.5
 				bgalpha = 1
 				if score ~= nil then
