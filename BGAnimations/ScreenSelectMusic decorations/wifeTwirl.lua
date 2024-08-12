@@ -907,7 +907,7 @@ t[#t + 1] = Def.Sprite {
 	end,
 	ChartPreviewOffMessageCommand = function(self)
 		self:visible(BannersEnabled())
-	end
+	end,
 }
 local enabledC = "#099948"
 local disabledC = "#ff6666"

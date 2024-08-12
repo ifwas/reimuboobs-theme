@@ -1,4 +1,4 @@
-local tzoom = 0.5
+local tzoom = 0.55
 local pdh = 48 * tzoom
 local ygap = 2
 local packspaceY = pdh + ygap
@@ -334,7 +334,7 @@ local function makeGoalDisplay(i)
 		UIElements.SpriteButton(1, 1, THEME:GetPathG("", "X.png")) .. {
 			-- delete button
 			InitCommand = function(self)
-				self:xy(c0x - 13,pdh/2.3):zoom(0.3):halign(0):valign(1):diffuse(Color.Red)
+				self:xy(c0x - 13,pdh/2.3):zoom(0.4):halign(0):valign(1):diffuse(Color.Red)
 			end,
 			MouseOverCommand = function(self)
 				self:diffusealpha(hoverAlpha)
@@ -354,7 +354,7 @@ local function makeGoalDisplay(i)
 		UIElements.TextToolTip(1, 1, "Common normal") .. {
 			--rate
 			InitCommand = function(self)
-				self:x(c1x):zoom(tzoom):halign(0.5):valign(1)
+				self:x(c1x):zoom(tzoom * 0.8):halign(0.5):valign(1):y(-4)
 			end,
 			DisplayCommand = function(self)
 				local ratestring = string.format("%.2f", sg:GetRate()):gsub("%.?0$", "") .. "x"
@@ -420,7 +420,7 @@ local function makeGoalDisplay(i)
 		UIElements.TextToolTip(1, 1, "Common normal") .. {
 			--song name
 			InitCommand = function(self)
-				self:x(c2x):zoom(tzoom):maxwidth((c3x - c2x - capWideScale(50, 80)) / tzoom):halign(0):valign(1):draworder(1)
+				self:x(c2x):zoom(tzoom * 1.15):maxwidth((c3x - c2x - capWideScale(50, 80)) / tzoom):halign(0):valign(1):draworder(1):y(2)
 			end,
 			DisplayCommand = function(self)
 				if goalsong then
@@ -450,7 +450,7 @@ local function makeGoalDisplay(i)
 		LoadFont("Common normal") .. {
 			--pb
 			InitCommand = function(self)
-				self:x(c2x):zoom(tzoom):halign(0):valign(0)
+				self:x(c2x):zoom(tzoom * 0.5):halign(0):valign(0):y(5)
 			end,
 			DisplayCommand = function(self)
 				local pb = sg:GetPBUpTo()
@@ -479,7 +479,7 @@ local function makeGoalDisplay(i)
 		LoadFont("Common normal") .. {
 			--assigned
 			InitCommand = function(self)
-				self:x(c4x):zoom(tzoom):halign(1):valign(0):maxwidth(width / 3.5 / tzoom)
+				self:x(c4x):zoom(tzoom * 0.7):halign(1):valign(0):maxwidth(width / 3.5 / tzoom):y(3)
 			end,
 			DisplayCommand = function(self)
 				self:settextf("%s: %s", translated_info["Assigned"], sg:WhenAssigned()):diffuse(byAchieved(sg))
@@ -504,7 +504,7 @@ local function makeGoalDisplay(i)
 		LoadFont("Common normal") .. {
 			--msd diff
 			InitCommand = function(self)
-				self:x(c5x):zoom(tzoom):halign(1):valign(1)
+				self:x(c5x):zoom(tzoom):halign(1):valign(1):y(10)
 			end,
 			DisplayCommand = function(self)
 				if goalsteps then
@@ -518,7 +518,7 @@ local function makeGoalDisplay(i)
 		LoadFont("Common normal") .. {
 			--steps diff
 			InitCommand = function(self)
-				self:x(c5x):zoom(tzoom):halign(1):valign(0)
+				self:x(c5x):zoom(tzoom * 0.5):halign(1):valign(0):y(-5)
 			end,
 			DisplayCommand = function(self)
 				if goalsteps and goalsong then

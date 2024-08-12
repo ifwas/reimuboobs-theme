@@ -4,13 +4,13 @@ local t = Def.ActorFrame {}
 
 t[#t + 1] = Def.Quad {
 	InitCommand = function(self)
-		self:zoomto(20, 20):diffuse(color("#ffffff")):diffusealpha(0.7)
+		self:zoomto(20, 20):diffuse(color("#ffffff")):diffusealpha(0)
 	end
 }
 
 t[#t + 1] = UIElements.QuadButton(1, 1) .. {
 	InitCommand = function(self)
-		self:zoomto(54, 20):diffuse(color("#ffffff")):diffusealpha(0.5):halign(0)
+		self:zoomto(54, 20):diffuse(color("#ffffff")):diffusealpha(0):halign(0)
 	end,
 	MouseOverCommand = function(self)
 		self:diffusealpha(hoverAlpha)

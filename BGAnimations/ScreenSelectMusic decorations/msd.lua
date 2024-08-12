@@ -34,7 +34,7 @@ local t = Def.ActorFrame {
 		self:queuecommand("Set"):visible(false)
 	end,
 	OffCommand = function(self)
-		self:bouncebegin(0.2):xy(-500, 0):diffusealpha(0)
+		self:bouncebegin(0.2):xy(0, 500):diffusealpha(0)
 		self:sleep(0.04):queuecommand("Invis")
 	end,
 	InvisCommand= function(self)

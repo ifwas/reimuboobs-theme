@@ -25,8 +25,8 @@ i will finish it whenever im not lazy but this is essential atm
 It doesn't change a lot in terms of gameplay but im open to suggestions
 
 ## TODO:
-
-- actually finish the volume control thing
-- not be lazy and delete some things i just left in _xoon2
-- fix the pointer for the offsetplot that i broke for the score page
-- implement ideas (such as durvin's edit of ScreenEvaluation and other stuff from other themes)
+- fix the offsetpoint pointer
+- finally implement the volume control
+- maybe rework a bit more some tabs before going on more miscellaneous stuff
+- fix the font kanjis for the love of god
+- implement more ideas, or qols, or maybe more paritys from rebirth

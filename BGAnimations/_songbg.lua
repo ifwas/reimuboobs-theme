@@ -1,5 +1,5 @@
 local enabled = PREFSMAN:GetPreference("ShowBackgrounds")
-local brightness = 0.3
+local brightness = 0.25
 
 local t = Def.ActorFrame {}
 
@@ -36,14 +36,7 @@ end
 t[#t + 1] = Def.Quad {
 	InitCommand = function(self)
 		self:xy(SCREEN_WIDTH, 0):halign(1):valign(0):zoomto(capWideScale(get43size(350), 350), SCREEN_HEIGHT)
-		self:diffuse(0.1,0.1,0.1,0.4)
-	end
-}
---vertical bar left of songwheel
-t[#t + 1] = Def.Quad {
-	InitCommand = function(self)
-		self:xy(SCREEN_WIDTH - capWideScale(get43size(350), 350), 0):halign(0):valign(0):zoomto(4, SCREEN_HEIGHT)
-		self:diffuse(getMainColor("highlight")):diffusealpha(0.5)
+		self:diffuse(0.1,0.1,0.1,0.1)
 	end
 }
 

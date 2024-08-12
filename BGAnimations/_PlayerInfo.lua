@@ -2,7 +2,9 @@
 local t =
 	Def.ActorFrame {
 	Name = "PlayerAvatar"
+	
 }
+
 
 
 
@@ -538,7 +540,7 @@ t[#t + 1] = Def.ActorFrame {
 		LogOutMessageCommand = function(self)
 			self:playcommand("SequentialScoreUploadFinished")
 		end,
-	}
+	},
 }
 
 --silly little thing
@@ -551,6 +553,15 @@ t[#t + 1] = Def.Sprite {
 	end
 }
 ]]
+
+t[#t + 1] =
+	Def.Quad{
+		InitCommand=function(self)
+			self:xy(SCREEN_CENTER_X + 270,SCREEN_TOP + 30)
+			self:scaletoclipped(capWideScale(get43size(384), 384), capWideScale(get43size(120), 120)):diffuse(getMainColor("frames")):diffusealpha(0.65)
+			self:fadebottom(0.5)
+		end,
+	}
 
 t[#t + 1] = Def.ActorFrame {
 	InitCommand = function(self)
