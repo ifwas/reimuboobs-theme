@@ -269,7 +269,7 @@ local function scoreBoard(pn, position)
 				self:xy(frameX - 5, frameY - 100)
 				self:zoomto(frameWidth + 12, SCREEN_WIDTH + 50)
 				self:halign(0):valign(0)
-				self:diffuse(getMainColor("tabs"))
+				self:diffuse(getMainColor("frames")):diffusealpha(0.65)
 			end,
 		},
 		Def.ActorFrame {
