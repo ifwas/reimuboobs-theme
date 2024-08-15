@@ -480,8 +480,8 @@ local function scoreBoard(pn, position)
 			UIElements.QuadButton(1, 1) .. {
 				Name = "MouseHoverBG",
 				InitCommand = function(self)
-					self:xy(frameX + 3, frameY + 30.3)
-					self:zoomto(0.30)
+					self:xy(frameX + 3, frameY + 20)
+					self:zoomto(capWideScale(320,490)/2.2,20)
 					self:halign(0):valign(0)
 					self:diffusealpha(0)
 				end,
@@ -500,15 +500,15 @@ local function scoreBoard(pn, position)
 				MouseClickCommand = function(self)
 					if inMulti then return end
 					if self:IsVisible() then
-						self:playcommand("ToggleCustomWindows")
+						MESSAGEMAN:Broadcast("ToggleCustomWindows")
 					end
 				end,
 			},
 			LoadFont("Common Large") .. {
 				Name = "NormalText",
 				InitCommand = function(self)
-					self:xy(frameX + 3, frameY + 30.3)
-					self:zoom(0.30)
+					self:xy(frameX + 3, frameY + 30)
+					self:zoom(0.3)
 					self:halign(0):valign(0)
 					self:maxwidth(capWideScale(320, 500))
 					self:visible(true)
@@ -573,8 +573,8 @@ local function scoreBoard(pn, position)
 			LoadFont("Common Large") ..	{-- high precision rollover
 				Name = "LongerText",
 				InitCommand = function(self)
-					self:xy(frameX + 3, frameY + 9)
-					self:zoom(0.45)
+					self:xy(frameX + 3, frameY + 30)
+					self:zoom(0.3)
 					self:halign(0):valign(0)
 					self:maxwidth(capWideScale(320, 500))
 					self:visible(false)
