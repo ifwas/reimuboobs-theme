@@ -910,9 +910,10 @@ local function littlebits(i)
 				else
 					rating = DLMAN:GetSkillsetRating(ms.SkillSets[i])
 					self:settextf("%05.2f (#%i)", rating, DLMAN:GetSkillsetRank(ms.SkillSets[i]))
-					self:GetParent():x(frameX)
-					self:x(capWideScale(28,45)):maxwidth(9999)
+					self:GetParent():x(frameX + capWideScale(28,45))
+					self:x():maxwidth(9999)
 					if not IsUsingWideScreen() then self:maxwidth(70) end
+					self:x(120)
 				end
 				self:diffuse(byMSD(rating))
 			end,

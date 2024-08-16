@@ -797,9 +797,10 @@ t[#t + 1] = UIElements.SpriteButton(1, 1, nil) .. {
 		if song then
 			if song:HasCDTitle() then
 				self:visible(true)
-				self:Load(song:GetCDTitlePath()):bob():effectmagnitude(0,2,0)
+				self:Load(song:GetCDTitlePath()):bob():effectmagnitude(0,2,0):diffusealpha(1)
 			else
-				self:visible(false)
+				self:visible(true)
+				self:Load(THEME:GetPathG("","cdtitle")):diffusealpha(0) --honestly i could just make it load whatever asset it had, but whatever
 			end
 		else
 			self:visible(false)
@@ -826,7 +827,7 @@ t[#t + 1] = UIElements.SpriteButton(1, 1, nil) .. {
 	end,
 	ToolTipCommand = function(self)
 		if isOver(self) then
-			if self.song and song:HasCDTitle() and self:GetVisible() then
+			if self.song and self:GetVisible() then 
 				local auth = self.song:GetOrTryAtLeastToGetSimfileAuthor()
 				if auth and #auth > 0 and auth ~= "Author Unknown" then
 					TOOLTIP:SetText(auth)
