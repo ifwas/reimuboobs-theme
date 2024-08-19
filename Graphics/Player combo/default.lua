@@ -19,11 +19,9 @@ end
 ]]
 local Pulse = function(self, param)
 	self:stoptweening()
-	self:zoomy(0.4)
-	self:linear(0.016)
-	self:zoomy(0.45)
-	self:linear(0.160)
-	self:zoomy(0.4)
+	self:zoomy(1.06 * param.Zoom * numberZoom())
+	self:linear(0.05)
+	self:zoomy(param.Zoom * numberZoom())
 end
 local PulseLabel = function(self, param)
 	self:stoptweening()
@@ -155,7 +153,7 @@ local t = Def.ActorFrame {
 		if CTEnabled then
 			local lb = 0.9
 			local ub = 1.1
-			local maxcombo = 100
+			local maxcombo = 1
 			param.LabelZoom = scale( iCombo, 0, maxcombo, lb, ub )
 			param.LabelZoom = clamp( param.LabelZoom, lb, ub )
 			param.Zoom = scale( iCombo, 0, maxcombo, lb, ub )
