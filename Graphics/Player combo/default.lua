@@ -22,7 +22,7 @@ local Pulse = function(self, param)
 	self:zoomy(0.4)
 	self:linear(0.016)
 	self:zoomy(0.45)
-	sself:linear(0.160)
+	self:linear(0.160)
 	self:zoomy(0.4)
 end
 local PulseLabel = function(self, param)
