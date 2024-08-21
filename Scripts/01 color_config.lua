@@ -6,6 +6,7 @@ local defaultConfig = {
 		Line_Right = "#59307f"
 	},
 	main = {
+		frame = "#000000",
 		highlight = "#614080",
 		frames = "#000111",
 		tabs = "#2E2E2E99",
@@ -18,6 +19,20 @@ local defaultConfig = {
 		background = "#111111CC",
 		border = "#000111",
 		text = "#9654FD"
+	},
+	selectMusic = {
+		MusicWheelTitleText = "#FFFFFF",
+		MusicWheelSubtitleText = "#FFFFFF",
+		MusicWheelArtistText = "#FFFFFF",
+		MusicWheelSectionCountText = "#FFFFFF",
+		MusicWheelDivider = "#FFFFFF",
+		UnfinishedGoalGradient = "#FF66FF",
+		CompletedGoalGradient = "#66FF66",
+		MusicWheelExtraColor = "#FFCCCC",
+		ProfileCardText = "#FFFFFF",
+		TabContentText = "#FFFFFF",
+		BannerText = "#FFFFFF",
+		StepsDisplayListText = "#FFFFFF"
 	},
 	clearType = {
 		MFC = "#66ccff",
@@ -286,4 +301,13 @@ function bySkillRange(x)
 	else
 		return color("#c97bff")
 	end
+end
+
+-- the graph kills itself if this function doesn't exist soooooo i'll just put this
+-- also if you attempt to make the colors the same as the byMSD function the graph also kills itself, dunno why and i don't really care
+function getMSDColor(MSD)
+	if MSD then
+		return HSV(math.min(220,math.max(280 - MSD*11, -40)), 0.5, 1)
+	end
+	return HSV(0, 0.9, 0.9)
 end

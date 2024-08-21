@@ -66,6 +66,7 @@ local t = Def.ActorFrame {
 			if song and steps then
 				cd:visible(true)
 				cd:queuecommand("GraphUpdate")
+				MESSAGEMAN:Broadcast("SetSteps",{steps = steps})
 			else
 				cd:visible(false)
 			end
@@ -96,43 +97,7 @@ t[#t + 1] = Def.Quad {
 	end
 }
 
---Skillset label function
-local function littlebits(i)
-	local t = Def.ActorFrame {
-		LoadFont("Common Large") .. {
-			InitCommand = function(self)
-				self:xy(frameX + offsetX, frameY + 100 + txtDist * i):halign(0):valign(0):zoom(0.55):maxwidth(155 / 0.55)
-			end,
-			SetCommand = function(self)
-				--skillset name
-				if song and steps then
-					self:settext(ms.SkillSetsTranslated[i] .. ":")
-				else
-					self:settext("")
-				end
-				--highlight
-				if greatest == i then
-					self:diffusetopedge(Saturation(getMainColor("highlight"), 0.5))
-					self:diffusebottomedge(Saturation(getMainColor("positive"), 0.6))
-				end
-			end
-		},
-		LoadFont("Common Large") .. {
-			InitCommand = function(self)
-				self:xy(frameX + 240, frameY + 100 + txtDist * i):halign(1):valign(0):zoom(0.55):maxwidth(110 / 0.55)
-			end,
-			SetCommand = function(self)
-				if song and steps then
-					self:settextf("%05.2f", meter[i + 1])
-					self:diffuse(byMSD(meter[i + 1]))
-				else
-					self:settext("")
-				end
-			end
-		}
-	}
-	return t
-end
+
 
 --Tab Title Frame
 t[#t + 1] = Def.Quad {
@@ -142,24 +107,40 @@ t[#t + 1] = Def.Quad {
 	end
 }
 --Tab Title
-t[#t + 1] = LoadFont("Common Normal") .. {
+t[#t + 1] = LoadFont("Common Bold") .. {
 	InitCommand = function(self)
-		self:xy(frameX + offsetX/2, frameY + offsetY - 11):zoom(0.65):halign(0)
+		self:xy(frameX + offsetX/2, frameY + offsetY - 11):zoom(0.4):halign(0)
 		self:settextf("%s (Calc v%s)",translated_text["Title"], GetCalcVersion())
-		self:diffuse(Saturation(getMainColor("positive"), 0.1))
 	end
 }
 --Song Title
 t[#t + 1] = LoadFont("Common Large") .. {
 	InitCommand = function(self)
-		self:xy(frameX + offsetX, frameY + 35):zoom(0.6):halign(0):diffuse(getMainColor("positive"))
-		self:maxwidth(SCREEN_CENTER_X / 0.7)
-		self:diffusetopedge(Saturation(getMainColor("highlight"), 0.5))
-		self:diffusebottomedge(Saturation(getMainColor("positive"), 0.6))
+		self:xy(frameX + offsetX, frameY + 35):zoom(0.45):halign(0):diffuse(getMainColor("positive"))
+		self:maxwidth(SCREEN_CENTER_X / 0.5)
+		self:diffusetopedge(Saturation(getMainColor("highlight"), 0.2))
+		self:diffusebottomedge(Saturation(getMainColor("positive"), 0.3))
 	end,
 	SetCommand = function(self)
 		if song then
 			self:settext(song:GetDisplayMainTitle())
+		else
+			self:settext("")
+		end
+	end
+}
+
+--Author Title
+t[#t + 1] = LoadFont("Common Large") .. {
+	InitCommand = function(self)
+		self:xy(frameX + offsetX, frameY + 53):zoom(0.2):halign(0):diffuse(getMainColor("positive"))
+		self:maxwidth(SCREEN_CENTER_X / 0.5)
+		self:diffusetopedge(Saturation(getMainColor("highlight"), 0.2))
+		self:diffusebottomedge(Saturation(getMainColor("positive"), 0.3))
+	end,
+	SetCommand = function(self)
+		if song then
+			self:settext("Made by: " .. song:GetOrTryAtLeastToGetSimfileAuthor())
 		else
 			self:settext("")
 		end
@@ -184,7 +165,7 @@ t[#t + 1] = LoadFont("Common Large") .. {
 t[#t + 1] = LoadFont("Common Normal") .. {
 	Name = "StepsAndMeter",
 	InitCommand = function(self)
-		self:xy(frameX + offsetX, frameY + offsetY + 44):zoom(0.5):halign(0):maxwidth(350)
+		self:xy(frameX + offsetX, frameY + offsetY + 46):zoom(0.5):halign(0):maxwidth(350)
 	end,
 	SetCommand = function(self)
 		steps = GAMESTATE:GetCurrentSteps()
@@ -206,7 +187,7 @@ t[#t + 1] = LoadFont("Common Normal") .. {
 t[#t + 1] = LoadFont("Common Normal") .. {
 	Name = "NPS",
 	InitCommand = function(self)
-		self:xy(frameX + offsetX + 175, frameY + offsetY + 44):zoom(0.45):halign(0)
+		self:xy(frameX + offsetX + 175, frameY + offsetY + 47):zoom(0.45):halign(0)
 	end,
 	SetCommand = function(self)
 		steps = GAMESTATE:GetCurrentSteps()
@@ -225,11 +206,76 @@ t[#t + 1] = LoadFont("Common Normal") .. {
 	end
 }
 
+-- cdtitle
+t[#t + 1] = UIElements.SpriteButton(1, 1, nil) .. {
+	InitCommand = function(self)
+		self:xy(capWideScale(get43size(344), 364) + 50, capWideScale(get43size(245), 170))
+		self:halign(0.5):valign(1)
+	end,
+	SetCommand = function(self)
+		self:finishtweening()
+		self.song = song
+		if song then
+			if song:HasCDTitle() then
+				self:visible(true)
+				self:Load(song:GetCDTitlePath()):bob():effectmagnitude(0,1,0):diffusealpha(1)
+			else
+				self:visible(true)
+				self:Load(THEME:GetPathG("","cdtitle")):diffusealpha(0) --honestly i could just make it load whatever asset it had, but whatever
+			end
+		else
+			self:visible(false)
+		end
+		local height = self:GetHeight()
+		local width = self:GetWidth()
 
---Skillset labels
-for i = 1, #ms.SkillSets do
-	t[#t + 1] = littlebits(i)
-end
+		if height >= 60 and width >= 75 then
+			if height * (75 / 60) >= width then
+				self:zoom(60 / height)
+			else
+				self:zoom(75 / width)
+			end
+		elseif height >= 60 then
+			self:zoom(60 / height)
+		elseif width >= 75 then
+			self:zoom(75 / width)
+		else
+			self:zoom(1)
+		end
+		if isOver(self) then
+			self:playcommand("ToolTip")
+		end
+	end,
+	ToolTipCommand = function(self)
+		if isOver(self) then
+			if self.song and self:GetVisible() then 
+				local auth = self.song:GetOrTryAtLeastToGetSimfileAuthor()
+				if auth and #auth > 0 and auth ~= "Author Unknown" then
+					TOOLTIP:SetText(auth)
+					TOOLTIP:Show()
+				else
+					TOOLTIP:Hide()
+				end
+			else
+				TOOLTIP:Hide()
+			end
+		end
+	end,
+	MouseOverCommand = function(self)
+		self:playcommand("ToolTip")
+	end,
+	MouseOutCommand = function(self)
+		TOOLTIP:Hide()
+	end,
+}
+
+
+t[#t+1] = LoadActor("ssrbreakdown") .. {
+	InitCommand = function(self)
+		self:xy(capWideScale(135,160),280)
+		self:delayedFadeIn(4)
+	end
+}
 
 t[#t + 1] = LoadActor("../_chorddensitygraph.lua")
 

@@ -21,6 +21,7 @@ i will finish it whenever im not lazy but this is essential atm
 <img src="https://raw.githubusercontent.com/ifwas/reimuboobs-theme/main/Graphics/screenshotsexample/2.png"/>
 <img src="https://raw.githubusercontent.com/ifwas/reimuboobs-theme/main/Graphics/screenshotsexample/3.png"/>
 <img src="https://raw.githubusercontent.com/ifwas/reimuboobs-theme/main/Graphics/screenshotsexample/4.png"/>
+<img src="https://raw.githubusercontent.com/ifwas/reimuboobs-theme/main/Graphics/screenshotsexample/5.png"/>
 
 It doesn't change a lot in terms of gameplay but im open to suggestions
 
