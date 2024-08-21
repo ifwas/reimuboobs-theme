@@ -1,7 +1,7 @@
 --uuhhhhhhhhhhhh not sure if i have to credit it but this whole code is from spwncamp, so credits to poco for all of this, i just edited some things to make it work on til death
 local t = Def.ActorFrame{}
 local circleRadius = 100
-local maxValue = 30
+local maxValue = 41
 local softCap = 40/30
 local frameWidth = capWideScale(250,300)
 local frameHeight = 270
