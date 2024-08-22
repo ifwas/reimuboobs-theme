@@ -1,3 +1,7 @@
+the hotkey for the volume is 
+ctrl + q to decrease it
+ctrl + w to increase it
+
 ## About 
 
 This is my own theme edit of [Etterna](https://github.com/etternagame/etterna)'s theme "Til Death", the goal of this repository is to document the changes/fixes i make while giving out an public release of the theme 
@@ -26,8 +30,7 @@ i will finish it whenever im not lazy but this is essential atm
 It doesn't change a lot in terms of gameplay but im open to suggestions
 
 ## TODO:
-- fix the offsetpoint pointer
-- finally implement the volume control
+- fix some bugs from the volumecontrol thing
 - maybe rework a bit more some tabs before going on more miscellaneous stuff
 - fix the font kanjis for the love of god
 - implement more ideas, or qols, or maybe more paritys from rebirth
