@@ -32,5 +32,4 @@ It doesn't change a lot in terms of gameplay but im open to suggestions
 ## TODO:
 - fix some bugs from the volumecontrol thing
 - maybe rework a bit more some tabs before going on more miscellaneous stuff
-- fix the font kanjis for the love of god
 - implement more ideas, or qols, or maybe more paritys from rebirth
