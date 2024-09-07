@@ -1220,6 +1220,7 @@ if GAMESTATE:IsPlayerEnabled() then
 end
 
 t[#t + 1] = LoadActor("../offsetplot")
+t[#t + 1] = LoadActor("../_volumecontrol")
 updateDiscordStatus(true)
 
 return t
