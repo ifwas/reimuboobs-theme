@@ -1,3 +1,5 @@
+--im not very good with names as you can see -ifwas
+
 --[[
 	Basically rewriting the c++ code to not be total shit so this can also not be total shit.
 ]] local allowedCustomization = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).CustomizeGameplay
