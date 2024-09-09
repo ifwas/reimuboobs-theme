@@ -10,6 +10,7 @@ local frameY = THEME:GetMetric("ScreenTitleMenu", "ScrollerY")
 
 
 
+
 t[#t + 1] =
 	Def.Sprite{
 		Texture=THEME:GetPathG("","titlebg");
@@ -19,6 +20,7 @@ t[#t + 1] =
 			self:diffusealpha(0.4)
 		end
 	}
+
 
 local playingMusic = {}
 local playingMusicCounter = 1

@@ -526,6 +526,20 @@ local function makeScoreDisplay(i)
 				self:visible(true):addy(-row2yoff)
 			end
 		},
+		--[[
+
+		--poco pleasd help me my familyu are in danger pls dfix
+		Def.Sprite {
+			OnCommand = function(self)
+				self:visible(true)
+				self:x(c2x - 6):zoom(tzoom + 0.25):halign(0):valign(0.5):maxwidth(width / 2 / tzoom):addy(row2yoff)
+			end,
+			-- please don't do this at home kids
+			DisplayCommand = function(self)
+				local pfpath = THEME:GetPathG("", "pfp/" .. hs:GetDisplayName()) or THEME:GetPathG("", "profilepicture")
+				self:Load(pfpath)
+			end
+		},
 
 		--[[ --wife version display ... not 100% reliable
 		LoadFont("Common normal") .. {

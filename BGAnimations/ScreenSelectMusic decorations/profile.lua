@@ -78,9 +78,9 @@ local t = Def.ActorFrame {
 	end
 }
 
-local frameX = 10
+local frameX = 20
 local frameY = 45
-local frameWidth = capWideScale(360, 400)
+local frameWidth = capWideScale(400, 440)
 local frameHeight = 350
 local fontScale = 0.25
 local scoresperpage = 20
@@ -952,7 +952,7 @@ local profilebuttons = Def.ActorFrame {
 
 	LoadFont("Common Large") .. { --taps
 			InitCommand = function(self)
-				self:xy(240 , ((txtDist * i) - 25)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				self:xy(260 , ((txtDist * i) - 25)):maxwidth(170 * 3):halign(0):zoom(0.275)
 			end,
 			SetCommand = function(self)
 				self:settextf("%s %s", noteCount, translated_info["TapsHit"])
@@ -960,7 +960,7 @@ local profilebuttons = Def.ActorFrame {
 		},
 		LoadFont("Common Large") .. { --playtime
 			InitCommand = function(self)
-				self:xy(240 , ((txtDist * i) - 10)):maxwidth(170 * 3):halign(0):zoom(0.275)
+				self:xy(260 , ((txtDist * i) - 10)):maxwidth(170 * 3):halign(0):zoom(0.275)
 			end,
 			BeginCommand = function(self)
 				self:queuecommand("Set")
@@ -972,7 +972,7 @@ local profilebuttons = Def.ActorFrame {
 		},
 		LoadFont("Common Large") .. { --plays
 		InitCommand = function(self)
-			self:xy(240 , ((txtDist * i) + 5)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			self:xy(260 , ((txtDist * i) + 5)):maxwidth(170 * 3):halign(0):zoom(0.275)
 		end,
 		SetCommand = function(self)
 			self:settextf("%s %s", playCount, translated_info["Plays"])
@@ -980,7 +980,7 @@ local profilebuttons = Def.ActorFrame {
 	},
 		LoadFont("Common Large") .. { --playsonthissession
 		InitCommand = function(self)
-			self:xy(240 , ((txtDist * i) + 20)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			self:xy(260 , ((txtDist * i) + 20)):maxwidth(170 * 3):halign(0):zoom(0.275)
 		end,
 		SetCommand = function(self)
 			self:settextf(SCOREMAN:GetNumScoresThisSession() .. " " .. translated_info["PlaysThisSession"])
@@ -991,7 +991,7 @@ local profilebuttons = Def.ActorFrame {
 	-- grade functionality in profile page here, thx steffen <3
 	LoadFont("Common Large") .. { --AAAA
 	InitCommand = function(self)
-		self:xy(240 , ((txtDist * i) + 45)):maxwidth(170 * 3):halign(0):zoom(0.275)
+		self:xy(260 , ((txtDist * i) + 45)):maxwidth(170 * 3):halign(0):zoom(0.275)
 	end,
 	SetCommand = function(self)
 		local scores = GRADECOUNTERSTORAGE.AAAA
@@ -1000,7 +1000,7 @@ local profilebuttons = Def.ActorFrame {
     },
 	LoadFont("Common Large") .. { --AAA
 		InitCommand = function(self)
-			self:xy(240 , ((txtDist * i) + 60)):maxwidth(170 * 3):halign(0):zoom(0.275)
+			self:xy(260 , ((txtDist * i) + 60)):maxwidth(170 * 3):halign(0):zoom(0.275)
 		end,
 		SetCommand = function(self)
 			local scores = GRADECOUNTERSTORAGE.AAA
@@ -1009,7 +1009,7 @@ local profilebuttons = Def.ActorFrame {
 	},
 	LoadFont("Common Large") .. { --AA
 	InitCommand = function(self)
-		self:xy(240 , ((txtDist * i) + 75)):maxwidth(170 * 3):halign(0):zoom(0.275)
+		self:xy(260 , ((txtDist * i) + 75)):maxwidth(170 * 3):halign(0):zoom(0.275)
 	end,
 	SetCommand = function(self)
 		local scores = GRADECOUNTERSTORAGE.AA
@@ -1018,7 +1018,7 @@ local profilebuttons = Def.ActorFrame {
 },
 LoadFont("Common Large") .. { --A
 	InitCommand = function(self)
-		self:xy(240 , ((txtDist * i) + 90)):maxwidth(170 * 3):halign(0):zoom(0.275)
+		self:xy(260 , ((txtDist * i) + 90)):maxwidth(170 * 3):halign(0):zoom(0.275)
 	end,
 	SetCommand = function(self)
 		local scores = GRADECOUNTERSTORAGE.A

@@ -6,7 +6,6 @@ local defaultConfig = {
 		Line_Right = "#59307f"
 	},
 	main = {
-		frame = "#000000",
 		highlight = "#614080",
 		frames = "#000111",
 		tabs = "#2E2E2E99",
@@ -19,20 +18,6 @@ local defaultConfig = {
 		background = "#111111CC",
 		border = "#000111",
 		text = "#9654FD"
-	},
-	selectMusic = {
-		MusicWheelTitleText = "#FFFFFF",
-		MusicWheelSubtitleText = "#FFFFFF",
-		MusicWheelArtistText = "#FFFFFF",
-		MusicWheelSectionCountText = "#FFFFFF",
-		MusicWheelDivider = "#FFFFFF",
-		UnfinishedGoalGradient = "#FF66FF",
-		CompletedGoalGradient = "#66FF66",
-		MusicWheelExtraColor = "#FFCCCC",
-		ProfileCardText = "#FFFFFF",
-		TabContentText = "#FFFFFF",
-		BannerText = "#FFFFFF",
-		StepsDisplayListText = "#FFFFFF"
 	},
 	clearType = {
 		MFC = "#66ccff",

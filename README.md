@@ -14,6 +14,7 @@ This version of the theme has some stuff missing from 0.72.3, mostly experimenta
 
 - Poco0137
 - Steffen for the grade counter logic
+- Darkmans39
 - Sidek for the titlesplash animation, for porting the xoon 3 particule system and inspiration on the ScreenEvaluation layout
 - MISSILE228 for some graphic stuff (mainly the main menu artwork)
   

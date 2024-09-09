@@ -25,6 +25,7 @@ local translated_text = {
 	Title = THEME:GetString("TabMSD", "Title")
 }
 
+
 --Actor Frame
 local t = Def.ActorFrame {
 	Name = "MSDTab",
@@ -209,7 +210,7 @@ t[#t + 1] = LoadFont("Common Normal") .. {
 -- cdtitle
 t[#t + 1] = UIElements.SpriteButton(1, 1, nil) .. {
 	InitCommand = function(self)
-		self:xy(capWideScale(get43size(344), 364) + 50, capWideScale(get43size(245), 170))
+		self:xy(capWideScale(get43size(344), 364) + 50, capWideScale(get43size(160), 160))
 		self:halign(0.5):valign(1)
 	end,
 	SetCommand = function(self)
