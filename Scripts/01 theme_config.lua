@@ -14,6 +14,7 @@ local defaultConfig = {
 		FadeNoteFieldInSyncMachine = true,
 		ShowPlayerOptionsHint = true,
 		ShowBanners = true, -- false to turn off banners everywhere
+		AdvancedPlayerTracker = true,
 	},
 	NPSDisplay = {
 		MaxWindow = 2,

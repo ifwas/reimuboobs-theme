@@ -11,8 +11,11 @@ end
 local t = Def.ActorFrame {}
 
 
-
+if isDarkWife then
+	t[#t + 1] = LoadActor("DarkWifeJudgmentSpotting")
+else
 t[#t + 1] = LoadActor("WifeJudgmentSpotting")
+end
 t[#t + 1] = LoadActor("titlesplash")
 t[#t + 1] = LoadActor("leaderboard")
 
