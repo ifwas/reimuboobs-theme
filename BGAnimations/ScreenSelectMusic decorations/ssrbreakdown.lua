@@ -111,7 +111,7 @@ end
 
 t[#t+1] = LoadFont("Common Normal")..{
 	InitCommand  = function(self)
-		self:xy(frameWidth + 20, frameHeight/2-20)
+		self:xy(frameWidth + capWideScale(get43size(-40),20), frameHeight/2-20)
 		self:zoom(0.75)
 		self:halign(1)
 		self:diffuse(color(colorConfig:get_data().selectMusic.TabContentText))

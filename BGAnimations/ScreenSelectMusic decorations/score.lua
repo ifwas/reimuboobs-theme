@@ -597,7 +597,7 @@ local function makeJudge(index, judge)
 		LoadFont("Common Large") .. {
 			Name = "Label",
 			InitCommand = function(self)
-				self:xy(frameX + 325, frameY - 80 + ((index - 1)))
+				self:xy(frameX + capWideScale(get43size(330),325), frameY - 80 + ((index - 1))) --325
 				self:zoom(0.25):halign(1)
 				self:settext("")
 			end,
@@ -611,7 +611,7 @@ local function makeJudge(index, judge)
 		},
 		LoadFont("Common Large") .. {
 			InitCommand = function(self)
-				self:xy(frameX + 330, frameY - 80 + ((index - 1))):settext("")
+				self:xy(frameX + capWideScale(get43size(340),330), frameY - 80 + ((index - 1))):settext("") --330
 				self:zoom(0.2):halign(0)
 				self:settext("")
 			end,
@@ -723,13 +723,12 @@ l[#l + 1] = UIElements.SpriteButton(1, 1, THEME:GetPathG("", "showReplay")) .. {
 l[#l + 1] = Def.ActorFrame {
 	InitCommand = function(self)
 		if not IsUsingWideScreen() then --offset it a bit if not using widescreen
-			self:x(6):y(37):zoom(0.9)
 		end
 	end,
 	UIElements.SpriteButton(1, 1, THEME:GetPathG("", "showEval")) .. {
 		Name = "EvalViewQuad",
 		InitCommand = function(self)
-			self:xy(15,frameHeight - 310):zoom(0.55):halign(0):diffusealpha(0)
+			self:xy(15 ,frameHeight - 310):zoom(0.55):halign(0):diffusealpha(0)
 		end,
 		BeginCommand = function(self)
 			if SCREENMAN:GetTopScreen():GetName() == "ScreenNetSelectMusic" then

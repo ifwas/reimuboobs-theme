@@ -1,6 +1,5 @@
 local t = Def.ActorFrame {}
 
-t[#t + 1] = LoadActor("../_volumecontrol")
 
 -- Text
 t[#t + 1] =

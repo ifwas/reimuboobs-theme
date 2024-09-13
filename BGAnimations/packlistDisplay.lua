@@ -116,8 +116,8 @@ local o = Def.ActorFrame {
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		Name = "NameHeader",
 		InitCommand = function(self)
-			self:xy(c2x, headeroff)
-			self:zoom(tzoom)
+			self:xy(c2x + capWideScale(get43size(-30),0), headeroff)
+			self:zoom(tzoom * capWideScale(get43size(0.8),1))
 			self:halign(0)
 			self:settext("Pack Name")
 		end,
@@ -137,8 +137,8 @@ local o = Def.ActorFrame {
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		Name = "AverageDiffHeader",
 		InitCommand = function(self)
-			self:xy(c2xc3x + 65, headeroff)
-			self:zoom(tzoom)
+			self:xy(c2xc3x + capWideScale(get43size(150),65), headeroff)
+			self:zoom(tzoom * capWideScale(get43size(0.9),1))
 			self:halign(1)
 			self:settext("MSD")
 		end,
@@ -158,8 +158,8 @@ local o = Def.ActorFrame {
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		Name = "SizeHeader",
 		InitCommand = function(self)
-			self:xy(c3x + 70, headeroff)
-			self:zoom(tzoom * 0.9)
+			self:xy(c3x + capWideScale(get43size(130),70), headeroff)
+			self:zoom(tzoom * capWideScale(get43size(0.8),0.9))
 			self:halign(1)
 			self:settext("Size(MB)")
 		end,
@@ -179,8 +179,8 @@ local o = Def.ActorFrame {
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		Name = "PlaysHeader",
 		InitCommand = function(self)
-			self:xy(c4x + 30, headeroff)
-			self:zoom(tzoom * 0.8)
+			self:xy(c4x + capWideScale(get43size(75),30), headeroff)
+			self:zoom(tzoom * capWideScale(get43size(0.85),0.8))
 			self:halign(1)
 			self:settext(translated_info["PackPlays"])
 		end,
@@ -200,7 +200,7 @@ local o = Def.ActorFrame {
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		Name = "SongCountHeader",
 		InitCommand = function(self)
-			self:xy(c5x + 20, headeroff)
+			self:xy(c5x + capWideScale(get43size(70),20), headeroff)
 			self:zoom(tzoom * 0.75)
 			self:halign(1)
 			self:settext(translated_info["SongCount"])
@@ -293,11 +293,11 @@ local function makePackDisplay(i)
 		UIElements.TextToolTip(1, 1, "Common normal") .. {
 			Name = "PackName",
 			InitCommand = function(self)
-				self:x(c2x - 20)
-				self:zoom(tzoom / 1.5)
+				self:x(c2x - capWideScale(get43size(40),20))
+				self:zoom(tzoom / capWideScale(get43size(2.3),1.5))
 
 				 -- x of left aligned col 2 minus x of right aligned col 3 minus roughly how wide column 3 is plus margin
-				self:maxwidth((c2xc3x - c2x*0.5) / (tzoom / 1.5))
+				self:maxwidth((c2xc3x - c2x*capWideScale(get43size(-1),0.5)) / (tzoom / 1.5))
 				self:halign(0)
 				self:diffusebottomedge(Saturation(getMainColor("highlight"), 0.2))
 			end,
@@ -320,7 +320,7 @@ local function makePackDisplay(i)
 		LoadFont("Common normal") .. {
 			Name = "PackAverageDiff",
 			InitCommand = function(self)
-				self:x(c2xc3x + 60)
+				self:x(c2xc3x + capWideScale(get43size(150),60))
 				self:zoom(tzoom*0.75)
 				self:halign(1)
 			end,
@@ -333,7 +333,7 @@ local function makePackDisplay(i)
 		LoadFont("Common normal") .. {
 			Name = "PackSize",
 			InitCommand = function(self)
-				self:x(c3x + 55):zoom(tzoom * 0.75):halign(1)
+				self:x(c3x + capWideScale(get43size(120),55)):zoom(tzoom * 0.75):halign(1)
 			end,
 			DisplayCommand = function(self)
 				local psize = packinfo:GetSize() / 1024 / 1024
@@ -344,7 +344,7 @@ local function makePackDisplay(i)
 		LoadFont("Common normal") .. {
 			Name = "PackPlays",
 			InitCommand = function(self)
-				self:x(c4x + 20):zoom(tzoom *0.75):halign(1)
+				self:x(c4x + capWideScale(get43size(70),20)):zoom(tzoom *0.75):halign(1)
 			end,
 			DisplayCommand = function(self)
 				self:settextf("%d", packinfo:GetPlayCount())
@@ -354,7 +354,7 @@ local function makePackDisplay(i)
 		LoadFont("Common normal") .. {
 			Name = "PackSongs",
 			InitCommand = function(self)
-				self:x(c5x + 10):zoom(tzoom * 0.75):halign(1)
+				self:x(c5x + capWideScale(get43size(50),10)):zoom(tzoom * 0.75):halign(1)
 			end,
 			DisplayCommand = function(self)
 				self:settextf("%d", packinfo:GetSongCount())

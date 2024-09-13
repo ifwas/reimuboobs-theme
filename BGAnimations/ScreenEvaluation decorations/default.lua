@@ -47,7 +47,7 @@ local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 
 local frameX = 3
 local frameY = 87 
-local frameWidth = SCREEN_CENTER_X - 200
+local frameWidth = SCREEN_CENTER_X - capWideScale(get43size(150),200)
 
 -- dont default to using custom windows and dont persist that state
 -- custom windows are meant to be used as a thing you occasionally check, not the primary way to play the game
@@ -69,7 +69,7 @@ t[#t+1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "SongTitle",
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X, capWideScale(173, 150) - 130)
+			self:xy(SCREEN_CENTER_X, 20) 
 			self:zoom(0.33)
 			self:maxwidth(capWideScale(250 / 0.25, 180 / 0.25))
 		end,
@@ -83,7 +83,7 @@ t[#t+1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "SongArtist",
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X, capWideScale(139, 165) - 130)
+			self:xy(SCREEN_CENTER_X, 35)
 			self:zoom(0.2)
 			self:maxwidth(180 / 0.25)
 		end,
@@ -97,7 +97,7 @@ t[#t+1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "Subtitle",
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X, SCREEN_BOTTOM - 13)
+			self:xy(SCREEN_CENTER_X + capWideScale(get43size(150),0), SCREEN_BOTTOM - 13)
 			self:zoom(0.25)
 			self:maxwidth(capWideScale(500 / 0.25, 360 / 0.25))
 		end,
@@ -115,7 +115,7 @@ t[#t+1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "AuthorSim", --thanks for the idea oniichan42
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X, capWideScale(173, 150) - 100)
+			self:xy(SCREEN_CENTER_X, 50)
 			self:zoom(0.23)
 			self:maxwidth(capWideScale(250 / 0.25, 180 / 0.25))
 			self:diffuse(getMainColor("positive"))
@@ -352,7 +352,7 @@ local function scoreBoard(pn, position)
 					self:xy(8, -4)
 					self:zoom(0.3)
 					self:halign(0):valign(1)
-					self:maxwidth(capWideScale(320, 500))
+					self:maxwidth(550)
 				end,
 				SetCommand = function(self)
 					self:diffuse(getGradeColor(score:GetWifeGrade()))
@@ -446,7 +446,7 @@ local function scoreBoard(pn, position)
 		LoadFont("Common Large") .. {
 			Name = "RateString",
 			InitCommand = function(self)
-				self:xy(frameX + 210, frameY - 63)
+				self:xy(frameX + capWideScale(get43size(250),210), frameY - 63)
 				self:zoom(0.35)
 				self:halign(0.5)
 				self:queuecommand("Set")
@@ -510,7 +510,7 @@ local function scoreBoard(pn, position)
 					self:xy(frameX + 3, frameY + 30)
 					self:zoom(0.3)
 					self:halign(0):valign(0)
-					self:maxwidth(capWideScale(320, 500))
+					self:maxwidth(550)
 					self:visible(true)
 				end,
 				BeginCommand = function(self)
@@ -576,7 +576,7 @@ local function scoreBoard(pn, position)
 					self:xy(frameX + 3, frameY + 30)
 					self:zoom(0.3)
 					self:halign(0):valign(0)
-					self:maxwidth(capWideScale(320, 500))
+					self:maxwidth(550)
 					self:visible(false)
 				end,
 				BeginCommand = function(self)
@@ -1089,7 +1089,7 @@ local function scoreBoard(pn, position)
 				LoadFont("Common Normal") .. {
 					Name = "StatText",
 					InitCommand = function(self)
-						self:xy(frameX + capWideScale(get43size(130), 153) - 30, frameY + 280 + ySpacing * i)
+						self:xy(frameX + capWideScale(get43size(200), 153) - 30, frameY + 280 + ySpacing * i)
 						self:zoom(tzoom)
 						self:halign(0)
 						self:settext(statNames[i])
@@ -1103,12 +1103,12 @@ local function scoreBoard(pn, position)
 					SetCommand = function(self, params)
 						local statValues = scoreStatistics(params ~= nil and params.score or score)
 						if i < 4 then
-							self:xy(frameWidth -20, frameY + 280 + ySpacing * i)
+							self:xy(frameWidth - capWideScale(get43size(0),20), frameY + 280 + ySpacing * i)
 							self:zoom(tzoom)
 							self:halign(1)
 							self:settextf("%5.2fms", statValues[i])
 						else
-							self:xy(frameWidth -20, frameY + 280 + ySpacing * i)
+							self:xy(frameWidth - capWideScale(get43size(0),20), frameY + 280 + ySpacing * i)
 							self:zoom(tzoom)
 							self:halign(1)
 							self:settext(statValues[i])
@@ -1168,7 +1168,7 @@ local function scoreBoard(pn, position)
 					self:diffusealpha(0.7)
 					self:GetChild("Line"):diffusealpha(0)
 					self:zoom(0.65)
-					self:xy(-30, 255)
+					self:xy(capWideScale(get43size(0),-30), 255)
 				end,
 				ScoreChangedMessageCommand = function(self)
 					if score and judge then
@@ -1198,7 +1198,7 @@ local function scoreBoard(pn, position)
 					local ss = SCREENMAN:GetTopScreen():GetStageStats()
 					self:Set(ss, ss:GetPlayerStageStats())
 					self:zoom(0.65)
-					self:xy(-30, 238)
+					self:xy(capWideScale(get43size(0),-30), 238) 
 				end,
 				SetComboGraphMessageCommand = function(self)
 					self:Clear()

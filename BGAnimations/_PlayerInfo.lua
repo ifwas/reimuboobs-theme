@@ -250,7 +250,7 @@ t[#t + 1] = Def.ActorFrame {
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		Name = "loginlogout",
 		InitCommand = function(self)
-			self:xy(AvatarX + 120, SCREEN_BOTTOM - 9):halign(0.5):zoom(0.45):diffuse(ButtonColor)
+			self:xy(AvatarX + capWideScale(get43size(120),120), SCREEN_BOTTOM - 9):halign(0.5):zoom(0.45):diffuse(ButtonColor)
 		end,
 		BeginCommand = function(self)
 			self:queuecommand("Set")
@@ -377,7 +377,7 @@ t[#t + 1] = Def.ActorFrame {
 	},
 	UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X - 80, AvatarY + 38):halign(0.5):zoom(0.46):diffuse(nonButtonColor)
+			self:xy(SCREEN_CENTER_X - capWideScale(get43size(15),80), AvatarY + 38):halign(0.5):zoom(0.46):diffuse(nonButtonColor)
 		end,
 		BeginCommand = function(self)
 			self:queuecommand("Set")
@@ -557,7 +557,7 @@ t[#t + 1] = Def.Sprite {
 t[#t + 1] =
 	Def.Quad{
 		InitCommand=function(self)
-			self:xy(SCREEN_CENTER_X + 270,SCREEN_TOP + 30)
+			self:xy(SCREEN_CENTER_X + capWideScale(get43size(270), 270),SCREEN_TOP + 30)
 			self:scaletoclipped(capWideScale(get43size(384), 384), capWideScale(get43size(120), 120)):diffuse(getMainColor("frames")):diffusealpha(0.65)
 			self:fadebottom(0.5)
 		end,
@@ -577,7 +577,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "SessionTime",
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X - 180, SCREEN_BOTTOM - 5):halign(0.5):valign(1):zoom(0.45)
+			self:xy(SCREEN_CENTER_X - capWideScale(get43size(150),180), SCREEN_BOTTOM - 5):halign(0.5):valign(1):zoom(0.45)
 		end
 	}
 }

@@ -5,8 +5,8 @@ local translated_info = {
 	By = THEME:GetString("ScreenGameplay", "CreatedBy")
 }
 
-local bannerWidth = 256
-local bannerHeight = 80
+local bannerWidth = capWideScale(get43size(220),256)
+local bannerHeight = capWideScale(get43size(70),80)
 local borderWidth = 2
 local shuri = 29
 
@@ -34,7 +34,7 @@ local t = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "DestroyMe2", 
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X - 140, SCREEN_CENTER_Y - 48)
+			self:xy(SCREEN_CENTER_X - capWideScale(get43size(50),140), SCREEN_CENTER_Y - 48)
 			self:diffuse(color("#FFFF00"))
 			self:horizalign(left)
 			self:zoom(0.4)
@@ -52,7 +52,7 @@ local t = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "DestroyMe3",
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X - 140, SCREEN_CENTER_Y - 27)
+			self:xy(SCREEN_CENTER_X - capWideScale(get43size(50),140), SCREEN_CENTER_Y - 27)
 			self:diffuse(color("#FFFF00"))
 			self:horizalign(left)
 			self:zoom(0.30)
@@ -71,7 +71,7 @@ local t = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "DestroyMe4",
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X - 140, SCREEN_CENTER_Y - 34.5)
+			self:xy(SCREEN_CENTER_X - capWideScale(get43size(50),140), SCREEN_CENTER_Y - 34.5)
 			self:diffuse(color("#FFFF00"))
 			self:horizalign(left)
 			self:zoom(0.3)

@@ -3,14 +3,15 @@ local requiredtimegap = 0.1
 
 
 return Def.ActorFrame {
+
     --if you uncomment this you'll lose about 300fps
---[[
+    --[[
         Def.Sprite {
             InitCommand = function(self)
-                self:fadeleft(0)
+                self:fadeleft(0.5)
                 self:halign(0.9)
                 self:zoomto(120,60)
-                self:x(60)
+                self:x(360)
                 self:y(-2)
                 self:diffusealpha(1)
                 end,
@@ -36,16 +37,17 @@ return Def.ActorFrame {
 
 
                         self:Load(bnpath)
-                        self:zoomto(60,30)
+                        self:zoomto(95,38)
             
                         if focus then
                             self:diffusealpha(1)
                         else
-                            self:diffusealpha(0.4)
+                            self:diffusealpha(0.3)
                         end
                     end
+
     },
-    ]]
+                    ]]
 
     UIElements.QuadButton(1, 1) .. {
 		InitCommand = function(self)

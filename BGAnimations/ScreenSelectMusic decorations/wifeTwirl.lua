@@ -450,12 +450,16 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		ChartPreviewOnMessageCommand = function(self)
 			self:accelerate(0.1)
+			if IsUsingWideScreen() then
 			self:addx(positionMSDtextaddxIni)
+			end
 		end,
 		ChartPreviewOffMessageCommand = function(self)
 			self:visible(true)
 			self:accelerate(0.2)
-			self:addx(positionMSDtextaddxFin)
+			if IsUsingWideScreen() then
+				self:addx(positionMSDtextaddxFin)
+			end
 		end
 	},
 	LoadFont("Common Normal") .. {
@@ -473,12 +477,16 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		ChartPreviewOnMessageCommand = function(self)
 			self:accelerate(0.15)
-			self:addx(positionMSDtextaddxIni)
+			if IsUsingWideScreen() then
+				self:addx(positionMSDtextaddxIni)
+			end
 		end,
 		ChartPreviewOffMessageCommand = function(self)
 			self:visible(true)
 			self:accelerate(0.15)
+			if IsUsingWideScreen() then
 			self:addx(positionMSDtextaddxFin)
+			end
 		end
 	},
 	LoadFont("Common Normal") .. {
@@ -496,12 +504,16 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		ChartPreviewOnMessageCommand = function(self)
 			self:accelerate(0.2)
-			self:addx(positionMSDtextaddxIni)
+			if IsUsingWideScreen() then
+				self:addx(positionMSDtextaddxIni)
+			end
 		end,
 		ChartPreviewOffMessageCommand = function(self)
 			self:visible(true)
 			self:accelerate(0.1)
-			self:addx(positionMSDtextaddxFin)
+			if IsUsingWideScreen() then
+				self:addx(positionMSDtextaddxFin)
+				end
 		end
 	},
 	-- **score related stuff** These need to be updated with rate changed commands

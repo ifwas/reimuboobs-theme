@@ -198,7 +198,7 @@ local function scoreitem(pn, index, scoreIndex, drawindex)
 		--ClearType lamps
 		Def.Quad {
 			InitCommand = function(self)
-				self:xy(framex, framey + (drawindex * spacing) - 4):zoomto(8, 30):halign(0):valign(0)
+				self:xy(framex, framey + (drawindex * spacing) - 4):zoomto(2, 30):halign(0):valign(0)
 			end,
 			BeginCommand = function(self)
 				if hsTable[index] == nil then return end

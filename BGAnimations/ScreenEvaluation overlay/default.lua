@@ -9,14 +9,14 @@ translated_info = {
 
 
 --Group folder name
-local frameWidth = SCREEN_CENTER_X - 200
+local frameWidth = SCREEN_CENTER_X - capWideScale(get43size(150),200)
 local frameHeight = 20
 local frameX = 170
 local frameY = 25 
 
 t[#t + 1] = LoadFont("Common Large") .. {
 	InitCommand = function(self)
-	self:x(SCREEN_CENTER_X - 322):y(25):zoom(0.3):maxwidth((frameWidth - 40) / 0.33)
+	self:x(SCREEN_CENTER_X - capWideScale(get43size(310),322)):y(25):zoom(0.3):maxwidth((frameWidth - 40) / 0.33)
 	end,
 	BeginCommand = function(self)
 		self:queuecommand("Set"):diffuse(getMainColor("positive"))
@@ -72,8 +72,8 @@ t[#t + 1] = LoadFont("Common Large") .. {
 t[#t + 1] = Def.Sprite {
 	Name = "Banner",
 	OnCommand = function(self)
-		self:x(SCREEN_CENTER_X - 308):y(36):valign(0)
-		self:scaletoclipped(capWideScale(get43size(220), 220), capWideScale(get43size(77), 77))
+		self:x(SCREEN_CENTER_X - capWideScale(get43size(280),308)):y(36):valign(0) --308
+		self:scaletoclipped(capWideScale(get43size(270), 220), capWideScale(get43size(94.5), 77))
 		local bnpath = GAMESTATE:GetCurrentSong():GetBannerPath()
 		self:visible(true)
 		if not BannersEnabled() then
