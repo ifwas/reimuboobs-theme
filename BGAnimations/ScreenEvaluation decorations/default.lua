@@ -9,6 +9,8 @@ if GAMESTATE:GetNumPlayersEnabled() == 1 then
 	end
 end
 
+--this REALLY needs a rewrite, at least until the 5th test client releases
+
 --[[
 	This needs a rewrite so that there is a single point of entry for choosing the displayed score, rescoring it, and changing its judge.
 	We "accidentally" started using inconsistent methods of communicating between actors and files due to lack of code design.
@@ -45,9 +47,9 @@ local dvt = {}
 local totalTaps = 0
 local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 
-local frameX = 3
-local frameY = 87 
-local frameWidth = SCREEN_CENTER_X - capWideScale(get43size(150),200)
+local frameX = 573
+local frameY = 150 
+local frameWidth = SCREEN_CENTER_X - capWideScale(get43size(150),160)
 
 -- dont default to using custom windows and dont persist that state
 -- custom windows are meant to be used as a thing you occasionally check, not the primary way to play the game
@@ -71,7 +73,7 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand = function(self)
 			self:xy(SCREEN_CENTER_X, 20) 
 			self:zoom(0.33)
-			self:maxwidth(capWideScale(250 / 0.25, 180 / 0.25))
+			self:maxwidth(capWideScale(250 / 0.25, 400 / 0.25))
 		end,
 		BeginCommand = function(self)
 			self:queuecommand("Set")
@@ -99,7 +101,7 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand = function(self)
 			self:xy(SCREEN_CENTER_X + capWideScale(get43size(150),0), SCREEN_BOTTOM - 13)
 			self:zoom(0.25)
-			self:maxwidth(capWideScale(500 / 0.25, 360 / 0.25))
+			self:maxwidth(capWideScale(500 / 0.25, 500 / 0.25))
 		end,
 		BeginCommand = function(self)
 			self:queuecommand("Set")
@@ -266,8 +268,8 @@ local function scoreBoard(pn, position)
 		Def.Quad {
 			Name = "DisplayBG",
 			InitCommand = function(self)
-				self:xy(frameX - 5, frameY - 100)
-				self:zoomto(frameWidth + 12, SCREEN_WIDTH + 50)
+				self:xy(frameX - 5, frameY + 25)
+				self:zoomto(frameWidth + 12, SCREEN_WIDTH / 3.3)
 				self:halign(0):valign(0)
 				self:diffuse(getMainColor("frames")):diffusealpha(0.65)
 			end,
@@ -275,7 +277,7 @@ local function scoreBoard(pn, position)
 		Def.ActorFrame {
 			Name = "CustomScoringDisplay",
 			InitCommand = function(self)
-				self:xy(frameX - 5, frameY + 44.3)
+				self:xy(frameX - 5, frameY + 49)
 				self:visible(usingCustomWindows)
 			end,
 			ToggleCustomWindowsMessageCommand = function(self)
@@ -350,7 +352,7 @@ local function scoreBoard(pn, position)
 				Name = "CustomPercent",
 				InitCommand = function(self)
 					self:xy(8, -4)
-					self:zoom(0.3)
+					self:zoom(0.37)
 					self:halign(0):valign(1)
 					self:maxwidth(550)
 				end,
@@ -375,8 +377,8 @@ local function scoreBoard(pn, position)
 		LoadFont("Common Large") .. {
 			Name = "MSDDisplay",
 			InitCommand = function(self)
-				self:xy(frameX + 2, frameY + 45)
-				self:zoom(0.35)
+				self:xy(frameX + 2, frameY + 50)
+				self:zoom(0.37)
 				self:halign(0):valign(0)
 				self:maxwidth(200)
 			end,
@@ -408,8 +410,8 @@ local function scoreBoard(pn, position)
 		LoadFont("Common Large") .. {
 			Name = "SSRDisplay",
 			InitCommand = function(self)
-				self:xy(frameWidth + frameX + 5, frameY + 45)
-				self:zoom(0.35)
+				self:xy(frameWidth + frameX + 5, frameY + 50)
+				self:zoom(0.37)
 				self:halign(1):valign(0)
 				self:maxwidth(200)
 			end,
@@ -428,7 +430,7 @@ local function scoreBoard(pn, position)
 		LoadFont("Common Large") .. {
 			Name = "DifficultyName",
 			InitCommand = function(self)
-				self:xy(frameWidth + frameX + 4, frameY + 33)
+				self:xy(frameWidth + frameX + 4, frameY + 38)
 				self:zoom(0.23)
 				self:halign(1):valign(0)
 				self:maxwidth(200)
@@ -443,12 +445,20 @@ local function scoreBoard(pn, position)
 				self:diffuse(getDifficultyColor(GetCustomDifficulty(steps:GetStepsType(), steps:GetDifficulty())))
 			end,
 		},
+		Def.Quad {
+			InitCommand = function(self)
+				self:xy(frameX + capWideScale(get43size(250),35), frameY - 90)
+				self:zoomto(80,25)
+				self:diffuse(getMainColor("frames"))
+			end
+		},
 		LoadFont("Common Large") .. {
 			Name = "RateString",
 			InitCommand = function(self)
-				self:xy(frameX + capWideScale(get43size(250),210), frameY - 63)
-				self:zoom(0.35)
+				self:xy(frameX + capWideScale(get43size(250),35), frameY - 90)
+				self:zoom(0.3)
 				self:halign(0.5)
+				self:diffuse(getMainColor("positive"))
 				self:queuecommand("Set")
 			end,
 			ScoreChangedMessageCommand = function(self)
@@ -466,9 +476,9 @@ local function scoreBoard(pn, position)
 				rate = notShit.round(rate,3)
 				local ratestr = getRateString(rate)
 				if ratestr == "1x" then
-					self:settext("1.0x")
+					self:settext("Rate: 1.0x")
 				else
-					self:settext(ratestr)
+					self:settext("Rate: " .. ratestr)
 				end
 			end,
 		},
@@ -480,7 +490,7 @@ local function scoreBoard(pn, position)
 			UIElements.QuadButton(1, 1) .. {
 				Name = "MouseHoverBG",
 				InitCommand = function(self)
-					self:xy(frameX + 3, frameY + 20)
+					self:xy(frameX + 3, frameY + 37)
 					self:zoomto(capWideScale(320,490)/2.2,20)
 					self:halign(0):valign(0)
 					self:diffusealpha(0)
@@ -507,8 +517,8 @@ local function scoreBoard(pn, position)
 			LoadFont("Common Large") .. {
 				Name = "NormalText",
 				InitCommand = function(self)
-					self:xy(frameX + 3, frameY + 30)
-					self:zoom(0.3)
+					self:xy(frameX + 3, frameY + 32)
+					self:zoom(0.37)
 					self:halign(0):valign(0)
 					self:maxwidth(550)
 					self:visible(true)
@@ -573,8 +583,8 @@ local function scoreBoard(pn, position)
 			LoadFont("Common Large") ..	{-- high precision rollover
 				Name = "LongerText",
 				InitCommand = function(self)
-					self:xy(frameX + 3, frameY + 30)
-					self:zoom(0.3)
+					self:xy(frameX + 3, frameY + 32)
+					self:zoom(0.37)
 					self:halign(0):valign(0)
 					self:maxwidth(550)
 					self:visible(false)
@@ -631,30 +641,6 @@ local function scoreBoard(pn, position)
 					end
 				end,
 			},
-		},
-		LoadFont("Common Normal") .. {
-			Name = "ModString",
-			InitCommand = function(self)
-				self:xy(frameX + 2.4, frameY + 63)
-				self:zoom(0.40)
-				self:halign(0)
-				self:maxwidth(frameWidth / 0.41)
-			end,
-			BeginCommand = function(self)
-				self:queuecommand("Set")
-			end,
-			SetCommand = function(self)
-				local mstring = GAMESTATE:GetPlayerState():GetPlayerOptionsString("ModsLevel_Current")
-				local ss = SCREENMAN:GetTopScreen():GetStageStats()
-				if not ss:GetLivePlay() then
-					mstring = SCREENMAN:GetTopScreen():GetReplayModifiers()
-				end
-				self:settext(getModifierTranslations(mstring))
-			end,
-			ScoreChangedMessageCommand = function(self)
-				local mstring = score:GetModifiers()
-				self:settext(getModifierTranslations(mstring))
-			end,
 		},
 		LoadFont("Common Large") .. {
 			Name = "ChordCohesionIndicator",
@@ -916,7 +902,7 @@ local function scoreBoard(pn, position)
 
 			LoadFont("Common Normal") .. {
 				InitCommand = function(self)
-					self:xy(frameX + 30, frameY + 280 + 10 * i)
+					self:xy(frameX + 20, frameY + 220 + 10 * i)
 					self:zoom(0.4)
 					self:halign(0)
 					self:settext(radars_translated[radars[i]])
@@ -924,7 +910,7 @@ local function scoreBoard(pn, position)
 			},
 			LoadFont("Common Normal") .. {
 				InitCommand = function(self)
-					self:xy(frameWidth / 2, frameY + 280 + 10 * i)
+					self:xy(frameX + 120, frameY + 220 + 10 * i)
 					self:zoom(0.4)
 					self:halign(1)
 				end,
@@ -1089,7 +1075,7 @@ local function scoreBoard(pn, position)
 				LoadFont("Common Normal") .. {
 					Name = "StatText",
 					InitCommand = function(self)
-						self:xy(frameX + capWideScale(get43size(200), 153) - 30, frameY + 280 + ySpacing * i)
+						self:xy(frameX + capWideScale(get43size(200), 143), frameY + 220 + ySpacing * i)
 						self:zoom(tzoom)
 						self:halign(0)
 						self:settext(statNames[i])
@@ -1103,12 +1089,12 @@ local function scoreBoard(pn, position)
 					SetCommand = function(self, params)
 						local statValues = scoreStatistics(params ~= nil and params.score or score)
 						if i < 4 then
-							self:xy(frameWidth - capWideScale(get43size(0),20), frameY + 280 + ySpacing * i)
+							self:xy(frameWidth + capWideScale(get43size(0),560), frameY + 220 + ySpacing * i)
 							self:zoom(tzoom)
 							self:halign(1)
 							self:settextf("%5.2fms", statValues[i])
 						else
-							self:xy(frameWidth - capWideScale(get43size(0),20), frameY + 280 + ySpacing * i)
+							self:xy(frameWidth + capWideScale(get43size(0),560), frameY + 220 + ySpacing * i)
 							self:zoom(tzoom)
 							self:halign(1)
 							self:settext(statValues[i])
@@ -1155,6 +1141,7 @@ local function scoreBoard(pn, position)
 	end
 
 	
+
 -- life graph
 	local function GraphDisplay()
 		return Def.ActorFrame {
@@ -1168,7 +1155,8 @@ local function scoreBoard(pn, position)
 					self:diffusealpha(0.7)
 					self:GetChild("Line"):diffusealpha(0)
 					self:zoom(0.65)
-					self:xy(capWideScale(get43size(0),-30), 255)
+					self:xy(capWideScale(get43size(0),96), 220)
+					self:zoomto(403, 30)
 				end,
 				ScoreChangedMessageCommand = function(self)
 					if score and judge then
@@ -1198,7 +1186,8 @@ local function scoreBoard(pn, position)
 					local ss = SCREENMAN:GetTopScreen():GetStageStats()
 					self:Set(ss, ss:GetPlayerStageStats())
 					self:zoom(0.65)
-					self:xy(capWideScale(get43size(0),-30), 238) 
+					self:xy(capWideScale(get43size(0),118), 190)
+					self:zoomto(403, 10)
 				end,
 				SetComboGraphMessageCommand = function(self)
 					self:Clear()
@@ -1219,6 +1208,7 @@ if GAMESTATE:IsPlayerEnabled() then
 	t[#t + 1] = scoreBoard(PLAYER_1, 0)
 end
 
+t[#t + 1] = LoadActor("../_xoon2")
 t[#t + 1] = LoadActor("../offsetplot")
 t[#t + 1] = LoadActor("../_volumecontrol")
 updateDiscordStatus(true)

@@ -180,13 +180,18 @@ local t = Def.ActorFrame {
 			if isOver(self) then
 				local seek = self:GetParent():GetChild("Seek")
 				local seektext = self:GetParent():GetChild("Seektext")
+				local seekbg = self:GetParent():GetChild("SeekBG")
 				local cdg = self:GetParent():GetChild("ChordDensityGraph")
 
 				seek:visible(true)
 				seektext:visible(true)
+				seekbg:visible(true)
 				seek:x(INPUTFILTER:GetMouseX() - self:GetParent():GetX())
-				seektext:x(INPUTFILTER:GetMouseX() - self:GetParent():GetX() - 4)	-- todo: refactor this lmao -mina
+				seektext:x(INPUTFILTER:GetMouseX() - self:GetParent():GetX() - 4)	-- todo: put this in tooltip mayhaps
 				seektext:y(INPUTFILTER:GetMouseY() - self:GetParent():GetY())
+				seekbg:x(INPUTFILTER:GetMouseX() - self:GetParent():GetX() - 25)
+				seekbg:y(INPUTFILTER:GetMouseY() - self:GetParent():GetY() + 15)
+
 				if cdg.npsVector ~= nil and #cdg.npsVector > 0 then
 					local percent = clamp((INPUTFILTER:GetMouseX() - self:GetParent():GetX()) / wodth, 0, 1)
 					local xtime = SecondsToMMSS(seek:GetX() * musicratio / getCurRateValue())
@@ -203,6 +208,7 @@ local t = Def.ActorFrame {
 			else
 				self:GetParent():GetChild("Seektext"):visible(false)
 				self:GetParent():GetChild("Seek"):visible(false)
+				self:GetParent():GetChild("SeekBG"):visible(false)
 				self:GetParent():GetDescendant("notChordDensityGraph", "Seektext1"):visible(false)
 				self:GetParent():GetDescendant("notChordDensityGraph", "Seek1"):visible(false)
 			end
@@ -223,20 +229,27 @@ t[#t + 1] = LoadActor("_calcdisplay.lua")
 t[#t + 1] = LoadFont("Common Normal") .. {
 	Name = "Seektext",
 	InitCommand = function(self)
-		self:y(8):valign(0):halign(1):draworder(1100):diffuse(color("0.8,0,0")):zoom(0.4)
+		self:y(8):valign(0):halign(1):draworder(1100):zoom(0.4)
 	end
 }
 
 t[#t + 1] = UIElements.QuadButton(1, 1) .. {
 	Name = "Seek",
 	InitCommand = function(self)
-		self:zoomto(2, hidth):diffuse(color("1,.2,.5,1")):halign(0.5):draworder(1100)
+		self:zoomto(2, hidth):diffuse(color("1,.2,.5,1 ")):halign(0.5):draworder(1100)
 	end,
 	MouseDownCommand = function(self, params)
 		if params.event == "DeviceButton_left mouse button" then
 			SCREENMAN:GetTopScreen():SetSampleMusicPosition( self:GetX() * musicratio )
 		end
 	end
+}
+
+t[#t + 1] = UIElements.QuadButton(1, 1) .. {
+	Name = "SeekBG",
+	InitCommand = function(self)
+		self:zoomto(50 , 40):diffuse(color("0,0,0,0.5")):halign(0.5):draworder(1000)
+	end,
 }
 
 return t

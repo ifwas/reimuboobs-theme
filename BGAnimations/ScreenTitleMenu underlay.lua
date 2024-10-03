@@ -97,21 +97,38 @@ t[#t + 1] = LoadFont("Common Large") .. {
 	end
 }
 
---Version number
+--Theme ver
 t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
-	Name = "Version",
 	InitCommand=function(self)
-		self:xy(515,frameY-1000000000):zoom(0.125):align(0.5,1) -- please ignore this, please please please please
+		self:xy(SCREEN_LEFT + 30,SCREEN_BOTTOM - 20):zoom(0.25):align(0.5,1)
+		self:diffusetopedge(Saturation(getMainColor("highlight"), 0.5))
+		self:diffusebottomedge(Saturation(getMainColor("positive"), 0.8))
+	end,
+	OnCommand=function(self)
+		self:settext("Ver. 1.67")
+	end,
+	MouseDownCommand = function(self, params)
+		if params.event == "DeviceButton_left mouse button" then
+			local tag = "urlnoexit,https://github.com/ifwas/reimuboobs-theme"
+			GAMESTATE:ApplyGameCommand(tag)
+		end
+	end
+}
+
+t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
+	Name = "GeometryDashButton",
+	InitCommand=function(self)
+		self:xy(SCREEN_LEFT + 65,SCREEN_BOTTOM - 15):zoom(0.25):valign(0)
 		self:diffusetopedge(Saturation(getMainColor("highlight"), 0.5))
 		self:diffusebottomedge(Saturation(getMainColor("positive"), 0.8))
 	end,
 	BeginCommand = function(self)
-		self:settext(GAMESTATE:GetEtternaVersion())
+		self:settext("launch geometry dash")
 	end,
 	MouseDownCommand = function(self, params)
 		if params.event == "DeviceButton_left mouse button" then
-			local tag = "urlnoexit,https://uglyretardedfaggots.com/" .. GAMESTATE:GetEtternaVersion()
-			GAMESTATE:ApplyGameCommand(tag)
+        GAMESTATE:ApplyGameCommand("urlnoexit,steam://rungameid/322170")
+		ms.ok("Launching Geometry Dash...")
 		end
 	end
 }
@@ -179,7 +196,7 @@ local i
 for i = 1, choiceCount do
 	t[#t + 1] = UIElements.QuadButton(1, 1) .. {
 		OnCommand = function(self)
-			self:xy(scrollerX, scrollerY):zoomto(260, 16)
+			self:xy(scrollerX + 10, scrollerY):zoomto(270, 16)
 			transformF(self, 0, i, choiceCount)
 			self:addx(SCREEN_CENTER_X - 20)
 			self:addy(SCREEN_CENTER_Y - 20)

@@ -921,6 +921,11 @@ t[#t + 1] = Def.Sprite {
 	ChartPreviewOffMessageCommand = function(self)
 		self:visible(BannersEnabled())
 	end,
+	OptionUpdatedMessageCommand = function(self)
+		if not previewVisible then
+		self:visible(BannersEnabled())
+		end
+	end,
 }
 local enabledC = "#099948"
 local disabledC = "#ff6666"
@@ -1265,8 +1270,45 @@ t[#t + 1] =
 		MouseOutCommand = function(self)
 			self:diffusealpha(1)
 		end,
-	}
+	},
+	
+--[[
+	UIElements.TextToolTip(1, 1, "Common Large") .. {
+		Name="rando",
+		InitCommand = function(self)
+			self:xy(20, 185 ):halign(0):zoom(0.27):diffuse(getMainColor("positive"))
+			self:settextf("Random Song")
+		end,
+		MouseOverCommand = function(self)
+			self:diffusealpha(hoverAlpha)
+		end,
+		MouseOutCommand = function(self)
+			self:diffusealpha(1)
+		end,
+		MouseDownCommand = function(self, params)
+			if params.event == "DeviceButton_left mouse button" then
+				local w = SCREENMAN:GetTopScreen():GetMusicWheel()
+	
+				if INPUTFILTER:IsShiftPressed() and self.lastlastrandom ~= nil then
+	
+					-- if the last random song wasnt filtered out, we can select it
+					-- so end early after jumping to it
+					if w:SelectSong(self.lastlastrandom) then
+						return
+					end
+					-- otherwise, just pick a new random song
+				end
+	
+				local t = w:GetSongs()
+				if #t == 0 then return end
+				local random_song = t[math.random(#t)]
+				w:SelectSong(random_song)
+				self.lastlastrandom = self.lastrandom
+				self.lastrandom = random_song
+			end
+		end
+    }
+]]
 }
-
 t[#t + 1] = LoadActorWithParams("../_chartpreview.lua", {yPos = prevY, yPosReverse = prevrevY})
 return t

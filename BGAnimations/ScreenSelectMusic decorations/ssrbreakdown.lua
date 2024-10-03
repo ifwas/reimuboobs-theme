@@ -35,7 +35,6 @@ local function makeMSDPoints(i)
 			local x,y = getPointOffset(circleRadius,sepAngle*(i-1)-90)
 			self:xy(x,y)
 			self:zoom(0.3)
-			self:diffuse(color(colorConfig:get_data().selectMusic.TabContentText))
 		end,
 		SetStepsMessageCommand = function(self, params)
 			local steps = params.steps
@@ -114,7 +113,6 @@ t[#t+1] = LoadFont("Common Normal")..{
 		self:xy(frameWidth + capWideScale(get43size(-40),20), frameHeight/2-20)
 		self:zoom(0.75)
 		self:halign(1)
-		self:diffuse(color(colorConfig:get_data().selectMusic.TabContentText))
 		self:settext("Overall:")
 	end,
 	SetStepsMessageCommand = function(self, params)

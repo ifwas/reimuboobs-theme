@@ -24,6 +24,11 @@ local moving
 local cheese
 local collapsed = false
 
+local avatarNames = {
+	reimuboobs = "reimuboobs"
+}
+
+
 local isGlobalRanking = true
 
 -- will eat any mousewheel inputs to scroll pages while mouse is over the background frame
@@ -526,8 +531,26 @@ local function makeScoreDisplay(i)
 				self:visible(true):addy(-row2yoff)
 			end
 		},
-		--[[
+--[[
+		UIElements.TextToolTip(1, 1, "Common Normal") .. {
+			Name = "DoesPfpExistTest" .. i,
+			InitCommand = function(self)
+				if not collapsed then
+					self:x(c2x + 50):zoom(tzoom - 0.05):halign(0):valign(0):maxwidth(width / 2 / tzoom):addy(row2yoff)
+				end
+			end,
+			DisplayCommand = function(self)
+				local user = hs:GetDisplayName()
+				if FILEMAN:DoesFileExist(THEME:GetPathG("", "pfp/" .. user .. ".jpg")) then
+					self:settext("yes")
+				else
+					self:settext("not really")
+				end
+			end
+		},
+]]
 
+--[[
 		--poco pleasd help me my familyu are in danger pls dfix
 		Def.Sprite {
 			OnCommand = function(self)
@@ -536,8 +559,9 @@ local function makeScoreDisplay(i)
 			end,
 			-- please don't do this at home kids
 			DisplayCommand = function(self)
-				local pfpath = THEME:GetPathG("", "pfp/" .. hs:GetDisplayName()) or THEME:GetPathG("", "profilepicture")
-				self:Load(pfpath)
+				local pfpath = THEME:GetPathG("", "pfp/" .. hs:GetDisplayName())
+				local pffallback = THEME:GetPathG("" , "profilepicture")
+				self:Load(pfpath , pffallback)
 			end
 		},
 

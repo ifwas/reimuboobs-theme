@@ -15,6 +15,7 @@ local defaultConfig = {
 		ShowPlayerOptionsHint = true,
 		ShowBanners = true, -- false to turn off banners everywhere
 		AdvancedPlayerTracker = false,
+		ShowOffsetScoreTab = false,
 	},
 	NPSDisplay = {
 		MaxWindow = 2,

@@ -1,4 +1,9 @@
 -- updated to handle both immediate evaluation when pulling data from pss (doesnt require invoking calls to loadreplay data) and scoretab plot construction (does) -mina
+local isEnabled = themeConfig:get_data().global.ShowOffsetScoreTab
+local t = Def.ActorFrame{}
+
+if not isEnabled then return t end
+
 
 local judges = {"marv", "perf", "great", "good", "boo", "miss"}
 local tst = ms.JudgeScalers
@@ -6,7 +11,7 @@ local judge = GetTimingDifficulty()
 local tso = tst[judge]
 
 local plotWidth, plotHeight = 400, 120
-local plotX, plotY = SCREEN_WIDTH - 5 - plotWidth / 2, SCREEN_HEIGHT - 59.5 - plotHeight / 2
+local plotX, plotY = 450 - 5 - plotWidth / 2, 400 - 59.5 - plotHeight / 2
 local dotDims, plotMargin = 2, 4
 local maxOffset = math.max(180, 180 * tso)
 local baralpha = 0.2
@@ -38,8 +43,8 @@ local nrt = {}
 local ctt = {}
 local ntt = {}
 local wuab = {}
-local finalSecond = GAMESTATE:GetCurrentSteps():GetLastSecond()
-local td = GAMESTATE:GetCurrentSteps():GetTimingData()
+local finalSecond
+local td
 local oddColumns = false
 local middleColumn = 1.5 -- middle column for 4k but accounting for trackvector indexing at 0
 
@@ -103,7 +108,10 @@ local function convertXToRow(x)
 end
 
 local o = Def.ActorFrame {
-	Name = "OffsetPlot",
+	Name = "OffsetPlotScoreTab",
+	InitCommand = function(self)
+		self:visible(false)
+	end,
 	OnCommand = function(self)
 		self:xy(plotX, plotY)
 		-- being explicit about the logic since atm these are the only 2 cases we handle
@@ -124,11 +132,8 @@ local o = Def.ActorFrame {
 			ctt = pss:GetTrackVector() -- column information for each offset
 			ntt = pss:GetTapNoteTypeVector() -- notetype information (we use this to handle mine hits differently- currently that means not displaying them)
 		else -- should be default behavior
-			if name == "ScreenScoreTabOffsetPlot" then
+			if name == "ScreenSelectMusic" then
 				local score = getScoreForPlot()
-				plotWidth, plotHeight = SCREEN_WIDTH, SCREEN_WIDTH * 0.3
-				self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y)
-				textzoom = 0.5
 				bgalpha = 1
 				if score ~= nil then
 					if score:HasReplayData() then
@@ -146,6 +151,7 @@ local o = Def.ActorFrame {
 				end
 			end
 		end
+
 
 		-- missing noterows. this happens with many online replays.
 		-- we can approximate, but i dont want to do that right now.
@@ -193,6 +199,34 @@ local o = Def.ActorFrame {
 
 			MESSAGEMAN:Broadcast("JudgeDisplayChanged")
 		end
+	end,
+	DisplayCommand = function(self)
+		local score = getScoreForPlot()
+
+			if score:HasReplayData() then
+				local replay = score:GetReplay()
+				dvt = replay:GetOffsetVector()
+				nrt = replay:GetNoteRowVector()
+				ctt = replay:GetTrackVector()
+				ntt = replay:GetTapNoteTypeVector()
+
+				--refresh timing data to look for new timing data
+				finalSecond = GAMESTATE:GetCurrentSteps():GetLastSecond()
+				td = GAMESTATE:GetCurrentSteps():GetTimingData()
+				self:visible(true)
+			else
+				dvt = {}
+				nrt = {}
+				ctt = {}
+				ntt = {}
+			end
+
+			wuab = {}
+			for i = 1, #nrt do
+				wuab[i] = td:GetElapsedTimeFromNoteRow(nrt[i])
+			end
+
+			MESSAGEMAN:Broadcast("JudgeDisplayChanged")
 	end,
 	LoadedCustomWindowMessageCommand = function(self)
 		usingCustomWindows = true
@@ -392,17 +426,7 @@ for i = 1, #fantabars do
 	}
 end
 
--- Bar for current mouse position on graph
-o[#o + 1] = Def.Quad {
-	Name = "PosBar",
-	InitCommand = function(self)
-		self:visible(false)
-		self:zoomto(2, plotHeight + plotMargin):diffuse(color("0.5,0.5,0.5,1"))
-	end,
-	JudgeDisplayChangedMessageCommand = function(self)
-		self:zoomto(2, plotHeight + plotMargin)
-	end
-}
+
 
 local dotWidth = dotDims / 2
 local function setOffsetVerts(vt, x, y, c)

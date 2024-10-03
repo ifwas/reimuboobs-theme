@@ -1,5 +1,4 @@
 local t = Def.ActorFrame {}
-t[#t + 1] = LoadActor("../_xoon2")
 t[#t + 1] = LoadActor("../_xoon3")
 
 translated_info = {
@@ -9,14 +8,14 @@ translated_info = {
 
 
 --Group folder name
-local frameWidth = SCREEN_CENTER_X - capWideScale(get43size(150),200)
+local frameWidth = SCREEN_CENTER_X - capWideScale(get43size(150),20)
 local frameHeight = 20
-local frameX = 170
-local frameY = 25 
+local frameX = SCREEN_WIDTH - 20
+local frameY = 15
 
 t[#t + 1] = LoadFont("Common Large") .. {
 	InitCommand = function(self)
-	self:x(SCREEN_CENTER_X - capWideScale(get43size(310),322)):y(25):zoom(0.3):maxwidth((frameWidth - 40) / 0.33)
+		self:xy(frameX, frameY + 10):halign(1):zoom(0.35):maxwidth((frameWidth) / 0.35)
 	end,
 	BeginCommand = function(self)
 		self:queuecommand("Set"):diffuse(getMainColor("positive"))
@@ -33,8 +32,7 @@ t[#t + 1] = LoadFont("Common Large") .. {
 --thanks steffen
 t[#t + 1] = LoadFont("Common Large") .. {
 	InitCommand = function(self)
-		self:xy(100, 10):halign(0):valign(1):zoom(0.15):diffuse(getMainColor("positive"))
-		self:diffusealpha(0) --change this to a 1 to make it visible if you care
+		self:xy(30, 32):halign(0):valign(1):zoom(0.35):diffuse(getMainColor("positive"))
 		self:settext("")
 	end,
 	OnCommand = function(self)
@@ -67,13 +65,26 @@ t[#t + 1] = LoadFont("Common Large") .. {
 	end,
 }
 
+local bannersizemultiplier = 1.27
+local BannerWidth = 220 * bannersizemultiplier-- 220
+local BannerHeight = 77 * bannersizemultiplier    -- 77
+
+--test banner overlay
+t[#t + 1] = Def.Quad {
+	Name = "Banner",
+	OnCommand = function(self)
+		self:x(SCREEN_CENTER_X + capWideScale(get43size(280),280)):y(70):valign(0) --308
+		self:scaletoclipped(capWideScale(get43size(270), BannerWidth), capWideScale(get43size(94.5), BannerHeight)) -- 220, 77
+		self:diffuse(getMainColor("frames"))
+	end
+}
 
 --test banner overlay
 t[#t + 1] = Def.Sprite {
 	Name = "Banner",
 	OnCommand = function(self)
-		self:x(SCREEN_CENTER_X - capWideScale(get43size(280),308)):y(36):valign(0) --308
-		self:scaletoclipped(capWideScale(get43size(270), 220), capWideScale(get43size(94.5), 77))
+		self:x(SCREEN_CENTER_X + capWideScale(get43size(280),280)):y(70):valign(0) --308
+		self:scaletoclipped(capWideScale(get43size(270), BannerWidth), capWideScale(get43size(94.5), BannerHeight)) -- 220, 77
 		local bnpath = GAMESTATE:GetCurrentSong():GetBannerPath()
 		self:visible(true)
 		if not BannersEnabled() then
@@ -84,6 +95,8 @@ t[#t + 1] = Def.Sprite {
 		self:LoadBackground(bnpath)
 	end
 }
+
+
 
 t[#t + 1] = LoadActor("../gradecounter")
 t[#t + 1] = LoadActor("../_cursor")

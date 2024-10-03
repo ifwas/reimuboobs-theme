@@ -78,7 +78,7 @@ if showVisualizer then
 	t[#t + 1] = vis
 end
 
- --[[
+--[[
 t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
 	Name="TestEvent",
 	InitCommand = function(self)
@@ -128,22 +128,17 @@ t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
 }
 ]]
 
-
-t[#t + 1] = LoadActor("currentsort")
 t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
 	Name="rando",
 	InitCommand = function(self)
-		self:xy(capWideScale(get43size(735),765), SCREEN_BOTTOM - 17):halign(0):valign(1):zoom(0.2):diffuse(getMainColor("positive"))
-		self:settextf("%s: %i", translated_info["SongsLoaded"], SONGMAN:GetNumSongs())
+		self:xy(capWideScale(get43size(735),790), SCREEN_BOTTOM - 17):halign(0):valign(1):zoom(0.2):diffuse(getMainColor("positive"))
+		self:settextf("Random Song")
 	end,
 	MouseOverCommand = function(self)
 		self:diffusealpha(hoverAlpha)
-		TOOLTIP:SetText(SONGMAN:GetNumSongGroups() .. " " .. translated_info["GroupsLoaded"])
-		TOOLTIP:Show()
 	end,
 	MouseOutCommand = function(self)
 		self:diffusealpha(1)
-		TOOLTIP:Hide()
 	end,
 	MouseDownCommand = function(self, params)
 		if params.event == "DeviceButton_left mouse button" then
@@ -169,6 +164,7 @@ t[#t + 1] = UIElements.TextToolTip(1, 1, "Common Large") .. {
 	end
 }
 
+t[#t + 1] = LoadActor("currentsort")
 t[#t + 1] = LoadActor("../thingy")
 t[#t + 1] = LoadActor("../_cursor")
 t[#t + 1] = LoadActor("../_halppls")

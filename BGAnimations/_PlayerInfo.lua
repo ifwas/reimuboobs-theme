@@ -543,10 +543,9 @@ t[#t + 1] = Def.ActorFrame {
 	},
 }
 
---silly little thing
 --[[
 t[#t + 1] = Def.Sprite {
-	Texture=THEME:GetPathG("","caralmel 7x3");
+	Texture=THEME:GetPathG("","amongustwerk 2x3");
 	InitCommand=function(self)
 		self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):zoom(0.3)
 		self:effectclock("beat")

@@ -107,6 +107,8 @@ local function updateLeaderBoardForCurrentChart()
 	end
 end
 
+
+
 local ret = Def.ActorFrame {
 	Name = "Scoretab",
 	BeginCommand = function(self)
@@ -651,37 +653,7 @@ for i = 1, #judges do
 	l[#l + 1] = makeJudge(i, judges[i])
 end
 
-l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
-	Name = "Score",
-	InitCommand = function(self)
-		self:y(frameHeight - headeroffY - 31 - offsetY):zoom(0.55):halign(0):settext("")
-		self:diffuse(getMainColor("positive"))
-	end,
-	DisplayCommand = function(self)
-		if hasReplayData then
-			self:settext(translated_info["ShowOffset"])
-		else
-			self:settext("")
-		end
-	end,
-	MouseOverCommand = function(self)
-		if hasReplayData then
-			self:diffusealpha(hoverAlpha)
-		end
-	end,
-	MouseOutCommand = function(self)
-		if hasReplayData then
-			self:diffusealpha(1)
-		end
-	end,
-	MouseDownCommand = function(self, params)
-		if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
-			if getTabIndex() == 2 and getScoreForPlot() and hasReplayData and isOver(self) then
-				SCREENMAN:AddNewScreenToTop("ScreenScoreTabOffsetPlot")
-			end
-		end
-	end,
-}
+
 l[#l + 1] = UIElements.SpriteButton(1, 1, THEME:GetPathG("", "showReplay")) .. {
 	Name = "ReplayViewer",
 	InitCommand = function(self)
@@ -773,8 +745,7 @@ l[#l + 1] = Def.ActorFrame {
 	},
 }
 
---todo
---l[#l + 1] = LoadActor("../offsetplot")
+
 
 l[#l + 1] = UIElements.SpriteButton(1, 1, THEME:GetPathG("", "upload")) .. {
 	Name = "TheDootButton",
@@ -790,7 +761,7 @@ l[#l + 1] = UIElements.SpriteButton(1, 1, THEME:GetPathG("", "upload")) .. {
 	end,
 	MouseOverCommand = function(self)
 		self:diffusealpha(hoverAlpha)
-		TOOLTIP:SetText(translated_info["UploadReplay"])
+		TOOLTIP:SetText("Upload Replay\nShift: All in Pack")
 		TOOLTIP:Show()
 	end,
 	MouseOutCommand = function(self)
@@ -799,108 +770,52 @@ l[#l + 1] = UIElements.SpriteButton(1, 1, THEME:GetPathG("", "upload")) .. {
 	end,
 	MouseDownCommand = function(self, params)
 		if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
-			if getTabIndex() == 2 and isOver(self) and DLMAN:IsLoggedIn() then
-				DLMAN:SendReplayDataForOldScore(score:GetScoreKey())
-				ms.ok(translated_info["UploadingReplay"]) --should have better feedback -mina
-			elseif getTabIndex() == 2 and isOver(self) and not DLMAN:IsLoggedIn() then
-				ms.ok(translated_info["NotLoggedIn"])
+			if INPUTFILTER:IsShiftPressed() then
+				if getTabIndex() == 2 and isOver(self) and DLMAN:IsLoggedIn() then
+					DLMAN:UploadScoresForPack(GAMESTATE:GetCurrentSong():GetGroupName())
+					ms.ok("Uploading All Scores in Pack...")
+				elseif getTabIndex() == 2 and isOver(self) and not DLMAN:IsLoggedIn() then
+					ms.ok(translated_info["NotLoggedIn"])
+				end
+			else
+				if getTabIndex() == 2 and isOver(self) and DLMAN:IsLoggedIn() then
+					DLMAN:SendReplayDataForOldScore(score:GetScoreKey())
+					ms.ok(translated_info["UploadingReplay"]) --should have better feedback -mina
+				elseif getTabIndex() == 2 and isOver(self) and not DLMAN:IsLoggedIn() then
+					ms.ok(translated_info["NotLoggedIn"])
+				end
 			end
 		end
 	end
 }
-l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
-	Name = "TheDootButtonTWO",
+
+local IsInvalidOrNah = ""
+
+l[#l + 1] = UIElements.SpriteButton(1, 1, THEME:GetPathG("", "invalidate")) .. {
+	Name = "TheDootNotButton",
 	InitCommand = function(self)
-		self:xy(frameWidth - offsetX - frameX, frameHeight - headeroffY - 49 - offsetY):zoom(0.425):halign(1):settext("")
-		self:diffuse(getMainColor("positive"))
+		self:xy(43.5 ,frameHeight - 310):zoom(0.55):halign(0):diffusealpha(0)
 	end,
 	DisplayCommand = function(self)
-		self:settext(translated_info["UploadAllScoreChart"])
+		if hasReplayData then
+			self:diffusealpha(1)
+		else
+			self:diffusealpha(0)
+		end
 	end,
 	MouseOverCommand = function(self)
 		self:diffusealpha(hoverAlpha)
-	end,
-	MouseOutCommand = function(self)
-		self:diffusealpha(1)
-	end,
-	MouseDownCommand = function(self, params)
-		if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
-			if getTabIndex() == 2 and isOver(self) and DLMAN:IsLoggedIn() then
-				DLMAN:UploadScoresForChart(score:GetChartKey())
-			elseif getTabIndex() == 2 and isOver(self) and not DLMAN:IsLoggedIn() then
-				ms.ok(translated_info["NotLoggedIn"])
-			end
-		end
-	end
-}
-l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
-	Name = "TheDootButtonTHREEEEEEEE",
-	InitCommand = function(self)
-		self:xy(frameWidth - offsetX - frameX, frameHeight - headeroffY - 63 - offsetY):zoom(0.425):halign(1):settext("")
-		self:diffuse(getMainColor("positive"))
-	end,
-	DisplayCommand = function(self)
-		self:settext(translated_info["UploadAllScorePack"])
-	end,
-	MouseOverCommand = function(self)
-		self:diffusealpha(hoverAlpha)
-	end,
-	MouseOutCommand = function(self)
-		self:diffusealpha(1)
-	end,
-	MouseDownCommand = function(self, params)
-		if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
-			if getTabIndex() == 2 and isOver(self) and DLMAN:IsLoggedIn() then
-				DLMAN:UploadScoresForPack(GAMESTATE:GetCurrentSong():GetGroupName())
-			elseif getTabIndex() == 2 and isOver(self) and not DLMAN:IsLoggedIn() then
-				ms.ok(translated_info["NotLoggedIn"])
-			end
-		end
-	end
-}
-l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
-	Name = "TheDootButtonFOUR",
-	InitCommand = function(self)
-		self:xy(frameWidth - offsetX - frameX, frameHeight - headeroffY - 77 - offsetY):zoom(0.425):halign(1):settext("")
-		self:diffuse(getMainColor("positive"))
-	end,
-	DisplayCommand = function(self)
-		self:settext(translated_info["UploadAllScore"])
-	end,
-	MouseOverCommand = function(self)
-		self:diffusealpha(hoverAlpha)
-	end,
-	MouseOutCommand = function(self)
-		self:diffusealpha(1)
-	end,
-	MouseDownCommand = function(self, params)
-		if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
-			if getTabIndex() == 2 and isOver(self) and DLMAN:IsLoggedIn() then
-				DLMAN:UploadAllScores()
-			elseif getTabIndex() == 2 and isOver(self) and not DLMAN:IsLoggedIn() then
-				ms.ok(translated_info["NotLoggedIn"])
-			end
-		end
-	end
-}
-l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
-	Name = "ValidateInvalidateScoreButton",
-	InitCommand = function(self)
-		self:xy(frameWidth - offsetX - frameX, frameHeight - headeroffY - 91 - offsetY):zoom(0.425):halign(1):settext("")
-		self:diffuse(getMainColor("positive"))
-	end,
-	DisplayCommand = function(self)
         if score:GetEtternaValid() then
-            self:settext(translated_info["InvalidateScore"])
+            IsInvalidOrNah = translated_info["InvalidateScore"]
         else
-            self:settext(translated_info["ValidateScore"])
+            IsInvalidOrNah = translated_info["ValidateScore"]
         end
-	end,
-	MouseOverCommand = function(self)
-		self:diffusealpha(hoverAlpha)
+		TOOLTIP:SetText(IsInvalidOrNah)
+		TOOLTIP:Show()
 	end,
 	MouseOutCommand = function(self)
 		self:diffusealpha(1)
+		TOOLTIP:Hide()
 	end,
 	MouseDownCommand = function(self, params)
 		if nestedTab == 1 and params.event == "DeviceButton_left mouse button" then
@@ -918,6 +833,7 @@ l[#l + 1] = UIElements.TextToolTip(1, 1, "Common Normal") .. {
 		end
 	end
 }
+
 t[#t + 1] = l
 
 t[#t + 1] = Def.Quad {
@@ -998,6 +914,41 @@ local function nestedTabButton(i)
 		}
 	}
 end
+
+
+--some testing stats in regards offsetplot
+
+--[[
+t[#t + 1] = LoadFont("Common Normal") .. {
+	Name = "ScoreGraphStatText1",
+	InitCommand = function(self)
+		self:xy(400,8):valign(0):halign(1):zoom(0.5):settext("")
+	end,
+	DisplayCommand = function(self)
+		local finalSecond = GAMESTATE:GetCurrentSteps():GetLastSecond()
+		self:settext("finalSecond: " ..finalSecond)
+	end,
+}
+
+t[#t + 1] = LoadFont("Common Normal") .. {
+	Name = "ScoreGraphStatText1",
+	InitCommand = function(self)
+		self:xy(400,18):valign(0):halign(1):zoom(0.5):settext("")
+	end,
+	DisplayCommand = function(self)
+		local hasReplayData = score:HasReplayData()
+		if hasReplayData then
+		self:settext("hasreplaydata: true")
+		else
+		self:settext("hasreplaydata: false")
+		end
+	end,
+}
+]]
+
+
+t[#t + 1] = LoadActor("../puta")
+
 
 -- online score display
 ret[#ret + 1] = LoadActor("../superscoreboard")

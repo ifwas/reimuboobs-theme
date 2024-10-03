@@ -6,7 +6,7 @@ local judge = GetTimingDifficulty()
 local tso = tst[judge]
 
 local plotWidth, plotHeight = 400, 120
-local plotX, plotY = SCREEN_WIDTH - 5 - plotWidth / 2, SCREEN_HEIGHT - 59.5 - plotHeight / 2
+local plotX, plotY = 450 - 5 - plotWidth / 2, 500 - 59.5 - plotHeight / 2
 local dotDims, plotMargin = 2, 4
 local maxOffset = math.max(180, 180 * tso)
 local baralpha = 0.2
@@ -292,8 +292,8 @@ o[#o + 1] = Def.Quad {
 			txt:visible(true)
 			bg:visible(true)
 			bar:x(xpos)
-			txt:x(xpos - 2)
-			bg:x(xpos)
+			txt:x(xpos + 70)
+			bg:x(xpos + 70)
 			bg:zoomto(txt:GetZoomedWidth() + 4, txt:GetZoomedHeight() + 4)
 			local row = convertXToRow(xpos)
 			local replay = REPLAYS:GetActiveReplay()
@@ -516,7 +516,7 @@ o[#o + 1] = LoadFont("Common Normal") .. {
 o[#o + 1] = Def.Quad {
 	Name = "PosBG",
 	InitCommand = function(self)
-		self:valign(1):halign(1):zoomto(30,30):diffuse(color(".1,.1,.1,.45")):y(-plotHeight / 2 - plotMargin)
+		self:valign(1):halign(1):zoomto(30,30):diffuse(color(".1,.1,.1,.9")):y(-plotHeight / 2 - plotMargin)
 		self:visible(false)
 	end
 }
