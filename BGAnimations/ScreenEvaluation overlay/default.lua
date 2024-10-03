@@ -1,5 +1,5 @@
 local t = Def.ActorFrame {}
-t[#t + 1] = LoadActor("../_xoon3")
+
 
 translated_info = {
 	Title = THEME:GetString("ScreenEvaluation", "Title"),

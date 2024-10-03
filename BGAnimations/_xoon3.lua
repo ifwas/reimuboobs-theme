@@ -1,4 +1,4 @@
-local hideFancyElements = false
+local hideFancyElements = themeConfig:get_data().global.HideFancyParticles
 local t = Def.ActorFrame{};
 if hideFancyElements then return t; end
 

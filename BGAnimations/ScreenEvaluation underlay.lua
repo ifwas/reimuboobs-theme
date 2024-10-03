@@ -34,4 +34,6 @@ if enabled then
 	}
 end
 
+t[#t + 1] = LoadActor("_xoon3")
+
 return t

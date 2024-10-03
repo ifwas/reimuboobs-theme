@@ -1316,3 +1316,37 @@ function ShowOffsetScoreTab()
     setmetatable(t, t)
     return t
 end
+
+function HideFancyParticles()
+	local t = {
+        Name = "HideFancyParticles",
+        LayoutType = "ShowAllInRow",
+        SelectType = "SelectOne",
+        OneChoiceForAllPlayers = true,
+        ExportOnChange = true,
+        ExportOnCancel = true,
+        Choices = {THEME:GetString("OptionNames", "Off"), THEME:GetString("OptionNames", "On")},
+        LoadSelections = function(self, list, pn)
+            local pref = themeConfig:get_data().global.HideFancyParticles
+            if pref then
+                list[2] = true
+            else
+                list[1] = true
+            end
+        end,
+        SaveSelections = function(self, list, pn)
+            local value
+            if list[1] then
+                value = false
+            else
+                value = true
+            end
+            themeConfig:get_data().global.HideFancyParticles = value
+            themeConfig:set_dirty()
+            themeConfig:save()
+        end
+    }
+    setmetatable(t, t)
+    return t
+end
+
