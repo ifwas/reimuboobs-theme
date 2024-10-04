@@ -62,6 +62,10 @@ local ccornah = {
 	THEME:GetString("NestedScores", "ShowInvalid"),
 	THEME:GetString("NestedScores", "HideInvalid")
 }
+local globalornah = {
+	"Global",
+	"MX"
+}
 
 local translated_info = {
 	LoginToView = THEME:GetString("NestedScores", "LoginToView"),
@@ -328,9 +332,9 @@ local o = Def.ActorFrame {
 		InitCommand = function(self)
 			self:diffuse(getMainColor("positive"))
 			if collapsed then
-				self:xy(c5x - 175, headeroff):zoom(tzoom):halign(1):valign(1)
+				self:xy(c5x - 150, headeroff):zoom(tzoom):halign(1):valign(1)
 			else
-				self:xy(c5x - capWideScale(160,190), headeroff):zoom(tzoom):halign(1):valign(1)
+				self:xy(c5x - capWideScale(160,200), headeroff):zoom(tzoom):halign(1):valign(1)
 			end
 		end,
 		MouseOverCommand = function(self)
@@ -363,7 +367,7 @@ local o = Def.ActorFrame {
 				--self:xy(c5x - 110, headeroff):zoom(tzoom):halign(1):valign(1)
 			else
 				self:visible(true)
-				self:xy(c5x - capWideScale(80,96), headeroff):zoom(tzoom):halign(1):valign(1)
+				self:xy(c5x - capWideScale(80,56), headeroff):zoom(tzoom):halign(1):valign(1)
 			end
 		end,
 		MouseOverCommand = function(self)
@@ -382,6 +386,43 @@ local o = Def.ActorFrame {
 		MouseDownCommand = function(self, params)
 			if params.event == "DeviceButton_left mouse button" then
 				DLMAN:ToggleValidFilter()
+				ind = 0
+				self:GetParent():queuecommand("GetFilteredLeaderboard")
+			end
+		end
+	},
+	UIElements.TextToolTip(1, 1, "Common Normal") .. {
+		--globalorMX
+		InitCommand = function(self)
+			self:diffuse(getMainColor("positive"))
+			if collapsed then
+				self:visible(false)
+				--self:xy(c5x - 110, headeroff):zoom(tzoom):halign(1):valign(1)
+			else
+				self:visible(true)
+				self:xy(c5x - capWideScale(80,156), headeroff):zoom(tzoom):valign(1)
+			end
+		end,
+		MouseOverCommand = function(self)
+			self:diffusealpha(hoverAlpha)
+		end,
+		MouseOutCommand = function(self)
+			self:diffusealpha(1)
+		end,
+		UpdateCommand = function(self)
+			if currentCountry == "Global" then
+				self:settext(globalornah[1])
+			else
+				self:settext(DLMAN:GetUserCountryCode())
+			end
+		end,
+		MouseDownCommand = function(self, params)
+			if params.event == "DeviceButton_left mouse button" then
+				if currentCountry == "Global" then
+					currentCountry = DLMAN:GetUserCountryCode()
+				else
+					currentCountry = "Global"
+				end
 				ind = 0
 				self:GetParent():queuecommand("GetFilteredLeaderboard")
 			end
