@@ -334,7 +334,7 @@ local o = Def.ActorFrame {
 			if collapsed then
 				self:xy(c5x - 150, headeroff):zoom(tzoom):halign(1):valign(1)
 			else
-				self:xy(c5x - capWideScale(160,200), headeroff):zoom(tzoom):halign(1):valign(1)
+				self:xy(c5x - capWideScale(160,230), headeroff):zoom(tzoom):halign(1):valign(1)
 			end
 		end,
 		MouseOverCommand = function(self)
@@ -367,7 +367,7 @@ local o = Def.ActorFrame {
 				--self:xy(c5x - 110, headeroff):zoom(tzoom):halign(1):valign(1)
 			else
 				self:visible(true)
-				self:xy(c5x - capWideScale(80,56), headeroff):zoom(tzoom):halign(1):valign(1)
+				self:xy(c5x - capWideScale(80,86), headeroff):zoom(tzoom):halign(1):valign(1)
 			end
 		end,
 		MouseOverCommand = function(self)
@@ -400,7 +400,7 @@ local o = Def.ActorFrame {
 				--self:xy(c5x - 110, headeroff):zoom(tzoom):halign(1):valign(1)
 			else
 				self:visible(true)
-				self:xy(c5x - capWideScale(80,156), headeroff):zoom(tzoom):valign(1)
+				self:xy(c5x - capWideScale(80,186), headeroff):zoom(tzoom):valign(1)
 			end
 		end,
 		MouseOverCommand = function(self)
