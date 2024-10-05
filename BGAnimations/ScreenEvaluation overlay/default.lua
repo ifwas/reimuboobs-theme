@@ -15,7 +15,7 @@ local frameY = 15
 
 t[#t + 1] = LoadFont("Common Large") .. {
 	InitCommand = function(self)
-		self:xy(frameX, frameY + 10):halign(1):zoom(0.35):maxwidth((frameWidth) / 0.35)
+		self:xy(frameX, frameY + 10):halign(1):zoom(0.35):maxwidth((frameWidth) / 0.5)
 	end,
 	BeginCommand = function(self)
 		self:queuecommand("Set"):diffuse(getMainColor("positive"))
