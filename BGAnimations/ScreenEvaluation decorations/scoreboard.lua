@@ -59,7 +59,13 @@ local t = Def.ActorFrame {
 	Name = "scoreBoard",
 	OnCommand = function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(input)
-	end
+	end,
+	ChangingTabToScoreMessageCommand = function(self)
+        self:bouncebegin(0.2):xy(-700, 0):diffusealpha(0)
+    end,
+    ExitTabScoreMessageCommand = function(self)
+        self:bouncebegin(0.2):xy(0, 0):diffusealpha(1)
+    end
 }
 
 local function scoreitem(pn, index, scoreIndex, drawindex)
@@ -115,7 +121,7 @@ local function scoreitem(pn, index, scoreIndex, drawindex)
 			InitCommand = function(self)
 				self:xy(framex, framey + (drawindex * spacing) - 4):zoomto(frameWidth, 30):halign(0):valign(0):diffuse(
 					color("#333333")
-				):diffusealpha(0.3):diffuselefttedge(color("#33333333"))
+				):diffusealpha(0.3)
 			end,
 			BeginCommand = function(self)
 				self:visible(GAMESTATE:IsHumanPlayer())
@@ -126,7 +132,7 @@ local function scoreitem(pn, index, scoreIndex, drawindex)
 			InitCommand = function(self)
 				self:xy(framex, framey + (drawindex * spacing) - 4):zoomto(frameWidth, 30):halign(0):valign(0):diffuse(
 					color("#ffffff")
-				):diffusealpha(0.3):diffuseleftedge(color("#33333300"))
+				):diffusealpha(0.3)
 			end,
 			HahaThisCodeINeedHelpCommand = function(self, params)
 				local equis = params.doot == index

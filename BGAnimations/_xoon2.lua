@@ -191,7 +191,7 @@ t[#t + 1] = Def.ActorFrame {
 		InitCommand = function(self)
 			self:xy(AvatarX, AvatarY + 15):halign(0):valign(0)
 			self:zoomto(404, 49)
-			self:diffuse(getMainColor("frames")):diffusealpha(0.45)
+			self:diffuse(getMainColor("frames")):diffusealpha(0.6)
 		end
 	},
 	UIElements.SpriteButton(1, 1, nil) .. {
@@ -256,7 +256,7 @@ t[#t + 1] = Def.ActorFrame {
 			self:xy(AvatarX + 2.4, AvatarY + 57)
 			self:zoom(0.40)
 			self:halign(0)
-			self:maxwidth(460)
+			self:maxwidth(1000)
 		end,
 		BeginCommand = function(self)
 			self:queuecommand("Set")
@@ -270,7 +270,7 @@ t[#t + 1] = Def.ActorFrame {
 			self:settext(getModifierTranslations(mstring))
 		end,
 		ScoreChangedMessageCommand = function(self)
-			local mstring = score:GetModifiers()
+			local mstring = SCREENMAN:GetTopScreen():GetReplayModifiers()
 			self:settext(getModifierTranslations(mstring))
 		end,
 	},
@@ -355,7 +355,7 @@ t[#t + 1] = Def.ActorFrame {
 		InitCommand = function(self)
 			self:halign(0)
 			self:xy(AvatarX + 54, AvatarY + 40)
-			self:zoom(0.45)
+			self:zoom(0.5)
 			self:maxwidth(capWideScale(360,800))
 			self:maxheight(22)
 			self:diffuse(ButtonColor)

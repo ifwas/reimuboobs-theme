@@ -9,6 +9,8 @@ if GAMESTATE:GetNumPlayersEnabled() == 1 then
 	end
 end
 
+
+
 --this REALLY needs a rewrite, at least until the 5th test client releases
 
 --[[
@@ -37,6 +39,7 @@ local function scaleToJudge(scale)
 	return out
 end
 
+local hoverAlpha = 0.8
 local judge = PREFSMAN:GetPreference("SortBySSRNormPercent") and 4 or GetTimingDifficulty()
 local judge2 = judge
 local score = SCOREMAN:GetMostRecentScore()
@@ -50,6 +53,7 @@ local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 local frameX = 573
 local frameY = 150 
 local frameWidth = SCREEN_CENTER_X - capWideScale(get43size(150),160)
+local linearvariable = 1.3
 
 -- dont default to using custom windows and dont persist that state
 -- custom windows are meant to be used as a thing you occasionally check, not the primary way to play the game
@@ -71,7 +75,7 @@ t[#t+1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "SongTitle",
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X, 20) 
+			self:xy(SCREEN_CENTER_X, 20):diffusealpha(1)
 			self:zoom(0.33)
 			self:maxwidth(capWideScale(250 / 0.25, 400 / 0.25))
 		end,
@@ -85,7 +89,7 @@ t[#t+1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "SongArtist",
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X, 35)
+			self:xy(SCREEN_CENTER_X, 35):diffusealpha(1)
 			self:zoom(0.2)
 			self:maxwidth(180 / 0.25)
 		end,
@@ -93,7 +97,7 @@ t[#t+1] = Def.ActorFrame {
 			self:queuecommand("Set")
 		end,
 		SetCommand = function(self)
-			self:settext(GAMESTATE:GetCurrentSong():GetDisplayArtist())
+			self:settext(GAMESTATE:GetCurrentSong():GetDisplayArtist())	
 		end,
 	},
 	LoadFont("Common Large") .. {
@@ -737,6 +741,26 @@ local function scoreBoard(pn, position)
 				end,
 			},
 			LoadFont("Common Large") .. {
+				Name = "NameShadow",
+				InitCommand = function(self)
+					self:xy(frameX + 10, frameY + 80.5 + ((judgmentIndex - 1) * 22))
+					self:zoom(0.25)
+					self:halign(0)
+					self:diffuse(getMainColor("frames"))
+				end,
+				BeginCommand = function(self)
+					if aboutToForceWindowSettings then return end
+					self:queuecommand("Set")
+				end,
+				SetCommand = function(self)
+					if usingCustomWindows then
+						self:settext(getCustomWindowConfigJudgmentName(judgmentName))
+					else
+						self:settext(getJudgeStrings(judgmentName))
+					end
+				end,
+			},
+			LoadFont("Common Large") .. {
 				Name = "Name",
 				InitCommand = function(self)
 					self:xy(frameX + 10, frameY + 79.3 + ((judgmentIndex - 1) * 22))
@@ -756,10 +780,26 @@ local function scoreBoard(pn, position)
 				end,
 			},
 			LoadFont("Common Large") .. {
+				Name = "CountShadow",
+				InitCommand = function(self)
+					self:xy(frameX + frameWidth - 40, frameY + 80.8 + ((judgmentIndex - 1) * 22))
+					self:zoom(0.3)
+					self:halign(1)
+					self:diffuse(getMainColor("frames"))
+				end,
+				BeginCommand = function(self)
+					if aboutToForceWindowSettings then return end
+					self:queuecommand("Set")
+				end,
+				SetCommand = function(self)
+					self:settext(self:GetParent().jcount)
+				end,
+			},
+			LoadFont("Common Large") .. {
 				Name = "Count",
 				InitCommand = function(self)
 					self:xy(frameX + frameWidth - 40, frameY + 79.3 + ((judgmentIndex - 1) * 22))
-					self:zoom(0.25)
+					self:zoom(0.3)
 					self:halign(1)
 				end,
 				BeginCommand = function(self)
@@ -1204,10 +1244,80 @@ local function scoreBoard(pn, position)
 	return t
 end
 
+--this is so badly coded, don't do this, i only did this because i was tired
+local tabindex = "local"
+
+t[#t + 1] = UIElements.QuadButton(1, 1) .. {
+	Name = "TabBGOnline",
+	InitCommand = function(self)
+		self:xy(168, SCREEN_CENTER_Y - 4):zoomto(50, 20):diffusecolor(getMainColor("frames")):diffusealpha(0.7):valign(1)
+	end,
+	MouseDownCommand = function(self, params)
+		if params.event == "DeviceButton_left mouse button" and tabindex == "local" then
+			MESSAGEMAN:Broadcast("ChangingTabToScore")
+			self:diffusecolor(Brightness(getMainColor("positive"),0.3)):diffusealpha(0.5)
+			self:linear(0.2):zoomto(50,25)
+		end
+	end,
+	ExitTabScoreMessageCommand = function(self)
+		tabindex = "local"
+		self:diffusecolor(getMainColor("frames")):diffusealpha(0.7)
+		self:linear(0.2):zoomto(50,20)
+	end
+}
+
+t[#t + 1] = LoadFont("Common Large") .. {
+	Name="TestEventLeaderboard",
+	InitCommand = function(self)
+		self:xy(155, SCREEN_CENTER_Y - 10):halign(0):valign(1):zoom(0.2):diffuse(getMainColor("positive"))
+		self:settextf("Online")
+	end,
+	ChangingTabToScoreMessageCommand = function(self)
+		self:linear(0.2):xy(155, SCREEN_CENTER_Y - 15)
+	end,
+	ExitTabScoreMessageCommand = function(self)
+		self:linear(0.2):xy(155, SCREEN_CENTER_Y - 10)
+	end
+}
+
+t[#t + 1] = UIElements.QuadButton(1, 1) .. {
+	Name = "TabBGOffline",
+	InitCommand = function(self)
+		self:xy(118, SCREEN_CENTER_Y - 4):zoomto(50, 25):diffusecolor(Brightness(getMainColor("positive"),0.3)):diffusealpha(0.5):valign(1)
+	end,
+	ChangingTabToScoreMessageCommand = function(self)
+		tabindex = "online"
+		self:diffusecolor(getMainColor("frames")):diffusealpha(0.7)
+		self:linear(0.2):zoomto(50,20)
+	end,
+	MouseDownCommand = function(self, params)
+		if params.event == "DeviceButton_left mouse button" and tabindex == "online" then
+			MESSAGEMAN:Broadcast("ExitTabScore")
+			self:diffusecolor(Brightness(getMainColor("positive"),0.3)):diffusealpha(0.5)
+			self:linear(0.2):zoomto(50,25)
+		end
+	end
+}
+
+t[#t + 1] = LoadFont("Common Large") .. {
+	Name="TestEventExitLead",
+	InitCommand = function(self)
+		self:xy(107, SCREEN_CENTER_Y - 15):halign(0):valign(1):zoom(0.2):diffuse(getMainColor("positive"))
+		self:settextf("Local")
+	end,
+	ChangingTabToScoreMessageCommand = function(self)
+		self:linear(0.2):xy(107, SCREEN_CENTER_Y - 10)
+	end,
+	ExitTabScoreMessageCommand = function(self)
+		self:linear(0.2):xy(107, SCREEN_CENTER_Y - 15)
+	end
+}
+
 if GAMESTATE:IsPlayerEnabled() then
 	t[#t + 1] = scoreBoard(PLAYER_1, 0)
 end
 
+t[#t + 1] = LoadActor("onlinething")
 t[#t + 1] = LoadActor("../_xoon2")
 t[#t + 1] = LoadActor("../offsetplot")
 t[#t + 1] = LoadActor("../_volumecontrol")
